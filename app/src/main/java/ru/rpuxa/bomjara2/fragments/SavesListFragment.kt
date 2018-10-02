@@ -15,13 +15,19 @@ import ru.rpuxa.bomjara2.save.Save
 class SavesListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        inflater.inflate(R.layout.saves_list, container)!!
+        inflater.inflate(R.layout.saves_list, container, false)!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recycler = view.recycler
         recycler.setHasFixedSize(true)
         recycler.layoutManager = LinearLayoutManager(context)
-        recycler.adapter = SavesAdapter(listOf(Save("123", 123, 1, 89125123)))
+        recycler.adapter = SavesAdapter(listOf(
+                Save("123", 123, 1, 89125123),
+                Save("123", 123, 1, 89123),
+                Save("123", 123, 1, 912523),
+                Save("123", 123, 1, 825123),
+                Save("123", 123, 1, 8123)
+        ))
     }
 
 
@@ -33,7 +39,7 @@ class SavesListFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SaveViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.save_card_view, parent)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.save_card_view, parent, false)
             view.delete.setOnClickListener {
 
             }
