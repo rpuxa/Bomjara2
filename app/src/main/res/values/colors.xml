@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="energy">#3b72a8</color>
+    <color name="health">#f41717</color>
+    <color name="food">#ffb863</color>
 </resources>
