@@ -11,43 +11,20 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import ru.rpuxa.bomjara2.R
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.round
 
 class ScrollButtonsView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private val frameWidth = 5f
-    private val cursorSpeed = 10f
 
     private var iconWidth = width - 2 * frameWidth
     private val paint = Paint()
     private var cursorIcon: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.frame)
     private var icons: Array<Bitmap> = emptyArray()
-    private var dragging = false
-    private var last = 0f
-    private var start = 0f
-    private var _cursor = 0f
-    fun setCursor(value: Float, fromPager: Boolean) {
-        _cursor = value
-        if (!fromPager) {
-            val pager = controlViewPager
-            if (pager != null) {
+    private var cursor = 0f
+    private var coloredIcons: Array<Bitmap> = emptyArray()
 
-                pager.beginFakeDrag()
-                val new = (last - value) * pager.width / (iconWidth + frameWidth)
-                pager.fakeDragBy(new)
-                start += new
-                if (abs(start) >= pager.width - 1) {
-                    pager.endFakeDrag()
-                    start = 0f
-                }
-                last = value
-            }
-        } else {
-            cursorTarget = value
-        }
-    }
-
-    private var cursorTarget = 0f
 
     private var controlViewPager: ViewPager? = null
 
@@ -62,25 +39,17 @@ class ScrollButtonsView(context: Context, attrs: AttributeSet) : View(context, a
 
         var y = frameWidth
         icons.forEachIndexed { index, bitmap ->
-            if (bitmap.width != iconWidthInt || bitmap.height != iconWidthInt)
+            if (bitmap.width != iconWidthInt || bitmap.height != iconWidthInt) {
                 icons[index] = Bitmap.createScaledBitmap(bitmap, iconWidthInt, iconWidthInt, false)
-            canvas.drawBitmap(icons[index], frameWidth, y, paint)
+                coloredIcons[index] = Bitmap.createScaledBitmap(coloredIcons[index], iconWidthInt, iconWidthInt, false)
+            }
+            canvas.drawBitmap(if (abs(cursor / (iconWidth + frameWidth) - index) < .01f) coloredIcons[index] else icons[index], frameWidth, y, paint)
             y += frameWidth + iconWidth
 
         }
         if (cursorIcon.width != withFrame || cursorIcon.height != withFrame)
             cursorIcon = Bitmap.createScaledBitmap(cursorIcon, withFrame, withFrame, false)
-        canvas.drawBitmap(cursorIcon, 0f, _cursor, paint)
-
-        if (_cursor != cursorTarget) {
-            val delta = cursorTarget - _cursor
-            val pos = _cursor + sign(delta) * max(abs(delta) * cursorSpeed / iconWidth, cursorSpeed / 4)
-            setCursor(if (delta > 0) min(cursorTarget, pos) else max(cursorTarget, pos), false)
-
-            invalidate()
-        } else if (!dragging) {
-            controlViewPager.endDrag()
-        }
+        canvas.drawBitmap(cursorIcon, 0f, cursor, paint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -92,23 +61,23 @@ class ScrollButtonsView(context: Context, attrs: AttributeSet) : View(context, a
         if (touchY > maxY)
             touchY = maxY
 
-        cursorTarget = when (event.action) {
-            MotionEvent.ACTION_UP -> {
-                dragging = false
-                round(touchY / iconWithFrame) * iconWithFrame
-            }
-            else -> {
-                dragging = true
-                touchY
-            }
+        if (event.action == MotionEvent.ACTION_UP) {
+            val n = round(touchY / iconWithFrame)
+            cursor = n * iconWithFrame
+            controlViewPager?.currentItem = n.toInt()
         }
-        if (cursorTarget != _cursor)
-            invalidate()
+
         return true
     }
 
     fun setIcons(vararg icons: Int): ScrollButtonsView {
         this.icons = Array(icons.size) { BitmapFactory.decodeResource(resources, icons[it])!! }
+        invalidate()
+        return this
+    }
+
+    fun setColoredIcons(vararg icons: Int): ScrollButtonsView {
+        coloredIcons = Array(icons.size) { BitmapFactory.decodeResource(resources, icons[it])!! }
         invalidate()
         return this
     }
@@ -123,22 +92,14 @@ class ScrollButtonsView(context: Context, attrs: AttributeSet) : View(context, a
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                if (!viewPager.isFakeDragging && !dragging) {
-                    val full = iconWidth + frameWidth
-                    setCursor((position + positionOffset) * full, true)
-                    invalidate()
-                }
+                val full = iconWidth + frameWidth
+                cursor = (position + positionOffset) * full
+                invalidate()
             }
+
 
             override fun onPageSelected(position: Int) {
             }
         })
-    }
-
-    private fun ViewPager?.endDrag() {
-        if (this != null && isFakeDragging)
-            endFakeDrag()
-        last = _cursor
-        start = 0f
     }
 }

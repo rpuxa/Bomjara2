@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara2.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -12,8 +13,10 @@ import kotlinx.android.synthetic.main.actions_list.*
 import ru.rpuxa.bomjara2.R
 import ru.rpuxa.bomjara2.actions.Action
 import ru.rpuxa.bomjara2.actions.Actions
+import ru.rpuxa.bomjara2.game.Player
 import ru.rpuxa.bomjara2.getCurrencyIcon
 import ru.rpuxa.bomjara2.getMenuIcon
+import ru.rpuxa.bomjara2.toast
 
 class ActionsListFragment : Fragment() {
     var cacheView: View? = null
@@ -58,12 +61,42 @@ class ActionsListFragment : Fragment() {
         override fun getItemCount() = list.size
 
         override fun onBindViewHolder(holder: ActionsViewHolder, position: Int) {
-            val action = list[position]
-            holder.button.text = action.name
-            holder.cost.text = action.addMoney.toString()
-            holder.currency.setImageBitmap(holder.currency.context.getCurrencyIcon(action.addMoney))
-            holder.illegal.visibility = if (action.illegal) View.VISIBLE else View.INVISIBLE
+            with(holder) {
+                val action = list[position]
+                button.text = action.name
+                cost.text = action.addMoney.toString()
+                currency.setImageBitmap(holder.currency.context.getCurrencyIcon(action.addMoney))
+                illegal.visibility = if (action.illegal) View.VISIBLE else View.INVISIBLE
+                val context = button.context
+                button.setOnClickListener {
+                    action(action, context)
+                }
+            }
         }
+
+        private fun ActionsViewHolder.action(action: Action, context: Context) {
+            if (!Player.CURRENT.doingAction) {
+
+                when (action.canPerform(Player.CURRENT)) {
+                    Action.YES -> {
+                        Player.CURRENT.doingAction = true
+                        bar.visibility = View.VISIBLE
+                        illegal.visibility = View.INVISIBLE
+                        bar.start(1000) {
+                            Player.CURRENT.doingAction = false
+                            if (action.illegal)
+                                illegal.visibility = View.VISIBLE
+                            bar.visibility = View.INVISIBLE
+                            action.perform(Player.CURRENT)
+                        }
+                    }
+                    Action.MONEY_NEEDED -> context.toast(context.getString(R.string.money_needed))
+                    Action.ENERGY_NEEDED -> context.toast(context.getString(R.string.cant_work))
+                }
+            }
+        }
+
+
     }
 
     companion object {

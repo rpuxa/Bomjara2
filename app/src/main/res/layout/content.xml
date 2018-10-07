@@ -24,10 +24,10 @@
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toStartOf="@+id/scroll_buttons"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/status_bars" />
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/status_bars"
         layout="@layout/status_bars"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         app:layout_constraintBottom_toTopOf="@+id/pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/status_bars" />
 
     <View
         android:id="@+id/view2"

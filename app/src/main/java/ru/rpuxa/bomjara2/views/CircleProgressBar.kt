@@ -16,14 +16,14 @@ import kotlin.math.sin
 
 class CircleProgressBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private val circleWidth = 5f
-    private val color = Color.BLUE
-    private val paint = Paint()
+    private val circleWidth = 15f
+    private val paint = Paint().apply {
+        color = Color.CYAN
+    }
     private var progress = .5f
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-        paint.color = color
         val w = width / 2f
         val h = height / 2f
         val r = Math.min(w, h)
@@ -50,8 +50,13 @@ class CircleProgressBar(context: Context, attrs: AttributeSet) : View(context, a
         canvas.drawPath(path, paint)
     }
 
+    var started = false
+
     fun start(duration: Int, callback: () -> Unit) {
-        val anim = ValueAnimator.ofFloat(0f, 1f)
+        if (started)
+            return
+        started = true
+        val anim = ValueAnimator.ofFloat(0f, 1.1f)
         anim.duration = duration.toLong()
         anim.addUpdateListener {
             progress = it.animatedValue as Float
@@ -63,6 +68,7 @@ class CircleProgressBar(context: Context, attrs: AttributeSet) : View(context, a
             }
 
             override fun onAnimationEnd(animation: Animator?) {
+                started = false
                 callback()
             }
 
@@ -72,5 +78,6 @@ class CircleProgressBar(context: Context, attrs: AttributeSet) : View(context, a
             override fun onAnimationStart(animation: Animator?) {
             }
         })
+        anim.start()
     }
 }

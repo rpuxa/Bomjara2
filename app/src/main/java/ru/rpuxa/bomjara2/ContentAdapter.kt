@@ -10,7 +10,8 @@ class ContentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     private val fragments = arrayOf(
             ActionsListFragment.create(Actions.ENERGY),
             ActionsListFragment.create(Actions.FOOD),
-            ActionsListFragment.create(Actions.HEALTH)
+            ActionsListFragment.create(Actions.HEALTH),
+            ActionsListFragment.create(Actions.JOBS)
     )
 
     override fun getItem(position: Int) = fragments[position]

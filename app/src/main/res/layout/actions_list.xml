@@ -15,7 +15,7 @@
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/health" />
+        app:srcCompat="@drawable/colored_health" />
 
     <TextView
         android:id="@+id/title"
