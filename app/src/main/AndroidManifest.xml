@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activities.MenuActivity">
+        <activity android:name=".activities.ContentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
 
 
         <activity android:name=".activities.SavesActivity" />
-        <activity android:name=".activities.ContentActivity" />
+        <activity android:name=".activities.MenuActivity" />
 
 
 

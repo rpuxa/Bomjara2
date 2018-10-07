@@ -2,12 +2,14 @@ package ru.rpuxa.bomjara2.game
 
 import ru.rpuxa.bomjara2.game.player.Condition
 import ru.rpuxa.bomjara2.game.player.Money
+import ru.rpuxa.bomjara2.game.player.Possessions
 
 class Player {
     var listener: Player.Listener? = null
     var condition = Condition(75, 75, 100)
     var maxCondition = Condition(100, 100, 100)
     var money = Money(rubles = 200)
+    var possessions = Possessions()
 
     operator fun plusAssign(condition: Condition) {
         this.condition += condition
@@ -36,5 +38,9 @@ class Player {
         fun onMoneyNeeded()
 
         fun caughtByPolice()
+    }
+
+    companion object {
+        var CURRENT = Player()
     }
 }
