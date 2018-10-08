@@ -22,8 +22,22 @@ class ContentActivity : AppCompatActivity() {
 
         pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
-                .setIcons(drawable.energy, drawable.food, drawable.health, drawable.job)
-                .setColoredIcons(drawable.colored_energy, drawable.colored_food, drawable.colored_health, drawable.colored_job)
+                .setIcons(
+                        drawable.info,
+                        drawable.location,
+                        drawable.energy,
+                        drawable.food,
+                        drawable.health,
+                        drawable.job
+                )
+                .setColoredIcons(
+                        drawable.colored_info,
+                        drawable.colored_location,
+                        drawable.colored_energy,
+                        drawable.colored_food,
+                        drawable.colored_health,
+                        drawable.colored_job
+                )
                 .setViewPager(pager)
     }
 

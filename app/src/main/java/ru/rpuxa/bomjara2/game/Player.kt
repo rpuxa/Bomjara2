@@ -17,18 +17,18 @@ class Player {
     var maxCondition = Condition(100, 100, 100)
     var money = Money(rubles = 20000)
     var possessions = Possessions()
+    var age = 0
 
     private var caughtByPolice = false
+
     private var dead = false
-
     var doingAction = false
-
-
     operator fun plusAssign(condition: Condition) {
         this.condition += condition
         this.condition.truncate(maxCondition)
         listener?.onConditionChanged(this.condition, this, maxCondition)
     }
+
 
     operator fun minusAssign(condition: Condition) {
         this += -condition
@@ -55,6 +55,8 @@ class Player {
         else if (caughtByPolice)
             listener.onCaughtByPolice()
     }
+
+    val stringAge get() = "${25 + age / 365} лет ${age % 365} дней"
 
     interface Listener {
 

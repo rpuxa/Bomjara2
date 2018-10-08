@@ -23,6 +23,7 @@ const val RUB = 0
 const val EURO = 1
 const val BITCOIN = 2
 const val BOTTLES = 3
+const val DIAMONDS = 4
 
 fun Context.getCurrencyIcon(money: Money) =
         BitmapFactory.decodeResource(

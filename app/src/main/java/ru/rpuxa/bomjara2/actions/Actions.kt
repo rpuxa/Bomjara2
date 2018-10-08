@@ -8,15 +8,41 @@ import ru.rpuxa.bomjara2.game.player.Possessions
 
 
 object Actions {
+    const val ENERGY = 0
+    const val FOOD = 1
+    const val HEALTH = 2
+    const val JOBS = 3
+
     private val actions = ArrayList<LocatedAction>()
-    private val LOCATIONS: Array<Element>
-    private val FRIENDS: Array<Element>
-    private val TRANSPORTS: Array<Element>
-    private val HOUSES: Array<Element>
-    private val penalties = arrayOf(
+    val LOCATIONS: Array<Element>
+    val FRIENDS: Array<Element>
+    val TRANSPORTS: Array<Element>
+    val HOUSES: Array<Element>
+    val PENALTIES = arrayOf(
             500
 
     )
+
+    operator fun get(menu: Int): List<Action> {
+        val loc = Player.CURRENT.possessions.location
+        val friend = Player.CURRENT.possessions.location
+
+        return actions.asSequence()
+                .filter { it.location == (if (menu == JOBS) friend else loc) && it.menu == menu }
+                .map { it.action }
+                .toList()
+
+    }
+
+
+    val penalty get() = PENALTIES[Player.CURRENT.possessions.location]
+
+    fun getMenuName(menu: Int) = when (menu) {
+        ENERGY -> "Бодрость"
+        FOOD -> "Еда"
+        HEALTH -> "Здоровье"
+        else -> "Работа"
+    }
 
     init {
         LOCATIONS = arrayOf(
@@ -92,36 +118,13 @@ object Actions {
         }
     }
 
-    class LocatedAction(val location: Int, val menu: Int, val action: Action)
-
-    const val ENERGY = 0
-    const val FOOD = 1
-    const val HEALTH = 2
-    const val JOBS = 3
+    private class LocatedAction(val location: Int, val menu: Int, val action: Action)
 
     open class Element(val name: String, transport: Int, house: Int, friend: Int, location: Int, val study: Int, val moneyRemove: Money) {
+
+
         val possessions = Possessions(transport, house, friend, location)
-    }
 
-    operator fun get(menu: Int): List<Action> {
-        val loc = Player.CURRENT.possessions.location
-        val friend = Player.CURRENT.possessions.location
-
-        return actions.asSequence()
-                .filter { it.location == (if (menu == JOBS) friend else loc) && it.menu == menu }
-                .map { it.action }
-                .toList()
-
-    }
-
-    val penalty get() = penalties[Player.CURRENT.possessions.location]
-
-
-    fun getMenuName(menu: Int) = when (menu) {
-        ENERGY -> "Бодрость"
-        FOOD -> "Еда"
-        HEALTH -> "Здоровье"
-        else -> "Работа"
     }
 
     private inline fun job(friend: Int, block: Job.() -> Unit) = Job(friend).block()

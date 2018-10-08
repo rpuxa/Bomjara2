@@ -20,6 +20,7 @@ class Action(val name: String, val addMoney: Money, val addCondition: Condition,
     fun perform(player: Player) {
         if (canPerform(player) != YES)
             return
+        player.age++
         if (addMoney.positive)
             player.salary(addMoney)
         else
