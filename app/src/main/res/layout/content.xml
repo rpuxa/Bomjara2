@@ -9,7 +9,7 @@
         android:layout_width="30dp"
         android:layout_height="0dp"
         android:background="@color/cardview_shadow_start_color"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
@@ -17,8 +17,10 @@
         android:id="@+id/pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="3dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/view2"
@@ -50,10 +52,17 @@
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="0dp"
         android:background="@color/cardview_shadow_start_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scroll_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="8dp"
+        android:layout_height="0dp"
+        android:background="@color/cardview_shadow_start_color"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintTop_toTopOf="@+id/pager" />
 
 </android.support.constraint.ConstraintLayout>
