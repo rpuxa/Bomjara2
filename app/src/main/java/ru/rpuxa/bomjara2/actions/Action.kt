@@ -27,7 +27,7 @@ class Action(val name: String, val addMoney: Money, val addCondition: Condition,
             player.add(addMoney)
         player += addCondition
         if (illegal && random.nextInt(10) == 5) {
-            player.listener?.onCaughtByPolice()
+            player.listener?.onCaughtByPolice(player)
         }
     }
 

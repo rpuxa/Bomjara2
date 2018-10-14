@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara2.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,7 +11,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.save_card_view.view.*
 import kotlinx.android.synthetic.main.saves_list.view.*
 import ru.rpuxa.bomjara2.R
-import ru.rpuxa.bomjara2.save.Save
+import ru.rpuxa.bomjara2.save.SaveInfo
 
 class SavesListFragment : Fragment() {
 
@@ -22,16 +23,16 @@ class SavesListFragment : Fragment() {
         recycler.setHasFixedSize(true)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = SavesAdapter(listOf(
-                Save("123", 123, 1, 89125123),
-                Save("123", 123, 1, 89123),
-                Save("123", 123, 1, 912523),
-                Save("123", 123, 1, 825123),
-                Save("123", 123, 1, 8123)
+                SaveInfo("123", 123, 1, 89125123),
+                SaveInfo("123", 123, 1, 89123),
+                SaveInfo("123", 123, 1, 912523),
+                SaveInfo("123", 123, 1, 825123),
+                SaveInfo("123", 123, 1, 8123)
         ))
     }
 
 
-    class SavesAdapter(private val list: List<Save>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
+    class SavesAdapter(private val list: List<SaveInfo>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
         class SaveViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val saveName = view.name!!
             val age = view.age!!
@@ -53,6 +54,7 @@ class SavesListFragment : Fragment() {
 
         override fun getItemCount() = list.size
 
+        @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: SaveViewHolder, position: Int) {
             val save = list[position]
             holder.saveName.text = save.name

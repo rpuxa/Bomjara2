@@ -3,11 +3,13 @@ package ru.rpuxa.bomjara2
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.support.v4.app.Fragment
+import android.view.View
 import android.widget.Toast
 import ru.rpuxa.bomjara2.actions.Actions.ENERGY
 import ru.rpuxa.bomjara2.actions.Actions.FOOD
 import ru.rpuxa.bomjara2.actions.Actions.HEALTH
 import ru.rpuxa.bomjara2.game.player.Money
+import ru.rpuxa.bomjara2.save.SaveLoader
 import java.util.*
 import kotlin.math.abs
 
@@ -15,6 +17,12 @@ val Int.rub get() = Money(rubles = toLong())
 val Int.euro get() = Money(euros = toLong())
 val Int.bitcoin get() = Money(bitcoins = toLong())
 val Int.bottle get() = Money(bottles = toLong())
+fun Long.currency(id: Int) = when (id) {
+    RUB -> Money(rubles = this)
+    EURO -> Money(euros = this)
+    BITCOIN -> Money(bitcoins = this)
+    else -> throw IllegalStateException()
+}
 
 val FREE = Money()
 
@@ -78,3 +86,11 @@ val gauss: Double
     }
 
 fun Long.roundTimes(i: Double) = Math.ceil(this * i).toLong()
+
+fun changeVisibility(visibility: Int, vararg views: View) {
+    views.forEach { it.visibility = visibility }
+}
+
+fun Context.save() {
+    SaveLoader.save(filesDir)
+}

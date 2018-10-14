@@ -24,19 +24,27 @@ class ContentActivity : AppCompatActivity() {
         scroll_buttons
                 .setIcons(
                         drawable.info,
+                        drawable.currencies,
                         drawable.location,
+                        drawable.transport,
+                        drawable.courses,
                         drawable.energy,
                         drawable.food,
                         drawable.health,
-                        drawable.job
+                        drawable.job,
+                        drawable.vip
                 )
                 .setColoredIcons(
                         drawable.colored_info,
+                        drawable.colored_currencies,
                         drawable.colored_location,
+                        drawable.colored_transport,
+                        drawable.colored_courses,
                         drawable.colored_energy,
                         drawable.colored_food,
                         drawable.colored_health,
-                        drawable.colored_job
+                        drawable.colored_job,
+                        drawable.colored_vip
                 )
                 .setViewPager(pager)
     }
@@ -48,9 +56,6 @@ class ContentActivity : AppCompatActivity() {
 
 
     inner class PlayerListener : Player.Listener {
-
-        override fun onCaughtByPolice() {
-        }
 
         override fun onMoneyChanged(money: Money, player: Player, positive: Boolean) {
             status_bars.rubles.text = money.rubles.divider()
@@ -66,11 +71,9 @@ class ContentActivity : AppCompatActivity() {
             fullness_bar.max = maxCondition.fullness
 
             health_bar.progress = condition.health
-            health_bar.max = condition.health
+            health_bar.max = maxCondition.health
         }
 
-        override fun onDead() {
-        }
     }
 
 }

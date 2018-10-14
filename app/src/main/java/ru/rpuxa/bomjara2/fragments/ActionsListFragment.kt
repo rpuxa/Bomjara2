@@ -2,7 +2,6 @@ package ru.rpuxa.bomjara2.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,19 +17,11 @@ import ru.rpuxa.bomjara2.getCurrencyIcon
 import ru.rpuxa.bomjara2.getMenuIcon
 import ru.rpuxa.bomjara2.toast
 
-class ActionsListFragment : Fragment() {
-    var cacheView: View? = null
-    var change = false
+class ActionsListFragment : CacheFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        if (cacheView == null)
-            cacheView = inflater.inflate(R.layout.actions_list, container, false)!!
-        return cacheView!!
-    }
+    override val layout = R.layout.actions_list
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (change)
-            return
+    override fun onChange(view: View) {
         val menu = arguments[MENU] as Int
         val actions = Actions[menu]
         actions_list.setHasFixedSize(true)
@@ -39,7 +30,6 @@ class ActionsListFragment : Fragment() {
         actions_list.adapter.notifyDataSetChanged()
         icon.setImageBitmap(context.getMenuIcon(menu))
         title.text = Actions.getMenuName(menu)
-        change = true
     }
 
 
@@ -102,7 +92,7 @@ class ActionsListFragment : Fragment() {
     companion object {
         private const val MENU = "menu"
 
-        fun create(menu: Int): Fragment {
+        fun create(menu: Int): ActionsListFragment {
             val bundle = Bundle()
             bundle.putInt(MENU, menu)
             val fragment = ActionsListFragment()

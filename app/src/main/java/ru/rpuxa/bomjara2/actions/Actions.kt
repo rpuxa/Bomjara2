@@ -17,15 +17,38 @@ object Actions {
     val LOCATIONS: Array<Element>
     val FRIENDS: Array<Element>
     val TRANSPORTS: Array<Element>
-    val HOUSES: Array<Element>
-    val PENALTIES = arrayOf(
+    val HOMES: Array<Element>
+    val COURSES = arrayOf(
+            Course(0, "Езда на самокате", FREE, 10),
+            Course(1, "Езда на велосипеде", (-200).rub, 30),
+            Course(2, "ПДД", (-1000).rub, 100),
+            Course(3, "Строение авто", (-100).euro, 200),
+            Course(4, "Строительство", (-100).euro, 200),
+            Course(5, "Программирование", (-300).euro, 200),
+            Course(6, "Торговле валютами", (-600).euro, 200),
+            Course(7, "Управление персоналом", (-40).bitcoin, 200)
+    )
+    val VIPS = arrayOf(
+            Vip("+10 к макс. запасу сытости", 9) {
+                it.maxCondition.fullness += 10
+            },
+            Vip("+10 к макс. запасу здоровья", 9) {
+                it.maxCondition.health += 10
+            },
+            Vip("+10 к макс. запасу бодрости", 9) {
+                it.maxCondition.energy += 10
+            },
+            Vip("+10% к эффективности работы", 15) {
+                it.efficiency += 10
+            }
+    )
+    private val PENALTIES = arrayOf(
             500
-
     )
 
     operator fun get(menu: Int): List<Action> {
         val loc = Player.CURRENT.possessions.location
-        val friend = Player.CURRENT.possessions.location
+        val friend = Player.CURRENT.possessions.friend
 
         return actions.asSequence()
                 .filter { it.location == (if (menu == JOBS) friend else loc) && it.menu == menu }
@@ -47,7 +70,7 @@ object Actions {
     init {
         LOCATIONS = arrayOf(
                 Element("Помойка на окраине", 0, 0, 0, 0, 0, FREE),
-                Element("Подъезд", 1, 1, 0, 0, -1, FREE),
+                Element("Подъезд", 1, 1, 0, 0, -1, 10.rub),
                 Element("Жилой район", 2, 2, 1, 1, -1, FREE),
                 Element("Дача", 3, 3, 3, 0, -1, FREE),
                 Element("Квартира в микрорайоне", 4, 4, 4, 0, -1, FREE),
@@ -77,7 +100,7 @@ object Actions {
                 Element("Спорткар", 0, 0, 0, 0, -1, 500.bitcoin)
         )
 
-        HOUSES = arrayOf(
+        HOMES = arrayOf(
                 Element("Помойка", 0, 0, 0, 0, 0, FREE),
                 Element("Палатка б/у", 0, 0, 0, 0, 0, 1000.rub),
                 Element("Гараж улитка", 2, 1, 0, 1, 0, 9000.rub),
@@ -116,11 +139,13 @@ object Actions {
             add("Пособирать монеты", 60.rub, -10, -20, -10)
             add("Украсть бабки у уличных музыкантов", 100.rub, -10, -10, -10, false)
         }
+
     }
+
 
     private class LocatedAction(val location: Int, val menu: Int, val action: Action)
 
-    open class Element(val name: String, transport: Int, house: Int, friend: Int, location: Int, val study: Int, val moneyRemove: Money) {
+    open class Element(val name: String, transport: Int, house: Int, friend: Int, location: Int, val course: Int, val moneyRemove: Money) {
 
 
         val possessions = Possessions(transport, house, friend, location)

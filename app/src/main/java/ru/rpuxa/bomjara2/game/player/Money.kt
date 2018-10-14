@@ -14,7 +14,8 @@ class Money(var rubles: Long = 0, var euros: Long = 0, var bitcoins: Long = 0, v
     }
 
     fun add(money: Money): Boolean {
-
+        if (!canAdd(money))
+            return false
         rubles += money.rubles
         euros += money.euros
         bitcoins += money.bitcoins
@@ -24,10 +25,7 @@ class Money(var rubles: Long = 0, var euros: Long = 0, var bitcoins: Long = 0, v
     }
 
     val positive: Boolean
-        get() = rubles > 0 && euros > 0 && bitcoins > 0 && bottles > 0 && diamonds > 0
-
-    fun remove(money: Money) =
-            add(-money)
+        get() = rubles >= 0 && euros >= 0 && bitcoins >= 0 && bottles >= 0 && diamonds >= 0
 
     operator fun timesAssign(i: Double) {
         rubles = rubles.roundTimes(i)
@@ -58,6 +56,15 @@ class Money(var rubles: Long = 0, var euros: Long = 0, var bitcoins: Long = 0, v
             return "-0"
 
         return if (c > 0) "+$c" else "$c"
+    }
+
+    fun countFromCurrency(currency: Int) = when (currency) {
+        RUB -> rubles
+        EURO -> euros
+        BITCOIN -> bitcoins
+        BOTTLES -> bottles
+        DIAMONDS -> diamonds
+        else -> throw IllegalStateException("unknown currency")
     }
 
     val currency

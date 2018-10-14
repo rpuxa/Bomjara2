@@ -1,9 +1,13 @@
 package ru.rpuxa.bomjara2.game.player
 
+import kotlin.math.round
+
 class Condition(var energy: Int = 0,
                 var fullness: Int = 0,
                 var health: Int = 0
 ) {
+    val positive: Boolean
+        get() = energy >= 0 && fullness >= 0 && health >= 0
 
     operator fun plusAssign(condition: Condition) {
         energy += condition.energy
@@ -33,4 +37,11 @@ class Condition(var energy: Int = 0,
         if (health > maxCondition.health)
             health = maxCondition.health
     }
+
+    operator fun times(gauss: Double) =
+            Condition(
+                    health = round(gauss * health).toInt(),
+                    energy = round(gauss * energy).toInt(),
+                    fullness = round(gauss * fullness).toInt()
+            )
 }

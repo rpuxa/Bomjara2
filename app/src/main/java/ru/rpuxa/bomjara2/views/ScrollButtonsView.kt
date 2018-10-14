@@ -34,19 +34,30 @@ class ScrollButtonsView(context: Context, attrs: AttributeSet) : View(context, a
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-        val iconWidthInt = iconWidth.toInt()
-        val withFrame = iconWidthInt + frameWidth.toInt() * 2
 
         var y = frameWidth
         icons.forEachIndexed { index, bitmap ->
+            val iconWidthInt = (iconWidth * 0.7).toInt()
+            //val withFrame = iconWidthInt + frameWidth.toInt() * 2
+
             if (bitmap.width != iconWidthInt || bitmap.height != iconWidthInt) {
                 icons[index] = Bitmap.createScaledBitmap(bitmap, iconWidthInt, iconWidthInt, false)
                 coloredIcons[index] = Bitmap.createScaledBitmap(coloredIcons[index], iconWidthInt, iconWidthInt, false)
             }
-            canvas.drawBitmap(if (abs(cursor / (iconWidth + frameWidth) - index) < .01f) coloredIcons[index] else icons[index], frameWidth, y, paint)
+            canvas.drawBitmap(
+                    if (abs(cursor / (iconWidth + frameWidth) - index) < .01f) coloredIcons[index] else icons[index],
+                    frameWidth + iconWidth * 0.15f,
+                    y + iconWidth * 0.15f,
+                    paint
+            )
+
             y += frameWidth + iconWidth
 
         }
+
+        val iconWidthInt = iconWidth.toInt()
+        val withFrame = iconWidthInt + frameWidth.toInt() * 2
+
         if (cursorIcon.width != withFrame || cursorIcon.height != withFrame)
             cursorIcon = Bitmap.createScaledBitmap(cursorIcon, withFrame, withFrame, false)
         canvas.drawBitmap(cursorIcon, 0f, cursor, paint)

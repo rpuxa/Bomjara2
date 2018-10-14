@@ -11,11 +11,14 @@
 
         <TextView
             android:id="@+id/current"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="32dp"
             android:text="Помойка на окраине"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/change_label"
             app:layout_constraintTop_toTopOf="@+id/textView6" />
 
         <Button
@@ -29,10 +32,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/next" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/change_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -40,7 +43,7 @@
             android:text="Следующее"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintTop_toBottomOf="@+id/current" />
 
         <ImageView
             android:id="@+id/icon"
@@ -58,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="-25"
-            android:textStyle="italic"
+            android:textStyle="bold|italic"
             app:layout_constraintBottom_toBottomOf="@+id/change"
             app:layout_constraintStart_toEndOf="@+id/change"
             app:layout_constraintTop_toTopOf="@+id/change" />
@@ -67,7 +70,7 @@
             android:id="@+id/currency"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/cost"
             app:layout_constraintStart_toEndOf="@+id/cost"
             app:layout_constraintTop_toTopOf="@+id/cost"
@@ -77,22 +80,28 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="Местоположеине"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="@+id/icon" />
 
         <TextView
             android:id="@+id/next"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="32dp"
-            android:text="Подъезд"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="@+id/textView8" />
+            android:text="asdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdas"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/change_label"
+            app:layout_constraintTop_toTopOf="@+id/change_label" />
 
         <TextView
             android:id="@+id/textView6"
