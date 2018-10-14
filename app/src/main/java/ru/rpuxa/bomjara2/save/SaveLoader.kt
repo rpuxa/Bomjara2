@@ -37,7 +37,7 @@ object SaveLoader {
             return
         }
         saves.add(convertOld(player))
-        file1.delete()
+        //  file1.delete()
     }
 
     fun convertOld(player: SerializablePlayer): Save {
@@ -64,7 +64,10 @@ object SaveLoader {
                 (fields[6] as Double).toInt(),
                 (fields[8] as Double).toInt(),
                 (fields[10] as Double).toInt(),
-                fields[13] as IntArray
+                fields[13] as IntArray,
+                false,
+                fields[4] as Boolean,
+                fields[3] as Boolean
         )
     }
 }

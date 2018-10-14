@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara2.game
 
+import android.support.annotation.CallSuper
 import ru.rpuxa.bomjara2.actions.Actions
 import ru.rpuxa.bomjara2.game.player.Condition
 import ru.rpuxa.bomjara2.game.player.Money
@@ -7,7 +8,7 @@ import ru.rpuxa.bomjara2.game.player.Possessions
 import ru.rpuxa.bomjara2.gauss
 import ru.rpuxa.bomjara2.save.Save
 
-class Player(var name: String) {
+class Player(var name: String, val old: Boolean) {
     var listener: Player.Listener? = null
         set(value) {
             field = value
@@ -23,9 +24,11 @@ class Player(var name: String) {
     var age = 0
     var efficiency = 100
 
-    private var caughtByPolice = false
+    var caughtByPolice = false
+    var deadByZeroHealth = false
+    var deadByHungry = false
 
-    private var dead = false
+
     var doingAction = false
     operator fun plusAssign(condition: Condition) {
         this.condition += condition * gauss
@@ -47,20 +50,27 @@ class Player(var name: String) {
     private fun update(listener: Listener) {
         listener.onMoneyChanged(money, this, false)
         listener.onConditionChanged(condition, this, maxCondition)
-        if (dead)
-            listener.onDead(this)
-        else if (caughtByPolice)
-            listener.onCaughtByPolice(this)
+        when {
+            deadByZeroHealth -> listener.onDead(this, false)
+            deadByHungry -> listener.onDead(this, true)
+            caughtByPolice -> listener.onCaughtByPolice(this)
+        }
+
     }
 
     val stringAge get() = "${25 + age / 365} лет ${age % 365} дней"
 
     interface Listener {
 
-        fun onDead(player: Player) {
-            player.dead = true
+        @CallSuper
+        fun onDead(player: Player, hunger: Boolean) {
+            if (hunger)
+                player.deadByHungry = true
+            else
+                player.deadByZeroHealth = true
         }
 
+        @CallSuper
         fun onCaughtByPolice(player: Player) {
             player.caughtByPolice = true
         }
@@ -71,10 +81,10 @@ class Player(var name: String) {
     }
 
     companion object {
-        var CURRENT = Player("васёк")
+        var CURRENT = Player("васёк", true)
 
 
-        fun fromSave(save: Save) = Player(save.name).apply {
+        fun fromSave(save: Save) = Player(save.name, save.old).apply {
             age = save.age
             money = Money(save.rubles, save.euros, save.bitcoins, save.bottles, save.diamonds)
             possessions = Possessions(save.transport, save.home, save.friend, save.location)
@@ -82,13 +92,16 @@ class Player(var name: String) {
             maxCondition = Condition(save.maxEnergy, save.maxFullness, save.maxHealth)
             condition = Condition(save.energy, save.fullness, save.health)
             courses = save.courses
+            deadByHungry = save.deadByHungry
+            deadByZeroHealth = save.deadByZeroHealth
+            caughtByPolice = save.caughtByPolice
         }
     }
 
 
     fun toSave() =
             Save(
-                    false,
+                    old,
                     name,
                     age,
                     money.bottles,
@@ -107,7 +120,10 @@ class Player(var name: String) {
                     condition.energy,
                     condition.fullness,
                     condition.health,
-                    courses
+                    courses,
+                    deadByHungry,
+                    deadByZeroHealth,
+                    caughtByPolice
             )
 
 

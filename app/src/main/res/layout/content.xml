@@ -65,4 +65,19 @@
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintTop_toTopOf="@+id/pager" />
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/bottom_banner"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pager"
+        app:layout_constraintStart_toEndOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view2" />
+
 </android.support.constraint.ConstraintLayout>

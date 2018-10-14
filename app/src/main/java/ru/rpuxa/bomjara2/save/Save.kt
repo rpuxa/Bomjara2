@@ -22,5 +22,8 @@ class Save(
         val energy: Int,
         val fullness: Int,
         val health: Int,
-        val courses: IntArray
+        val courses: IntArray,
+        val deadByHungry: Boolean,
+        val deadByZeroHealth: Boolean,
+        val caughtByPolice: Boolean
 ) : Serializable

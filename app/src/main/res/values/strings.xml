@@ -1,4 +1,8 @@
 <resources>
+    <string name="ad_id">ca-app-pub-9182384050264940~1367861415</string>
+    <string name="bottom_banner_id">ca-app-pub-9182384050264940/8043158391</string>
+    <string name="dead_banner_id">ca-app-pub-9182384050264940/6095651901</string>
+
     <string name="app_name">Симулятор бомжа 2.0</string>
     <string name="money_needed">Нехватает средств</string>
     <string name="cant_work">Не хочу работать, я устал</string>
