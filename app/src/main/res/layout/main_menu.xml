@@ -39,9 +39,9 @@
             android:text="Выйти"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/continue_game"
+            app:layout_constraintEnd_toEndOf="@+id/saves"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/continue_game"
+            app:layout_constraintStart_toStartOf="@+id/saves"
             app:layout_constraintTop_toBottomOf="@+id/rate" />
 
         <Button
@@ -51,9 +51,8 @@
             android:layout_marginTop="8dp"
             android:text="Оценить"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintEnd_toEndOf="@+id/continue_game"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/continue_game"
+            app:layout_constraintEnd_toEndOf="@+id/saves"
+            app:layout_constraintStart_toStartOf="@+id/saves"
             app:layout_constraintTop_toBottomOf="@+id/settings" />
 
         <Button
@@ -63,35 +62,37 @@
             android:layout_marginTop="8dp"
             android:text="Настройки"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintEnd_toEndOf="@+id/continue_game"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/continue_game"
+            app:layout_constraintEnd_toEndOf="@+id/saves"
+            app:layout_constraintStart_toStartOf="@+id/saves"
             app:layout_constraintTop_toBottomOf="@+id/saves" />
 
         <Button
             android:id="@+id/saves"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
             android:text="Сохранения"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintEnd_toEndOf="@+id/continue_game"
-            app:layout_constraintStart_toStartOf="@+id/continue_game"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/continue_game" />
 
         <Button
             android:id="@+id/continue_game"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
             android:text="Продолжить игру"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/saves"
+            app:layout_constraintStart_toStartOf="@+id/saves"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     </android.support.constraint.ConstraintLayout>

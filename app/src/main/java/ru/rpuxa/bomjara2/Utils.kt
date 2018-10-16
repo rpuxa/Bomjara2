@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara2
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.support.v4.app.Fragment
 import android.view.View
@@ -8,8 +9,11 @@ import android.widget.Toast
 import ru.rpuxa.bomjara2.actions.Actions.ENERGY
 import ru.rpuxa.bomjara2.actions.Actions.FOOD
 import ru.rpuxa.bomjara2.actions.Actions.HEALTH
+import ru.rpuxa.bomjara2.game.Player
 import ru.rpuxa.bomjara2.game.player.Money
 import ru.rpuxa.bomjara2.save.SaveLoader
+import ru.rpuxa.bomjara2.settings.saveSettings
+import java.io.*
 import java.util.*
 import kotlin.math.abs
 
@@ -92,5 +96,35 @@ fun changeVisibility(visibility: Int, vararg views: View) {
 }
 
 fun Context.save() {
-    SaveLoader.save(filesDir)
+    Thread {
+        SaveLoader.savePlayer(Player.CURRENT)
+        SaveLoader.save(filesDir)
+        saveSettings(filesDir)
+    }.start()
 }
+
+inline fun <reified T> Context.startActivity() {
+    startActivity(Intent(this, T::class.java))
+}
+
+fun getStringAge(i: Int) =
+        "${25 + i / 365} лет ${i % 365} дней"
+
+fun File.writeObject(obj: Any, fileName: String) {
+    ObjectOutputStream(FileOutputStream(File(this, fileName))).use {
+        it.writeObject(obj)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T> File.readObject(fileName: String): T? {
+    return try {
+        ObjectInputStream(FileInputStream(File(this, fileName))).use {
+            it.readObject() as T
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+

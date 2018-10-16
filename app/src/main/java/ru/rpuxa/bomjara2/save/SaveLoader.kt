@@ -1,7 +1,13 @@
 package ru.rpuxa.bomjara2.save
 
 import Game.Serialization.SerializablePlayer
-import java.io.*
+import ru.rpuxa.bomjara2.game.Player
+import ru.rpuxa.bomjara2.random
+import ru.rpuxa.bomjara2.readObject
+import ru.rpuxa.bomjara2.writeObject
+import java.io.File
+import java.io.FileInputStream
+import java.io.ObjectInputStream
 
 object SaveLoader {
 
@@ -10,20 +16,26 @@ object SaveLoader {
     var saves = ArrayList<Save>()
 
     fun save(file: File) {
-        ObjectOutputStream(FileOutputStream(File(file, FILE_NAME))).use {
-            it.writeObject(saves)
-        }
+        file.writeObject(saves, FILE_NAME)
     }
 
     fun load(file: File) {
-        try {
-            saves = ObjectInputStream(FileInputStream(File(file, FILE_NAME))).use {
-                it.readObject() as ArrayList<Save>
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        val saves = file.readObject<ArrayList<Save>>(FILE_NAME)
+        if (saves != null)
+            this.saves = saves
         loadOld(file)
+    }
+
+    fun savePlayer(player: Player) {
+        saves.removeAll { it.name == player.name }
+        saves.add(player.toSave())
+    }
+
+    fun findSaveById(id: Long) =
+            saves.find { it.id == id }
+
+    fun delete(save: Save) {
+        saves.remove(save)
     }
 
     private fun loadOld(file: File) {
@@ -45,6 +57,7 @@ object SaveLoader {
         val maxIndicators = fields[15] as DoubleArray
 
         return Save(
+                random.nextLong(),
                 true,
                 "Старое сохранение",
                 fields[0] as Int,

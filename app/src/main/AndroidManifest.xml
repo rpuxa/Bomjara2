@@ -29,11 +29,7 @@
         <activity
             android:name=".activities.ContentActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".fragments.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme"></activity>
+        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

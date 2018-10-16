@@ -58,6 +58,8 @@ class ContentActivity : AppCompatActivity() {
         bottom_banner.loadAd(AdRequest.Builder().build())
 
         deadBanner = Ad(this, getString(R.string.dead_banner_id))
+
+        save()
     }
 
     override fun onResume() {
@@ -66,16 +68,34 @@ class ContentActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
+        save()
         deadBanner.pause()
         super.onPause()
     }
 
     override fun onDestroy() {
+        save()
         Player.CURRENT.listener = null
         deadBanner.destroy()
         super.onDestroy()
     }
 
+    fun gotoMainMenu() {
+        startActivity<MenuActivity>()
+    }
+
+    override fun onBackPressed() {
+        var dialog = null as Dialog?
+        dialog = AlertDialog.Builder(this)
+                .setTitle("Выйти в главное меню?")
+                .setPositiveButton("Выйти") { _, _ ->
+                    gotoMainMenu()
+                }
+                .setNegativeButton("Отмена") { _, _ ->
+                    dialog!!.dismiss()
+                }
+                .show()
+    }
 
     inner class PlayerListener : Player.Listener {
 
@@ -108,7 +128,7 @@ class ContentActivity : AppCompatActivity() {
                     )
                     .setCancelable(false)
                     .setNegativeButton("Начать заново") { _, _ ->
-                        TODO()
+                        gotoMainMenu()
                     }
                     .setPositiveButton("Воскресить!") { _, _ ->
                         val res = deadBanner.show {

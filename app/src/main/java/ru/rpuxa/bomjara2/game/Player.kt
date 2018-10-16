@@ -6,9 +6,10 @@ import ru.rpuxa.bomjara2.game.player.Condition
 import ru.rpuxa.bomjara2.game.player.Money
 import ru.rpuxa.bomjara2.game.player.Possessions
 import ru.rpuxa.bomjara2.gauss
+import ru.rpuxa.bomjara2.getStringAge
 import ru.rpuxa.bomjara2.save.Save
 
-class Player(var name: String, val old: Boolean) {
+class Player(var id: Long, var name: String, val old: Boolean) {
     var listener: Player.Listener? = null
         set(value) {
             field = value
@@ -30,10 +31,14 @@ class Player(var name: String, val old: Boolean) {
 
 
     var doingAction = false
-    operator fun plusAssign(condition: Condition) {
-        this.condition += condition * gauss
-        this.condition.truncate(maxCondition)
-        listener?.onConditionChanged(this.condition, this, maxCondition)
+    operator fun plusAssign(add: Condition) {
+        condition += add * gauss
+        condition.truncate(maxCondition)
+        listener?.onConditionChanged(condition, this, maxCondition)
+        if (add.health == 0)
+            listener?.onDead(this, false)
+        else if (add.fullness == 0)
+            listener?.onDead(this, true)
     }
 
     fun add(money: Money): Boolean {
@@ -44,7 +49,7 @@ class Player(var name: String, val old: Boolean) {
     }
 
     fun salary(money: Money) {
-        add(money * gauss * (efficiency.toDouble() / 100))
+        add(money * (.5 + condition.energy.toDouble() / maxCondition.energy.toDouble()) * gauss * (efficiency.toDouble() / 100))
     }
 
     private fun update(listener: Listener) {
@@ -58,7 +63,7 @@ class Player(var name: String, val old: Boolean) {
 
     }
 
-    val stringAge get() = "${25 + age / 365} лет ${age % 365} дней"
+    val stringAge get() = getStringAge(age)
 
     interface Listener {
 
@@ -84,7 +89,7 @@ class Player(var name: String, val old: Boolean) {
         lateinit var CURRENT: Player
 
 
-        fun fromSave(save: Save) = Player(save.name, save.old).apply {
+        fun fromSave(save: Save) = Player(save.id, save.name, save.old).apply {
             age = save.age
             money = Money(save.rubles, save.euros, save.bitcoins, save.bottles, save.diamonds)
             possessions = Possessions(save.transport, save.home, save.friend, save.location)
@@ -101,6 +106,7 @@ class Player(var name: String, val old: Boolean) {
 
     fun toSave() =
             Save(
+                    id,
                     old,
                     name,
                     age,

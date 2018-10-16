@@ -3,8 +3,9 @@ package ru.rpuxa.bomjara2.save
 import java.io.Serializable
 
 class Save(
+        val id: Long,
         val old: Boolean,
-        val name: String,
+        var name: String,
         val age: Int,
         val bottles: Long,
         val rubles: Long,

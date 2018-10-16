@@ -9,13 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.actions_list.*
-import ru.rpuxa.bomjara2.R
+import ru.rpuxa.bomjara2.*
 import ru.rpuxa.bomjara2.actions.Action
 import ru.rpuxa.bomjara2.actions.Actions
 import ru.rpuxa.bomjara2.game.Player
-import ru.rpuxa.bomjara2.getCurrencyIcon
-import ru.rpuxa.bomjara2.getMenuIcon
-import ru.rpuxa.bomjara2.toast
 
 class ActionsListFragment : CacheFragment() {
 
@@ -78,6 +75,7 @@ class ActionsListFragment : CacheFragment() {
                                 illegal.visibility = View.VISIBLE
                             bar.visibility = View.INVISIBLE
                             action.perform(Player.CURRENT)
+                            context.save()
                         }
                     }
                     Action.MONEY_NEEDED -> context.toast(context.getString(R.string.money_needed))

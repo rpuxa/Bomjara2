@@ -17,7 +17,7 @@ class InfoFragment : CacheFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val player = Player.CURRENT
         with(view) {
-            save_name.text = "хз"
+            save_name.text = player.name
             age.text = player.stringAge
 
             location.text = Actions.LOCATIONS[player.possessions.location].name

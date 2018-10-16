@@ -89,7 +89,7 @@
         app:layout_constraintEnd_toStartOf="@+id/to_group"
         app:layout_constraintStart_toEndOf="@+id/from_group"
         app:layout_constraintTop_toTopOf="@+id/to_group"
-        app:srcCompat="@drawable/bitcoin" />
+        app:srcCompat="@drawable/arrow" />
 
     <EditText
         android:id="@+id/from_count"
