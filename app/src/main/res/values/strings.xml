@@ -8,4 +8,8 @@
     <string name="cant_work">Не хочу работать, я устал</string>
     <string name="health">Здоровье</string>
     <string name="current_courses">Текущие курсы</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

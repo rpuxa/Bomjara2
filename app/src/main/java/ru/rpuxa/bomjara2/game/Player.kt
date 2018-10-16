@@ -81,7 +81,7 @@ class Player(var name: String, val old: Boolean) {
     }
 
     companion object {
-        var CURRENT = Player("васёк", true)
+        lateinit var CURRENT: Player
 
 
         fun fromSave(save: Save) = Player(save.name, save.old).apply {

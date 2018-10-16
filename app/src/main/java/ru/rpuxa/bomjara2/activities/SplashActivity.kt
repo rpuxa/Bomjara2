@@ -6,12 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import ru.rpuxa.bomjara2.R
 
-class LoadActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         load()
-        startActivity(Intent(this, ContentActivity::class.java))
+        startActivity(Intent(this, MenuActivity::class.java))
     }
 
     private fun load() {
