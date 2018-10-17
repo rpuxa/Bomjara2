@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -65,6 +66,8 @@
         app:layout_constraintTop_toTopOf="@+id/pager" />
 
     <com.google.android.gms.ads.AdView
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/bottom_banner_id"
         android:id="@+id/bottom_banner"
         android:layout_width="320dp"
         android:layout_height="wrap_content"

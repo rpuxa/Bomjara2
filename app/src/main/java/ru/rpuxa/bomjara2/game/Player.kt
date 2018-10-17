@@ -19,7 +19,7 @@ class Player(var id: Long, var name: String, val old: Boolean) {
 
     var condition = Condition(75, 75, 100)
     var maxCondition = Condition(100, 100, 100)
-    var money = Money()
+    var money = Money(rubles = 50)
     var possessions = Possessions()
     var courses = IntArray(Actions.COURSES.size)
     var age = 0
@@ -35,9 +35,9 @@ class Player(var id: Long, var name: String, val old: Boolean) {
         condition += add * gauss
         condition.truncate(maxCondition)
         listener?.onConditionChanged(condition, this, maxCondition)
-        if (add.health == 0)
+        if (condition.health == 0)
             listener?.onDead(this, false)
-        else if (add.fullness == 0)
+        else if (condition.fullness == 0)
             listener?.onDead(this, true)
     }
 

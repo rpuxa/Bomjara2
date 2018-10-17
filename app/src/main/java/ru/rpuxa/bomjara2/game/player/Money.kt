@@ -25,7 +25,7 @@ class Money(var rubles: Long = 0, var euros: Long = 0, var bitcoins: Long = 0, v
     }
 
     val positive: Boolean
-        get() = rubles >= 0 && euros >= 0 && bitcoins >= 0 && bottles >= 0 && diamonds >= 0
+        get() = rubles > 0 || euros > 0 || bitcoins > 0 || bottles > 0 || diamonds > 0
 
     operator fun timesAssign(i: Double) {
         rubles = rubles.roundTimes(i)
