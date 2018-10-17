@@ -1,7 +1,6 @@
 package ru.rpuxa.bomjara2.activities
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -37,7 +36,7 @@ class SavesActivity : AppCompatActivity() {
         recycler.adapter = savesAdapter
 
         new_save.setOnClickListener {
-            pickNameDialog { name ->
+            pickNameDialog(randName) { name ->
                 startGame(Player(random.nextLong(), name, false))
             }
         }
@@ -47,30 +46,25 @@ class SavesActivity : AppCompatActivity() {
 
     }
 
-    private fun pickNameDialog(startName: String = "", onName: (String) -> Unit) {
-        var dialog = null as Dialog?
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Введите имя бомжа")
-
-        val nameEditText = EditText(this)
-        nameEditText.setText(startName)
-        builder.setView(nameEditText)
-
-        builder.setPositiveButton("Ок") { _, _ ->
-            val name = nameEditText.text.toString()
-            if (name.length < 4) {
-                toast("Имя должно быть не меньше 4 символов")
-                return@setPositiveButton
-            }
-            dialog!!.dismiss()
-            onName(name)
+    private fun pickNameDialog(startName: String, onName: (String) -> Unit) {
+        val nameEditText = EditText(this).apply {
+            setText(startName)
+            hint = "Имя"
+            setSelection(text.length)
         }
-
-        builder.setNegativeButton("Отмена") { _, _ ->
-            dialog!!.dismiss()
-        }
-
-        dialog = builder.show()
+        AlertDialog.Builder(this)
+                .setTitle("Введите имя бомжа")
+                .setView(nameEditText)
+                .setPositiveButton("Ок") { _, _ ->
+                    val name = nameEditText.text.toString()
+                    if (name.length < 4) {
+                        toast("Имя должно быть не меньше 4 символов")
+                        return@setPositiveButton
+                    }
+                    onName(name)
+                }
+                .setNegativeButton("Отмена", null)
+                .show()
     }
 
     private fun startGame(player: Player) {
@@ -126,23 +120,20 @@ class SavesActivity : AppCompatActivity() {
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.rename -> {
-                        pickNameDialog { newName ->
+                        pickNameDialog(save.name) { newName ->
                             save.name = newName
                             notifyItemChanged(holder.adapterPosition)
                         }
                     }
                     R.id.delete -> {
-                        var dialog = null as Dialog?
-                        dialog = AlertDialog.Builder(holder.view.context)
+                        AlertDialog.Builder(holder.view.context)
                                 .setTitle("Удалить сохранение?")
                                 .setPositiveButton("Удалить") { _, _ ->
                                     SaveLoader.delete(save)
                                     toast("Удалено")
                                     notifyItemRemoved(holder.adapterPosition)
                                 }
-                                .setNegativeButton("Отмена") { _, _ ->
-                                    dialog!!.dismiss()
-                                }
+                                .setNegativeButton("Отмена", null)
                                 .show()
                     }
                 }
@@ -156,5 +147,13 @@ class SavesActivity : AppCompatActivity() {
     override fun onPause() {
         SaveLoader.save(filesDir)
         super.onPause()
+    }
+
+    companion object {
+        val names = arrayOf(
+                "Геннадий", "Василий", "Анатолий", "Семён", "Вадим"
+        )
+
+        val randName get() = "Бомж ${names[random.nextInt(names.size)]}"
     }
 }

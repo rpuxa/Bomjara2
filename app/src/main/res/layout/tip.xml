@@ -20,7 +20,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:alpha="0.3"
+            android:alpha="0.5"
             android:scaleType="fitStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/close" />
 
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/text_tip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -38,7 +38,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="ОООООООООООООООоооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооочень длинный текст"
+            android:text="                     "
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/close_tip"

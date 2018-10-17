@@ -8,7 +8,6 @@ import ru.rpuxa.bomjara2.game.player.Possessions
 import ru.rpuxa.bomjara2.gauss
 import ru.rpuxa.bomjara2.getStringAge
 import ru.rpuxa.bomjara2.save.Save
-import ru.rpuxa.bomjara2.settings.Settings
 
 class Player(var id: Long, var name: String, val old: Boolean) {
     var listener: Player.Listener? = null
@@ -20,15 +19,10 @@ class Player(var id: Long, var name: String, val old: Boolean) {
 
     var condition = Condition(75, 75, 100)
     var maxCondition = Condition(100, 100, 100)
-    var money = Money(rubles = 20000)
-    var possessions = Possessions(location = 2)
+    var money = Money()
+    var possessions = Possessions()
     var courses = IntArray(Actions.COURSES.size)
     var age = 0
-        set(value) {
-            field = value
-            if (value == 50)
-                Settings.showTips = false
-        }
     var efficiency = 100
 
     var caughtByPolice = false

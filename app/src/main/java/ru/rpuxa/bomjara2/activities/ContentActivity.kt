@@ -85,15 +85,12 @@ class ContentActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        var dialog = null as Dialog?
-        dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
                 .setTitle("Выйти в главное меню?")
                 .setPositiveButton("Выйти") { _, _ ->
                     gotoMainMenu()
                 }
-                .setNegativeButton("Отмена") { _, _ ->
-                    dialog!!.dismiss()
-                }
+                .setNegativeButton("Отмена", null)
                 .show()
     }
 

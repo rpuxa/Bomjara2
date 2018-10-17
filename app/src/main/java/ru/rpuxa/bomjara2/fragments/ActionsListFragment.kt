@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.actions_list.*
+import kotlinx.android.synthetic.main.actions_list.view.*
 import ru.rpuxa.bomjara2.*
 import ru.rpuxa.bomjara2.actions.Action
 import ru.rpuxa.bomjara2.actions.Actions
+import ru.rpuxa.bomjara2.activities.TipFragment
 import ru.rpuxa.bomjara2.game.Player
 
 class ActionsListFragment : CacheFragment() {
@@ -27,6 +29,7 @@ class ActionsListFragment : CacheFragment() {
         actions_list.adapter.notifyDataSetChanged()
         icon.setImageBitmap(context.getMenuIcon(menu))
         title.text = Actions.getMenuName(menu)
+        TipFragment.setTip(view.tip_action, menu)
     }
 
 

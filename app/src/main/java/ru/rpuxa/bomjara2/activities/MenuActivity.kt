@@ -16,6 +16,7 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TipFragment.allTips.clear()
         SaveLoader.load(filesDir)
         setContentView(R.layout.main_menu)
         saves.setOnClickListener {
