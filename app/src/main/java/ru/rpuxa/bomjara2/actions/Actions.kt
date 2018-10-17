@@ -43,7 +43,8 @@ object Actions {
             }
     )
     private val PENALTIES = arrayOf(
-            500
+            500, 3000, 6000, 25_000, 50_000,
+            150_000, 350_000
     )
 
     operator fun get(menu: Int): List<Action> {
@@ -110,35 +111,67 @@ object Actions {
                 Element("Дом на берегу моря", 7, 1, 0, 1, 0, 600.bitcoin)
         )
 
-
-
-        location(0) {
-            food {
-                add("Жрать объедки с помойки", FREE, -10, -15, 25)
-                add("Купить бутер", (-40).rub, -5, -5, 30)
-                add("Купить шаурму", (-100).rub, -5, -5, 70)
-                add("Отжать семки у голубей", FREE, -5, -5, 50, false)
-            }
-
-            health {
-                add("Пособирать травы", FREE, 10, -10, -5)
-                add("Сходить к бабке", (-70).rub, 60, -10, -5)
-                add("Спереть лекарства с аптеки", FREE, 50, -15, -5, false)
-            }
-
-            energy {
-                add("Поспать", FREE, -5, 15, -5)
-                add("Выпить палёнки", (-45).rub, -5, 30, -5)
-                add("Купить пивас", (-60).rub, 0, 30, -5)
-                add("Украсть Редбулл", FREE, -10, 60, -5, false)
-            }
-        }
-
         job(0) {
             add("Пособирать бутылки", 25.bottle, -10, -20, -10)
             add("Пособирать монеты", 60.rub, -10, -20, -10)
             add("Украсть бабки у уличных музыкантов", 100.rub, -10, -10, -10, false)
         }
+
+        job(1) {
+            add("Пойти с Василием за бутылками", 45.bottle, -5, -20, -10)
+            add("Пособирать монеты из фонтана", 120.rub, -10, -20, -10)
+            add("Собирать макулатуру на свалках", 190.rub, -5, -40, -20)
+            add("Сдать люк на металл", 200.rub, -5, -20, -5, false)
+        }
+
+
+
+
+
+        location(0) {
+            food {
+                add("Жрать объедки с помойки", FREE, -10, -15, 25)
+                add("Купить бутер", 40.rub, -5, -5, 30)
+                add("Купить шаурму", 100.rub, -5, -5, 70)
+                add("Отжать семки у голубей", FREE, -5, -5, 50, false)
+            }
+
+            health {
+                add("Пособирать травы", FREE, 10, -10, -5)
+                add("Сходить к бабке", 70.rub, 60, -10, -5)
+                add("Спереть лекарства с аптеки", FREE, 50, -15, -5, false)
+            }
+
+            energy {
+                add("Поспать", FREE, -5, 15, -5)
+                add("Выпить палёнки", 45.rub, -5, 30, -5)
+                add("Купить пивас", 60.rub, 0, 30, -5)
+                add("Украсть Редбулл", FREE, -10, 60, -5, false)
+            }
+        }
+
+        location(1) {
+            food {
+                add("Жрать объедки с помойки", FREE, -10, -15, 25)
+                add("Купить шаурму", 100.rub, -5, -5, 30)
+                add("Купить шашлык", 250.rub, -5, -5, 80)
+                add("Отнять еду у доставщика пиццы", FREE, -5, -5, 70, false)
+            }
+            health {
+                add("Пособирать травы", FREE, 10, -15, -5)
+                add("Купить пилюли", 50.rub, 35, -5, -5)
+                add("Найти в подъезде бывшего врача", 190.rub, 70, -10, -5)
+                add("Украсть у деда лекарства", FREE, 60, -15, -5, false)
+            }
+            energy {
+                add("Поспать в палатке", FREE, -5, 15, -5)
+                add("Бухнуть с гопниками", 50.rub, -5, 35, -5)
+                add("Купить палёный абсент", 150.rub, -15, 70, -5)
+                add("Украсть Редбулл", FREE, -10, 50, -5, false)
+            }
+        }
+
+
 
     }
 
@@ -163,8 +196,8 @@ object Actions {
         inline fun health(block: Menu.() -> Unit) = Menu(HEALTH).block()
 
         internal inner class Menu(val type: Int) {
-            fun add(name: String, addMoney: Money, health: Int, energy: Int, food: Int, legal: Boolean = true) {
-                val action = Action(name, addMoney, Condition(energy, food, health), !legal)
+            fun add(name: String, removeMoney: Money, health: Int, energy: Int, food: Int, legal: Boolean = true) {
+                val action = Action(name, -removeMoney, Condition(energy, food, health), !legal)
                 actions.add(LocatedAction(i, type, action))
             }
         }
