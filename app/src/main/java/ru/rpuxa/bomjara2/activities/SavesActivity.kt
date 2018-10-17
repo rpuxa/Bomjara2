@@ -33,7 +33,7 @@ class SavesActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        val savesAdapter = SavesAdapter(SaveLoader.saves)
+        val savesAdapter = SavesAdapter(SaveLoader.saves.list)
         recycler.adapter = savesAdapter
 
         new_save.setOnClickListener {
@@ -75,8 +75,12 @@ class SavesActivity : AppCompatActivity() {
 
     private fun startGame(player: Player) {
         Player.CURRENT = player
-        startActivity<ContentActivity>()
-        Settings.lastSave = player.id
+        if (player.age == 0)
+            startActivity<PrehistoryActivity>()
+        else {
+            startActivity<ContentActivity>()
+            Settings.lastSave = player.id
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

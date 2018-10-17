@@ -29,7 +29,8 @@
         <activity
             android:name=".activities.ContentActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.PrehistoryActivity"></activity>
     </application>
 
 </manifest>

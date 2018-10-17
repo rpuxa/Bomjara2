@@ -1,9 +1,10 @@
 package ru.rpuxa.bomjara2.save
 
 import Game.Serialization.SerializablePlayer
+import ru.rpuxa.bomjara2.cache.SuperDeserializator
+import ru.rpuxa.bomjara2.cache.SuperSerializable
 import ru.rpuxa.bomjara2.game.Player
 import ru.rpuxa.bomjara2.random
-import ru.rpuxa.bomjara2.readObject
 import ru.rpuxa.bomjara2.writeObject
 import java.io.File
 import java.io.FileInputStream
@@ -11,31 +12,35 @@ import java.io.ObjectInputStream
 
 object SaveLoader {
 
-    private const val FILE_NAME = "saves2.0"
+    class Saves : SuperSerializable {
+        var list = ArrayList<Save>()
+    }
 
-    var saves = ArrayList<Save>()
+    private const val SAVES_FILE_NAME = "saves2.0"
+
+    var saves = Saves()
 
     fun save(file: File) {
-        file.writeObject(saves, FILE_NAME)
+        file.writeObject(saves.serialize(), SAVES_FILE_NAME)
     }
 
     fun load(file: File) {
-        val saves = file.readObject<ArrayList<Save>>(FILE_NAME)
+        val saves = SuperDeserializator.deserialize(file, SAVES_FILE_NAME) as? Saves
         if (saves != null)
             this.saves = saves
         loadOld(file)
     }
 
     fun savePlayer(player: Player) {
-        saves.removeAll { it.name == player.name }
-        saves.add(player.toSave())
+        saves.list.removeAll { it.name == player.name }
+        saves.list.add(player.toSave())
     }
 
     fun findSaveById(id: Long) =
-            saves.find { it.id == id }
+            saves.list.find { it.id == id }
 
     fun delete(save: Save) {
-        saves.remove(save)
+        saves.list.remove(save)
     }
 
     private fun loadOld(file: File) {
@@ -48,7 +53,7 @@ object SaveLoader {
             e.printStackTrace()
             return
         }
-        saves.add(convertOld(player))
+        saves.list.add(convertOld(player))
         //  file1.delete()
     }
 
