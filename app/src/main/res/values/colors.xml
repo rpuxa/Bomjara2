@@ -9,4 +9,6 @@
     <color name="gray">#ff303030</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="transient_red">#19cc0000</color>
 </resources>
