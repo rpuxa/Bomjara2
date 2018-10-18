@@ -13,17 +13,13 @@ import kotlinx.android.synthetic.main.vip_opened.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.actions.Vip
+import ru.rpuxa.bomjara.activities.App
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.toast
 
 class VipFragment : CacheFragment() {
 
-    lateinit var vipVideoAd: ru.rpuxa.bomjara.Ad
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        vipVideoAd = ru.rpuxa.bomjara.Ad(context, "ksdfdjfsdfgklhwergewhrgwerjk")
-    }
+    val ad get() = (activity.application as App).videoAd
 
     private val closed get() = Player.CURRENT.possessions.location < 2
 
@@ -41,7 +37,7 @@ class VipFragment : CacheFragment() {
         view.vip_list.layoutManager = LinearLayoutManager(context)
         view.vip_list.adapter = VipAdapter(Actions.VIPS)
         view.add_diamonds.setOnClickListener {
-            val res = vipVideoAd.show {
+            val res = ad.show {
                 Player.CURRENT.money.diamonds += 3
                 toast("Получайте награду")
                 updateMoney()

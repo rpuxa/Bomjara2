@@ -10,14 +10,19 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
     private val videoAd = MobileAds.getRewardedVideoAdInstance(context).apply {
         rewardedVideoAdListener = this@Ad
     }!!
-    private lateinit var listener: () -> Unit
+
+    private var watched = false
+    lateinit var listener: () -> Unit
 
     init {
         load()
     }
 
     override fun onRewardedVideoAdClosed() {
+        if (watched)
+            listener()
         load()
+        watched = false
     }
 
     override fun onRewardedVideoAdLeftApplication() {
@@ -34,7 +39,7 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
     }
 
     override fun onRewarded(p0: RewardItem?) {
-        listener()
+        watched = true
     }
 
     override fun onRewardedVideoStarted() {

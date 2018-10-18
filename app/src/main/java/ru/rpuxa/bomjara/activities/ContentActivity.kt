@@ -19,7 +19,7 @@ import ru.rpuxa.bomjara.game.player.Money
 
 class ContentActivity : AppCompatActivity() {
 
-    private lateinit var deadBanner: ru.rpuxa.bomjara.Ad
+    val ad get() = (application as App).videoAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,26 +62,17 @@ class ContentActivity : AppCompatActivity() {
             }
         }
 
-        deadBanner = ru.rpuxa.bomjara.Ad(this, getString(R.string.dead_banner_id))
-
         save()
-    }
-
-    override fun onResume() {
-        deadBanner.resume()
-        super.onResume()
     }
 
     override fun onPause() {
         save()
-        deadBanner.pause()
         super.onPause()
     }
 
     override fun onDestroy() {
         save()
         Player.CURRENT.listener = null
-        deadBanner.destroy()
         super.onDestroy()
     }
 
@@ -136,12 +127,13 @@ class ContentActivity : AppCompatActivity() {
                     .show()
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val res = deadBanner.show {
+                val res = ad.show {
                     toast("Мы вас с того света достали! Пожалуйста, не забывайте о своем здоровье", false)
                     player.deadByZeroHealth = false
                     player.deadByHungry = false
                     player.condition.fullness = player.maxCondition.fullness
                     player.condition.health = player.maxCondition.health
+                    onConditionChanged(Player.CURRENT.condition, Player.CURRENT, Player.CURRENT.maxCondition)
                     dialog.dismiss()
                 }
                 if (!res) {
@@ -166,7 +158,7 @@ class ContentActivity : AppCompatActivity() {
                     .show()
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val res = deadBanner.show {
+                val res = ad.show {
                     toast("Так уж и быть мы вас отпустим. Впредь будьте аккуратнее", false)
                     player.caughtByPolice = false
                     player.condition.fullness = player.maxCondition.fullness
