@@ -3,6 +3,7 @@ package ru.rpuxa.bomjara.save
 import Game.Serialization.SerializablePlayer
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.random
+import ru.rpuxa.bomjara.settings.Settings
 import ru.rpuxa.bomjara.writeObject
 import java.io.File
 import java.io.FileInputStream
@@ -42,17 +43,19 @@ object SaveLoader {
     }
 
     private fun loadOld(file: File) {
-        val file1 = File(file, "player")
+        val oldSave = File(file, "player")
         val player = try {
-            ObjectInputStream(FileInputStream(file1)).use {
+            ObjectInputStream(FileInputStream(oldSave)).use {
                 it.readObject() as SerializablePlayer
             }
         } catch (e: Exception) {
             e.printStackTrace()
             return
         }
-        saves.list.add(convertOld(player))
-        //  file1.delete()
+        val converted = convertOld(player)
+        saves.list.add(converted)
+        oldSave.delete()
+        Settings.lastSave = converted.id
     }
 
     private fun convertOld(player: SerializablePlayer): Save {

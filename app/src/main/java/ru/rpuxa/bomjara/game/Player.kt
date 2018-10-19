@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara.game
 
 import android.support.annotation.CallSuper
+import android.support.v4.app.FragmentActivity
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.game.player.Condition
 import ru.rpuxa.bomjara.game.player.Money
@@ -8,6 +9,7 @@ import ru.rpuxa.bomjara.game.player.Possessions
 import ru.rpuxa.bomjara.gauss
 import ru.rpuxa.bomjara.getStringAge
 import ru.rpuxa.bomjara.save.Save
+import ru.rpuxa.bomjara.toast
 
 class Player(var id: Long, var name: String, val old: Boolean) {
     var listener: Player.Listener? = null
@@ -83,6 +85,8 @@ class Player(var id: Long, var name: String, val old: Boolean) {
         fun onMoneyChanged(money: Money, player: Player, positive: Boolean)
 
         fun onConditionChanged(condition: Condition, player: Player, maxCondition: Condition)
+
+        val activity: FragmentActivity
     }
 
     companion object {
@@ -104,33 +108,37 @@ class Player(var id: Long, var name: String, val old: Boolean) {
     }
 
 
-    fun toSave() =
-            Save(
-                    id,
-                    old,
-                    name,
-                    age,
-                    money.bottles,
-                    money.rubles,
-                    money.euros,
-                    money.bitcoins,
-                    money.diamonds,
-                    possessions.location,
-                    possessions.friend,
-                    possessions.home,
-                    possessions.transport,
-                    efficiency,
-                    maxCondition.energy,
-                    maxCondition.fullness,
-                    maxCondition.health,
-                    condition.energy,
-                    condition.fullness,
-                    condition.health,
-                    courses,
-                    deadByHungry,
-                    deadByZeroHealth,
-                    caughtByPolice
-            )
+    fun toSave() = Save(
+            id,
+            old,
+            name,
+            age,
+            money.bottles,
+            money.rubles,
+            money.euros,
+            money.bitcoins,
+            money.diamonds,
+            possessions.location,
+            possessions.friend,
+            possessions.home,
+            possessions.transport,
+            efficiency,
+            maxCondition.energy,
+            maxCondition.fullness,
+            maxCondition.health,
+            condition.energy,
+            condition.fullness,
+            condition.health,
+            courses,
+            deadByHungry,
+            deadByZeroHealth,
+            caughtByPolice
+    )
+
+    fun addDiamond() {
+        money.diamonds++
+        listener?.activity?.toast("Вы нашли алмаз!")
+    }
 
 
 }

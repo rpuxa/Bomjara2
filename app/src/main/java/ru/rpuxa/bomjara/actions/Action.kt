@@ -26,6 +26,9 @@ class Action(val name: String, val addMoney: Money, val addCondition: Condition,
         else
             player.add(addMoney)
         player += addCondition
+        if (random.nextInt(40) == 10) {
+            player.addDiamond()
+        }
         if (illegal && random.nextInt(10) == 5) {
             player.listener?.onCaughtByPolice(player)
         }

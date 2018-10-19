@@ -92,6 +92,8 @@ class ContentActivity : AppCompatActivity() {
 
     inner class PlayerListener : Player.Listener {
 
+        override val activity get() = this@ContentActivity
+
         override fun onMoneyChanged(money: Money, player: Player, positive: Boolean) {
             status_bars.rubles.text = money.rubles.divider()
             status_bars.euros.text = money.euros.divider()
