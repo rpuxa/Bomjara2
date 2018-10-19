@@ -66,6 +66,7 @@ class SavesActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             onName(name)
+            dialog.dismiss()
         }
     }
 
