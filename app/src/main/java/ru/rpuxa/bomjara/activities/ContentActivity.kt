@@ -25,8 +25,7 @@ class ContentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content)
         Player.CURRENT.listener = PlayerListener()
-
-        pager.adapter = ru.rpuxa.bomjara.ContentAdapter(supportFragmentManager)
+        pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
                 .setIcons(
                         drawable.info,
@@ -63,6 +62,19 @@ class ContentActivity : AppCompatActivity() {
         }
 
         save()
+
+        if (Player.CURRENT.old) {
+            Player.CURRENT.old = false
+            val gift = Actions.penalty
+            AlertDialog.Builder(this)
+                    .setTitle("Спасибо за установку обновления")
+                    .setCancelable(false)
+                    .setMessage("Мы полностью переработали дизайн и механику игры. С нововедениями можете ознакомиться " +
+                            "при помощи подсказок. Так же держите от нас подарок - $gift рублей")
+                    .setPositiveButton("Спасибо", null)
+                    .show()
+            Player.CURRENT.add(Money(rubles = gift.toLong()))
+        }
     }
 
     override fun onPause() {

@@ -11,7 +11,7 @@ import ru.rpuxa.bomjara.getStringAge
 import ru.rpuxa.bomjara.save.Save
 import ru.rpuxa.bomjara.toast
 
-class Player(var id: Long, var name: String, val old: Boolean) {
+class Player(var id: Long, var name: String, var old: Boolean) {
     var listener: Player.Listener? = null
         set(value) {
             field = value

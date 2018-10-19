@@ -85,8 +85,8 @@ object SaveLoader {
                 (fields[10] as Double).toInt(),
                 fields[13] as IntArray,
                 false,
-                fields[4] as Boolean,
-                fields[3] as Boolean
+                false,
+                false
         )
     }
 }

@@ -121,14 +121,16 @@ class ExchangeFragment : CacheFragment() {
 
         val count = from_count.text.toString().toLong()
 
-        val convertedCount = CurrencyExchange.convert(count, from, to, false)
-        if (!Player.CURRENT.add(-count.currency(from))) {
-            toast(getString(R.string.money_needed))
-            return
+        when {
+            from == to -> toast("Выберите разные валюты")
+            count <= 0 -> toast("Введите положительную сумму")
+            !Player.CURRENT.add(-count.currency(from)) -> toast(getString(R.string.money_needed))
+            else -> {
+                Player.CURRENT.add(CurrencyExchange.convert(count, from, to, false).currency(to))
+                toast("Перевод выполнен")
+                update(from_count, to_count, from, to, false)
+            }
         }
-        Player.CURRENT.add(convertedCount.currency(to))
-        toast("Перевод выполнен")
-        update(from_count, to_count, from, to, false)
     }
 
     private val View.from
