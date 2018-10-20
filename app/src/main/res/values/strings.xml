@@ -12,4 +12,26 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="name">Имя</string>
+    <string name="enter_name">Введите имя бомжа</string>
+    <string name="ok">Ок</string>
+    <string name="name_error">Имя должно быть не меньше 4 символов</string>
+    <string name="delete_save">Удалить сохранение?</string>
+    <string name="delete">Удалить</string>
+    <string name="deleted">Удалено</string>
+    <string name="cancel">Отмена</string>
+    <string name="homeless">Бомж </string>
+    <string name="exit_to_main_menu">Выйти в главное меню?</string>
+    <string name="exit">Выйти</string>
+    <string name="s1">Переименовано</string>
+    <string name="google_play_link">https://play.google.com/store/apps/details?id=ru.rpuxa.bomjara</string>
+
+    <string-array name="homeless_names">
+        <item>Геннадий</item>
+        <item>Василий</item>
+        <item>Анатолий</item>
+        <item>Семён</item>
+        <item>Вадим</item>
+    </string-array>
+
 </resources>

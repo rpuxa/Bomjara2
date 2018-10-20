@@ -68,7 +68,7 @@ class ActionsListFragment : CacheFragment() {
             if (!Player.CURRENT.doingAction) {
 
                 when (action.canPerform(Player.CURRENT)) {
-                    Action.YES -> {
+                    Action.NOTHING_NEEDED -> {
                         Player.CURRENT.doingAction = true
                         bar.visibility = View.VISIBLE
                         illegal.visibility = View.INVISIBLE

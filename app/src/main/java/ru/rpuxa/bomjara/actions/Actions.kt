@@ -31,12 +31,16 @@ object Actions {
     val VIPS = arrayOf(
             Vip("+10 к макс. запасу сытости", 9) {
                 it.maxCondition.fullness += 10
+                Player.CURRENT.listener?.onMaxConditionChanged()
             },
             Vip("+10 к макс. запасу здоровья", 9) {
                 it.maxCondition.health += 10
+                Player.CURRENT.listener?.onMaxConditionChanged()
+
             },
             Vip("+10 к макс. запасу бодрости", 9) {
                 it.maxCondition.energy += 10
+                Player.CURRENT.listener?.onMaxConditionChanged()
             },
             Vip("+10% к эффективности работы", 15) {
                 it.efficiency += 10

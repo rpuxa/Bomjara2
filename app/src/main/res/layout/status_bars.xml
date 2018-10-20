@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ProgressBar
+    <ru.rpuxa.bomjara.views.AnimProgressBar
         android:id="@+id/health_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="171dp"
@@ -13,12 +13,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:indeterminate="false"
-        android:progress="50"
+        android:progress="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/fullness_bar" />
 
-    <ProgressBar
+    <ru.rpuxa.bomjara.views.AnimProgressBar
         android:id="@+id/fullness_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="171dp"
@@ -26,17 +26,17 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:indeterminate="false"
-        android:progress="50"
+        android:progress="0"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/energy_bar" />
 
-    <ProgressBar
+    <ru.rpuxa.bomjara.views.AnimProgressBar
         android:id="@+id/energy_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="171dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
-        android:progress="50"
+        android:progress="0"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
@@ -87,6 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="100 431"
+        android:textColor="@color/cardview_light_background"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
@@ -99,6 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="912"
+        android:textColor="@color/cardview_light_background"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView8"
         app:layout_constraintEnd_toStartOf="@+id/imageView8"
@@ -110,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="1 992"
+        android:textColor="@android:color/background_light"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toStartOf="@+id/imageView4"

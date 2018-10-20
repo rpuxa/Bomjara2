@@ -1,9 +1,12 @@
 package ru.rpuxa.bomjara.activities
 
+import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.TextView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.content.*
@@ -14,7 +17,6 @@ import ru.rpuxa.bomjara.R.drawable
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.game.CurrencyExchange
 import ru.rpuxa.bomjara.game.Player
-import ru.rpuxa.bomjara.game.player.Condition
 import ru.rpuxa.bomjara.game.player.Money
 
 class ContentActivity : AppCompatActivity() {
@@ -26,7 +28,7 @@ class ContentActivity : AppCompatActivity() {
         setContentView(R.layout.content)
         Player.CURRENT.listener = PlayerListener()
 
-        pager.adapter = ru.rpuxa.bomjara.ContentAdapter(supportFragmentManager)
+        pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
                 .setIcons(
                         drawable.info,
@@ -82,11 +84,11 @@ class ContentActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         AlertDialog.Builder(this)
-                .setTitle("Выйти в главное меню?")
-                .setPositiveButton("Выйти") { _, _ ->
+                .setTitle(getString(R.string.exit_to_main_menu))
+                .setPositiveButton(getString(R.string.exit)) { _, _ ->
                     gotoMainMenu()
                 }
-                .setNegativeButton("Отмена", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
     }
 
@@ -94,25 +96,57 @@ class ContentActivity : AppCompatActivity() {
 
         override val activity get() = this@ContentActivity
 
-        override fun onMoneyChanged(money: Money, player: Player, positive: Boolean) {
-            status_bars.rubles.text = money.rubles.divider()
-            status_bars.euros.text = money.euros.divider()
-            status_bars.bitcoins.text = money.bitcoins.divider()
+        var anim = ValueAnimator.ofFloat()!!
+
+        override fun onMoneyChanged(positive: Boolean, currency: Int) {
+            fun set(textView: TextView, count: Long, currency0: Int) {
+                textView.text = count.divider()
+                if (currency != currency0 || count == 0L)
+                    return
+                val startColor = if (positive) Color.GREEN else Color.RED
+                val toColor = Color.WHITE
+                anim.cancel()
+                val anim = ValueAnimator.ofFloat(1f, 0f)
+                anim.duration = 1000
+                anim.addUpdateListener {
+                    val v = it.animatedValue as Float
+                    val nv = 1 - v
+                    val r = (Color.red(startColor) * v + nv * Color.red(toColor)).toInt()
+                    val g = (Color.green(startColor) * v + nv * Color.green(toColor)).toInt()
+                    val b = (Color.blue(startColor) * v + nv * Color.blue(toColor)).toInt()
+
+                    textView.setTextColor(Color.argb(255, r, g, b))
+
+                }
+                anim.start()
+            }
+            Player.CURRENT.money.apply {
+                set(status_bars.rubles, rubles, RUB)
+                set(status_bars.euros, euros, EURO)
+                set(status_bars.bitcoins, bitcoins, BITCOIN)
+            }
         }
 
-        override fun onConditionChanged(condition: Condition, player: Player, maxCondition: Condition) {
-            energy_bar.progress = condition.energy
-            energy_bar.max = maxCondition.energy
 
-            fullness_bar.progress = condition.fullness
-            fullness_bar.max = maxCondition.fullness
-
-            health_bar.progress = condition.health
-            health_bar.max = maxCondition.health
+        override fun onConditionChanged() {
+            Player.CURRENT.condition.apply {
+                energy_bar.animatedProgress = energy
+                fullness_bar.animatedProgress = fullness
+                health_bar.animatedProgress = health
+            }
         }
 
-        override fun onDead(player: Player, hunger: Boolean) {
-            super.onDead(player, hunger)
+        override fun onMaxConditionChanged() {
+            Player.CURRENT.maxCondition.apply {
+                fullness_bar.max = fullness
+                energy_bar.max = energy
+                health_bar.max = health
+            }
+        }
+
+        override fun onDead(hunger: Boolean) {
+            super.onDead(hunger)
+            val player = Player.CURRENT
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Бомж умер от " + if (hunger) "голода" else "болезни")
                     .setMessage(
@@ -135,7 +169,7 @@ class ContentActivity : AppCompatActivity() {
                     player.deadByHungry = false
                     player.condition.fullness = player.maxCondition.fullness
                     player.condition.health = player.maxCondition.health
-                    onConditionChanged(Player.CURRENT.condition, Player.CURRENT, Player.CURRENT.maxCondition)
+                    onConditionChanged()
                     dialog.dismiss()
                 }
                 if (!res) {
@@ -145,8 +179,9 @@ class ContentActivity : AppCompatActivity() {
 
         }
 
-        override fun onCaughtByPolice(player: Player) {
-            super.onCaughtByPolice(player)
+        override fun onCaughtByPolice() {
+            super.onCaughtByPolice()
+            val player = Player.CURRENT
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Вас поймали менты!")
                     .setMessage(

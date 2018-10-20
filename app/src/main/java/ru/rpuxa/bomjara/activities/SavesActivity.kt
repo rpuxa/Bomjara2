@@ -1,6 +1,5 @@
 package ru.rpuxa.bomjara.activities
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -22,9 +21,13 @@ import ru.rpuxa.bomjara.settings.Settings
 
 class SavesActivity : AppCompatActivity() {
 
+    private lateinit var names: Array<String>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val new = intent?.extras?.get("new")
+        names = resources.getStringArray(R.array.homeless_names)
 
         setContentView(R.layout.activity_save)
         setSupportActionBar(toolbar)
@@ -49,20 +52,20 @@ class SavesActivity : AppCompatActivity() {
     private fun pickNameDialog(startName: String, onName: (String) -> Unit) {
         val nameEditText = EditText(this).apply {
             setText(startName)
-            hint = "Имя"
+            hint = context.getString(R.string.name)
             setSelection(text.length)
         }
         val dialog = AlertDialog.Builder(this)
-                .setTitle("Введите имя бомжа")
+                .setTitle(getString(R.string.enter_name))
                 .setView(nameEditText)
-                .setPositiveButton("Ок", null)
-                .setNegativeButton("Отмена", null)
+                .setPositiveButton(getString(R.string.ok), null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val name = nameEditText.text.toString()
             if (name.length < 4) {
-                toast("Имя должно быть не меньше 4 символов")
+                toast(getString(R.string.name_error))
                 return@setOnClickListener
             }
             onName(name)
@@ -101,7 +104,6 @@ class SavesActivity : AppCompatActivity() {
 
         override fun getItemCount() = list.size
 
-        @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: SaveViewHolder, position: Int) {
             val save = list[position]
             holder.saveName.text = save.name
@@ -126,17 +128,18 @@ class SavesActivity : AppCompatActivity() {
                         pickNameDialog(save.name) { newName ->
                             save.name = newName
                             notifyItemChanged(holder.adapterPosition)
+                            toast(getString(R.string.s1))
                         }
                     }
                     R.id.delete -> {
                         AlertDialog.Builder(holder.view.context)
-                                .setTitle("Удалить сохранение?")
-                                .setPositiveButton("Удалить") { _, _ ->
+                                .setTitle(getString(R.string.delete_save))
+                                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                                     SaveLoader.delete(save)
-                                    toast("Удалено")
+                                    toast(getString(R.string.deleted))
                                     notifyItemRemoved(holder.adapterPosition)
                                 }
-                                .setNegativeButton("Отмена", null)
+                                .setNegativeButton(getString(R.string.cancel), null)
                                 .show()
                     }
                 }
@@ -152,11 +155,5 @@ class SavesActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    companion object {
-        val names = arrayOf(
-                "Геннадий", "Василий", "Анатолий", "Семён", "Вадим"
-        )
-
-        val randName get() = "Бомж ${names[random.nextInt(names.size)]}"
-    }
+    private val randName get() = "Бомж " + names[random.nextInt(names.size)]
 }

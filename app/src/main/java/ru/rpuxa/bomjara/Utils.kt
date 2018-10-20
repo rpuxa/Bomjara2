@@ -32,6 +32,7 @@ fun Long.currency(id: Int) = when (id) {
 val FREE = Money()
 
 
+const val NONE = -1488
 const val RUB = 0
 const val EURO = 1
 const val BITCOIN = 2

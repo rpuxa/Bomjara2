@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara.activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.main_menu.*
@@ -32,6 +33,10 @@ class MenuActivity : AppCompatActivity() {
 
         settings.setOnClickListener {
             startActivity<SettingsActivity>()
+        }
+
+        rate.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_link))))
         }
     }
 

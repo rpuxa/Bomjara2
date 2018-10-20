@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.game
 
 import android.support.annotation.CallSuper
 import android.support.v4.app.FragmentActivity
+import ru.rpuxa.bomjara.NONE
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.game.player.Condition
 import ru.rpuxa.bomjara.game.player.Money
@@ -36,17 +37,17 @@ class Player(var id: Long, var name: String, val old: Boolean) {
     operator fun plusAssign(add: Condition) {
         condition += add * gauss
         condition.truncate(maxCondition)
-        listener?.onConditionChanged(condition, this, maxCondition)
+        listener?.onConditionChanged()
         if (condition.health == 0)
-            listener?.onDead(this, false)
+            listener?.onDead(false)
         else if (condition.fullness == 0)
-            listener?.onDead(this, true)
+            listener?.onDead(true)
     }
 
     fun add(money: Money): Boolean {
         if (!this.money.add(money))
             return false
-        listener?.onMoneyChanged(this.money, this, money.positive)
+        listener?.onMoneyChanged(money.positive, money.currency)
         return true
     }
 
@@ -55,12 +56,13 @@ class Player(var id: Long, var name: String, val old: Boolean) {
     }
 
     private fun update(listener: Listener) {
-        listener.onMoneyChanged(money, this, false)
-        listener.onConditionChanged(condition, this, maxCondition)
+        listener.onMoneyChanged(false, NONE)
+        listener.onConditionChanged()
+        listener.onMaxConditionChanged()
         when {
-            deadByZeroHealth -> listener.onDead(this, false)
-            deadByHungry -> listener.onDead(this, true)
-            caughtByPolice -> listener.onCaughtByPolice(this)
+            deadByZeroHealth -> listener.onDead(false)
+            deadByHungry -> listener.onDead(true)
+            caughtByPolice -> listener.onCaughtByPolice()
         }
 
     }
@@ -70,7 +72,8 @@ class Player(var id: Long, var name: String, val old: Boolean) {
     interface Listener {
 
         @CallSuper
-        fun onDead(player: Player, hunger: Boolean) {
+        fun onDead(hunger: Boolean) {
+            val player = Player.CURRENT
             if (hunger)
                 player.deadByHungry = true
             else
@@ -78,13 +81,15 @@ class Player(var id: Long, var name: String, val old: Boolean) {
         }
 
         @CallSuper
-        fun onCaughtByPolice(player: Player) {
-            player.caughtByPolice = true
+        fun onCaughtByPolice() {
+            Player.CURRENT.caughtByPolice = true
         }
 
-        fun onMoneyChanged(money: Money, player: Player, positive: Boolean)
+        fun onMoneyChanged(positive: Boolean, currency: Int)
 
-        fun onConditionChanged(condition: Condition, player: Player, maxCondition: Condition)
+        fun onMaxConditionChanged()
+
+        fun onConditionChanged()
 
         val activity: FragmentActivity
     }
