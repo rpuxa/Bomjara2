@@ -11,6 +11,7 @@ import ru.rpuxa.bomjara.save.SaveLoader
 import ru.rpuxa.bomjara.settings.Settings
 import ru.rpuxa.bomjara.settings.saveSettings
 import ru.rpuxa.bomjara.startActivity
+import ru.rpuxa.bomjara.startActivityFromRight
 
 class MenuActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class MenuActivity : AppCompatActivity() {
         SaveLoader.load(filesDir)
         setContentView(R.layout.main_menu)
         saves.setOnClickListener {
-            startActivity<SavesActivity>()
+            startActivityFromRight<SavesActivity>()
         }
 
         quit.setOnClickListener {
@@ -32,7 +33,7 @@ class MenuActivity : AppCompatActivity() {
         }
 
         settings.setOnClickListener {
-            startActivity<SettingsActivity>()
+            startActivityFromRight<SettingsActivity>()
         }
 
         rate.setOnClickListener {

@@ -64,6 +64,19 @@ class ContentActivity : AppCompatActivity() {
             }
         }
 
+        if (Player.CURRENT.old) {
+            Player.CURRENT.old = false
+            val gift = Actions.penalty
+            AlertDialog.Builder(this)
+                    .setTitle("Спасибо за установку обновления")
+                    .setCancelable(false)
+                    .setMessage("Мы полностью переработали дизайн и механику игры. С нововедениями можете ознакомиться " +
+                            "при помощи подсказок. Так же держите от нас подарок - $gift рублей")
+                    .setPositiveButton("Спасибо", null)
+                    .show()
+            Player.CURRENT.add(Money(rubles = gift.toLong()))
+        }
+
         save()
     }
 
@@ -212,7 +225,7 @@ class ContentActivity : AppCompatActivity() {
                     dialog.dismiss()
                     return@penalty
                 }
-                Player.CURRENT.add(Money(rubles = CurrencyExchange.convert(Player.CURRENT.money.euros, EURO, RUB, false)))
+                Player.CURRENT.add(Money(rubles = CurrencyExchange.convert(Player.CURRENT.money.euros, EURO, RUB)))
                 Player.CURRENT.money.euros = 0
                 if (Player.CURRENT.add((-Actions.penalty).rub)) {
                     toast("Для выплаты штрафа все ваши евро были переведены в рубли", false)
@@ -220,7 +233,7 @@ class ContentActivity : AppCompatActivity() {
                     return@penalty
                 }
 
-                Player.CURRENT.add(Money(rubles = CurrencyExchange.convert(Player.CURRENT.money.bitcoins, BITCOIN, RUB, false)))
+                Player.CURRENT.add(Money(rubles = CurrencyExchange.convert(Player.CURRENT.money.bitcoins, BITCOIN, RUB)))
                 Player.CURRENT.money.bitcoins = 0
                 if (Player.CURRENT.add((-Actions.penalty).rub)) {
                     toast("Для выплаты штрафа все ваши евро и биткоины были переведены в рубли", false)

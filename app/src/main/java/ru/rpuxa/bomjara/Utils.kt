@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -105,9 +106,19 @@ fun Context.save() {
     }.start()
 }
 
-inline fun <reified T> Context.startActivity() {
-    startActivity(Intent(this, T::class.java))
+inline fun <reified T : Activity> Activity.startActivity() =
+        startActivity(Intent(this, T::class.java))
+
+
+inline fun <reified T : Activity> Activity.startActivity(enterAnim: Int, exitAnim: Int) {
+    startActivity<T>()
+    overridePendingTransition(enterAnim, exitAnim)
 }
+
+inline fun <reified T : Activity> Activity.startActivityFromRight() {
+    startActivity<T>(R.anim.right_in, R.anim.left_out)
+}
+
 
 fun getStringAge(i: Int) =
         "${25 + i / 365} лет ${i % 365} дней"

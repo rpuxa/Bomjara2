@@ -35,4 +35,9 @@ class SettingsActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.left_in, R.anim.rigth_out)
+    }
 }

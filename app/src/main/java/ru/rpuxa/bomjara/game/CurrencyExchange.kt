@@ -4,6 +4,7 @@ import ru.rpuxa.bomjara.BITCOIN
 import ru.rpuxa.bomjara.EURO
 import ru.rpuxa.bomjara.RUB
 import ru.rpuxa.bomjara.game.player.Money
+import java.math.BigInteger
 
 object CurrencyExchange {
     private const val BOTTLES_RATE = 1.5
@@ -21,8 +22,10 @@ object CurrencyExchange {
     }
 
 
-    fun convert(count: Long, from: Int, to: Int, reverse: Boolean) =
-            ((if (reverse) 1.05 else .95) * count * getRate(from) / getRate(to)).toLong()
+    fun convert(count: Long, from: Int, to: Int): Long {
+        val big = BigInteger.valueOf(count) * BigInteger.valueOf(getRate(from).toLong()) / BigInteger.valueOf(getRate(to).toLong())
+        return (big - big / BigInteger.valueOf(25L)).toLong()
+    }
 
 
     private fun getRate(i: Int) = when (i) {

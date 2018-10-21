@@ -18,18 +18,19 @@ abstract class ChainFragment : CacheFragment() {
                                changeText: String,
                                elements: Array<Actions.Element>,
                                ref: KMutableProperty0<Int>) {
-        val possessions = elements[ref.get() + 1].possessions
-        val money = -elements[ref.get() + 1].moneyRemove
-        val course = -elements[ref.get() + 1].course
-        name.text = name0
-        icon.setImageResource(icon0)
-        current.text = elements[ref.get()].name
         if (ref.get() + 1 >= elements.size) {
             changeVisibility(View.GONE, next, change, change_label, cost, currency)
             return
         }
+        val element = elements[ref.get() + 1]
+        val possessions = element.possessions
+        val money = -element.moneyRemove
+        val course = element.course
+        name.text = name0
+        icon.setImageResource(icon0)
+        current.text = elements[ref.get()].name
         changeVisibility(View.VISIBLE, next, change, change_label, cost, currency)
-        next.text = elements[ref.get() + 1].name
+        next.text = element.name
         change.text = changeText
         cost.text = money.toString()
         currency.setImageBitmap(context.getCurrencyIcon(money))
@@ -49,7 +50,7 @@ abstract class ChainFragment : CacheFragment() {
                 return@setOnClickListener
             }
 
-            if (Player.CURRENT.courses[course] < Actions.COURSES[course].length) {
+            if (course != -1 && Player.CURRENT.courses[course] < Actions.COURSES[course].length) {
                 toast("Требуется пройти курс - ${Actions.COURSES[course].name}")
                 return@setOnClickListener
             }
@@ -61,6 +62,7 @@ abstract class ChainFragment : CacheFragment() {
             ref.set(ref.get() + 1)
             install(name0, icon0, changeText, elements, ref)
             toast("Выполнено!")
+            ActionsListFragment.updateActions()
         }
     }
 }

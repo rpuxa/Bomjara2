@@ -88,6 +88,11 @@ class SavesActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.left_in, R.anim.rigth_out)
+    }
+
     inner class SavesAdapter(private val list: List<Save>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
 
         inner class SaveViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -128,7 +133,7 @@ class SavesActivity : AppCompatActivity() {
                         pickNameDialog(save.name) { newName ->
                             save.name = newName
                             notifyItemChanged(holder.adapterPosition)
-                            toast(getString(R.string.s1))
+                            toast(getString(R.string.renamed))
                         }
                     }
                     R.id.delete -> {

@@ -18,7 +18,20 @@ import ru.rpuxa.bomjara.game.Player
 
 class ActionsListFragment : CacheFragment() {
 
+    init {
+        updateActions()
+    }
+
     override val layout = R.layout.actions_list
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val menu = arguments[MENU] as Int
+        if (updateActions[menu]) {
+            onChange(view)
+            updateActions[menu] = false
+        }
+    }
+
 
     override fun onChange(view: View) {
         val menu = arguments[MENU] as Int
@@ -91,6 +104,13 @@ class ActionsListFragment : CacheFragment() {
     }
 
     companion object {
+        val updateActions = Array(4) { true }
+
+        fun updateActions() {
+            for (i in updateActions.indices)
+                updateActions[i] = true
+        }
+
         private const val MENU = "menu"
 
         fun create(menu: Int): ActionsListFragment {

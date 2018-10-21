@@ -80,13 +80,13 @@ object SaveLoader {
                 maxIndicators[2].toInt(),
                 maxIndicators[0].toInt(),
                 maxIndicators[1].toInt(),
-                (fields[6] as Double).toInt(),
-                70,
-                (fields[10] as Double).toInt(),
+                100,
+                100,
+                100,
                 fields[13] as IntArray,
                 false,
-                fields[4] as Boolean,
-                fields[3] as Boolean
+                false,
+                false
         )
     }
 }

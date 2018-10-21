@@ -23,7 +23,7 @@
     <string name="homeless">Бомж </string>
     <string name="exit_to_main_menu">Выйти в главное меню?</string>
     <string name="exit">Выйти</string>
-    <string name="s1">Переименовано</string>
+    <string name="renamed">Переименовано</string>
     <string name="google_play_link">https://play.google.com/store/apps/details?id=ru.rpuxa.bomjara</string>
 
     <string-array name="homeless_names">

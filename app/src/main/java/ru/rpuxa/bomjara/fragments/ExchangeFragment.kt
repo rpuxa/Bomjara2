@@ -3,7 +3,6 @@ package ru.rpuxa.bomjara.fragments
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import kotlinx.android.synthetic.main.exchange.view.*
 import kotlinx.android.synthetic.main.open_exchange.*
 import ru.rpuxa.bomjara.*
@@ -33,38 +32,15 @@ class ExchangeFragment : CacheFragment() {
                 handOver(0.3)
             }
 
-            var block = false
-
             from_count.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
-                    block = false
                 }
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (block)
-                        return
-                    block = true
-                    update(from_count, to_count, from, to, false)
-
-                }
-            })
-
-            to_count.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    block = false
-                }
-
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (block)
-                        return
-                    block = true
-                    update(to_count, from_count, to, from, true)
+                    update(from, to)
                 }
             })
 
@@ -89,15 +65,15 @@ class ExchangeFragment : CacheFragment() {
             }
 
             from_group.setOnCheckedChangeListener { _, _ ->
-                update(from_count, to_count, from, to, false)
+                update(from, to)
             }
 
             to_group.setOnCheckedChangeListener { _, _ ->
-                update(from_count, to_count, from, to, false)
+                update(from, to)
             }
 
 
-            update(from_count, to_count, from, to, false)
+            update(from, to)
         }
     }
 
@@ -105,14 +81,14 @@ class ExchangeFragment : CacheFragment() {
     private fun View.setPercent(divide: Int) {
         val count = Player.CURRENT.money.countFromCurrency(from) / divide
         from_count.setText(count.toString())
-        update(from_count, to_count, from, to, false)
+        update(from, to)
     }
 
-    private fun View.update(fromCount: EditText, toCount: EditText, fromCurrency: Int, toCurrency: Int, reverse: Boolean) {
+    private fun View.update(fromCurrency: Int, toCurrency: Int) {
         all.text = Player.CURRENT.money.countFromCurrency(from).toString()
-        val from = fromCount.text.toString().toLongOrNull() ?: 0L
-        val to = CurrencyExchange.convert(from, fromCurrency, toCurrency, reverse)
-        toCount.setText(to.toString())
+        val from = from_count.text.toString().toLongOrNull() ?: 0L
+        val to = CurrencyExchange.convert(from, fromCurrency, toCurrency)
+        to_count.text = to.divider()
     }
 
     private fun View.convert() {
@@ -120,15 +96,17 @@ class ExchangeFragment : CacheFragment() {
         val to = to
 
         val count = from_count.text.toString().toLong()
-
-        val convertedCount = CurrencyExchange.convert(count, from, to, false)
-        if (!Player.CURRENT.add(-count.currency(from))) {
-            toast(getString(R.string.money_needed))
-            return
+        val convertedCount = CurrencyExchange.convert(count, from, to)
+        when {
+            from == to -> toast("Выберите разные валюты")
+            count == 0L || convertedCount == 0L -> toast("Введите положительную сумму")
+            !Player.CURRENT.add(-count.currency(from)) -> toast(getString(R.string.money_needed))
+            else -> {
+                Player.CURRENT.add(convertedCount.currency(to))
+                toast("Перевод выполнен")
+                update(from, to)
+            }
         }
-        Player.CURRENT.add(convertedCount.currency(to))
-        toast("Перевод выполнен")
-        update(from_count, to_count, from, to, false)
     }
 
     private val View.from

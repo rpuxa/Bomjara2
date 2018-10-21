@@ -14,7 +14,9 @@ fun loadSettings(file: File) {
 }
 
 fun saveSettings(file: File) {
-    file.writeObject(settings.serialize(), SETTINGS_FILE_NAME)
+    Thread {
+        file.writeObject(settings.serialize(), SETTINGS_FILE_NAME)
+    }.start()
 }
 
 class CacheSettings : ISettings {

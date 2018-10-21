@@ -59,7 +59,7 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
     private fun load() {
         videoAd.loadAd(id, AdRequest.Builder().build())
     }
-
+/*
     fun destroy() {
         videoAd.destroy(context)
     }
@@ -70,5 +70,5 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
 
     fun resume() {
         videoAd.resume(context)
-    }
+    }*/
 }

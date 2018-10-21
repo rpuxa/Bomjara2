@@ -67,6 +67,8 @@ class Money(var rubles: Long = 0, var euros: Long = 0, var bitcoins: Long = 0, v
         else -> throw IllegalStateException("unknown currency")
     }
 
+    val count get() = countFromCurrency(currency)
+
     val currency
         get() = when {
             euros != 0L -> EURO
