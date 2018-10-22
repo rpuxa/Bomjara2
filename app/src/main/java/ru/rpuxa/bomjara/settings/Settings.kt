@@ -1,21 +1,23 @@
 package ru.rpuxa.bomjara.settings
 
+import ru.rpuxa.bomjara.activities.App
+import ru.rpuxa.bomjara.cache.SuperDeserializator
+import ru.rpuxa.bomjara.cache.SuperSerializable
 import ru.rpuxa.bomjara.writeObject
 import java.io.File
 
 const val SETTINGS_FILE_NAME = "settings2.0"
 
-object Settings : ISettings by settings
-
-private lateinit var settings: CacheSettings
-
-fun loadSettings(file: File) {
-    settings = ru.rpuxa.bomjara.cache.SuperDeserializator.deserialize(file, SETTINGS_FILE_NAME) as? CacheSettings? ?: CacheSettings()
+val Settings: ISettings by lazy {
+    SuperDeserializator.deserialize(App.files, SETTINGS_FILE_NAME) as? CacheSettings?
+            ?: CacheSettings()
 }
+
 
 fun saveSettings(file: File) {
     Thread {
-        file.writeObject(settings.serialize(), SETTINGS_FILE_NAME)
+        file.writeObject(Settings.serialize(), SETTINGS_FILE_NAME)
+
     }.start()
 }
 
@@ -24,7 +26,7 @@ class CacheSettings : ISettings {
     override var lastSave = -1488228L
 }
 
-interface ISettings : ru.rpuxa.bomjara.cache.SuperSerializable {
+interface ISettings : SuperSerializable {
     var showTips: Boolean
     var lastSave: Long
 }

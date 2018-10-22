@@ -25,6 +25,8 @@
     <string name="exit">Выйти</string>
     <string name="renamed">Переименовано</string>
     <string name="google_play_link">https://play.google.com/store/apps/details?id=ru.rpuxa.bomjara</string>
+    <string name="vk_link">https://vk.com/grishayurkov</string>
+    <string name="description_ver2_0">Версия 2.0 находится в стадии доработки, так что если вы обнаружили какой-то баг, буду очень благодарен, если вы скинете его мне в вк. Спасибо!</string>
 
     <string-array name="homeless_names">
         <item>Геннадий</item>

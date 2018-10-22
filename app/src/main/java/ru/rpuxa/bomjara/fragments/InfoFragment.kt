@@ -1,9 +1,10 @@
 package ru.rpuxa.bomjara.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.info.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.divider
@@ -35,6 +36,10 @@ class InfoFragment : CacheFragment() {
             max_energy.text = player.maxCondition.energy.toString()
             max_fullness.text = player.maxCondition.fullness.toString()
             max_health.text = player.maxCondition.health.toString()
+            vk.setOnClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.vk_link))))
+
+            }
         }
     }
 

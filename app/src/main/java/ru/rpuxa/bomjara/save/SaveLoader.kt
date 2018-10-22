@@ -43,19 +43,23 @@ object SaveLoader {
     }
 
     private fun loadOld(file: File) {
-        val oldSave = File(file, "player")
-        val player = try {
-            ObjectInputStream(FileInputStream(oldSave)).use {
-                it.readObject() as SerializablePlayer
+        try {
+            val oldSave = File(file, "player")
+            val player = try {
+                ObjectInputStream(FileInputStream(oldSave)).use {
+                    it.readObject() as SerializablePlayer
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return
             }
-        } catch (e: Exception) {
+            val converted = convertOld(player)
+            saves.list.add(converted)
+            oldSave.delete()
+            Settings.lastSave = converted.id
+        } catch (e: ClassCastException) {
             e.printStackTrace()
-            return
         }
-        val converted = convertOld(player)
-        saves.list.add(converted)
-        oldSave.delete()
-        Settings.lastSave = converted.id
     }
 
     private fun convertOld(player: SerializablePlayer): Save {

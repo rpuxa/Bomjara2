@@ -3,8 +3,6 @@ package ru.rpuxa.bomjara.fragments
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import kotlinx.android.synthetic.main.exchange.view.*
-import kotlinx.android.synthetic.main.open_exchange.*
 import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.game.CurrencyExchange
 import ru.rpuxa.bomjara.game.Player
@@ -95,11 +93,11 @@ class ExchangeFragment : CacheFragment() {
         val from = from
         val to = to
 
-        val count = from_count.text.toString().toLong()
+        val count = from_count.text.toString().toLongOrNull() ?: 0L
         val convertedCount = CurrencyExchange.convert(count, from, to)
         when {
             from == to -> toast("Выберите разные валюты")
-            count == 0L || convertedCount == 0L -> toast("Введите положительную сумму")
+            count <= 0L || convertedCount == 0L -> toast("Введите положительную сумму")
             !Player.CURRENT.add(-count.currency(from)) -> toast(getString(R.string.money_needed))
             else -> {
                 Player.CURRENT.add(convertedCount.currency(to))
