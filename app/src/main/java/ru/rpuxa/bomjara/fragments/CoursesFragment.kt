@@ -114,6 +114,7 @@ class CoursesFragment : CacheFragment() {
                     completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
                     notifyItemRemoved(holder.adapterPosition)
                     completeAdapter.notifyItemInserted(0)
+                    toast("Курс пройден!")
                 } else {
                     notifyItemChanged(holder.adapterPosition)
                 }

@@ -64,6 +64,7 @@ class ContentActivity : AppCompatActivity() {
             }
         }
 
+
         if (Player.CURRENT.old) {
             Player.CURRENT.old = false
             val gift = Actions.penalty
@@ -111,10 +112,10 @@ class ContentActivity : AppCompatActivity() {
 
         var anim = ValueAnimator.ofFloat()!!
 
-        override fun onMoneyChanged(positive: Boolean, currency: Int) {
+        override fun onMoneyChanged(positive: Boolean, currency: Int, addCount: Long) {
             fun set(textView: TextView, count: Long, currency0: Int) {
                 textView.text = count.divider()
-                if (currency != currency0 || count == 0L)
+                if (currency != currency0 || addCount == 0L)
                     return
                 val startColor = if (positive) Color.GREEN else Color.RED
                 val toColor = Color.WHITE
@@ -213,6 +214,7 @@ class ContentActivity : AppCompatActivity() {
                     player.caughtByPolice = false
                     player.condition.fullness = player.maxCondition.fullness
                     player.condition.health = player.maxCondition.health
+                    onConditionChanged()
                     dialog.dismiss()
                 }
                 if (!res) {

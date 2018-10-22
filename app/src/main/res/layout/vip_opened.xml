@@ -32,7 +32,7 @@
         app:srcCompat="@drawable/colored_vip" />
 
     <TextView
-        android:id="@+id/diamonds"
+        android:id="@+id/vip_diamonds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -46,13 +46,13 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/add_diamonds"
-        app:layout_constraintEnd_toStartOf="@+id/add_diamonds"
-        app:layout_constraintTop_toTopOf="@+id/add_diamonds"
+        app:layout_constraintBottom_toBottomOf="@+id/add_vip_diamonds"
+        app:layout_constraintEnd_toStartOf="@+id/add_vip_diamonds"
+        app:layout_constraintTop_toTopOf="@+id/add_vip_diamonds"
         app:srcCompat="@drawable/diamond" />
 
     <Button
-        android:id="@+id/add_diamonds"
+        android:id="@+id/add_vip_diamonds"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginEnd="8dp"
@@ -72,7 +72,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_diamonds" />
+        app:layout_constraintTop_toBottomOf="@+id/add_vip_diamonds" />
 
     <fragment
         android:id="@+id/tip_vip"

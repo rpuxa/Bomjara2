@@ -47,7 +47,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     fun add(money: Money): Boolean {
         if (!this.money.add(money))
             return false
-        listener?.onMoneyChanged(money.positive, money.currency)
+        listener?.onMoneyChanged(money.positive, money.currency, money.count)
         return true
     }
 
@@ -56,7 +56,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     }
 
     private fun update(listener: Listener) {
-        listener.onMoneyChanged(false, NONE)
+        listener.onMoneyChanged(false, NONE, 0L)
         listener.onConditionChanged()
         listener.onMaxConditionChanged()
         when {
@@ -85,7 +85,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
             Player.CURRENT.caughtByPolice = true
         }
 
-        fun onMoneyChanged(positive: Boolean, currency: Int)
+        fun onMoneyChanged(positive: Boolean, currency: Int, addCount: Long)
 
         fun onMaxConditionChanged()
 
