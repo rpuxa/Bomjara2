@@ -16,7 +16,7 @@ import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.save.Save
 import ru.rpuxa.bomjara.save.SaveLoader
-import ru.rpuxa.bomjara.settings.Settings
+import ru.rpuxa.bomjara.settings.settings
 
 
 class SavesActivity : AppCompatActivity() {
@@ -79,7 +79,7 @@ class SavesActivity : AppCompatActivity() {
             startActivity<PrehistoryActivity>()
         else {
             startActivity<ContentActivity>()
-            Settings.lastSave = player.id
+            settings.lastSave = player.id
         }
     }
 

@@ -245,6 +245,10 @@ class ContentActivity : AppCompatActivity() {
                 toast(getString(R.string.money_needed))
             }
         }
+
+        override fun showRateDialog() {
+            //TODO
+        }
     }
 
 }

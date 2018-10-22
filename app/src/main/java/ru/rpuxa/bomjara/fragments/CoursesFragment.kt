@@ -50,7 +50,6 @@ class CoursesFragment : CacheFragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailableCoursesHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.course, parent, false)
-
             return AvailableCoursesHolder(view)
         }
 

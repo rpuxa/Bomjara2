@@ -4,6 +4,7 @@ import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.game.player.Condition
 import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.random
+import ru.rpuxa.bomjara.settings.settings
 
 class Action(
         val name: String,
@@ -33,8 +34,14 @@ class Action(
         if (random.nextInt(40) == 10) {
             player.addDiamond()
         }
-        if (illegal && random.nextInt(10) == 5) {
+        if (illegal && player.daysWithoutCaught >= 2 && random.nextInt(10) == 5) {
             player.listener?.onCaughtByPolice()
+        } else {
+            player.daysWithoutCaught++
+            if (!settings.wasRated && player.age > 100) {
+                player.listener?.showRateDialog()
+                settings.wasRated = true
+            }
         }
     }
 

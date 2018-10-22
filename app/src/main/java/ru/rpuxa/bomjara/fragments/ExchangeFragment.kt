@@ -3,6 +3,8 @@ package ru.rpuxa.bomjara.fragments
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import kotlinx.android.synthetic.main.exchange.*
+import kotlinx.android.synthetic.main.open_exchange.*
 import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.game.CurrencyExchange
 import ru.rpuxa.bomjara.game.Player

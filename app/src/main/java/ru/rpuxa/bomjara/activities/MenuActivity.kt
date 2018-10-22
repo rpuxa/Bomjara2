@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.main_menu.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.save.SaveLoader
-import ru.rpuxa.bomjara.settings.Settings
 import ru.rpuxa.bomjara.settings.saveSettings
 import ru.rpuxa.bomjara.startActivity
 import ru.rpuxa.bomjara.startActivityFromRight
@@ -45,7 +44,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        val save = SaveLoader.findSaveById(Settings.lastSave)
+        val save = SaveLoader.findSaveById(ru.rpuxa.bomjara.settings.settings.lastSave)
         if (save == null) {
             continue_game.text = "Новая игра"
             continue_game.setOnClickListener {

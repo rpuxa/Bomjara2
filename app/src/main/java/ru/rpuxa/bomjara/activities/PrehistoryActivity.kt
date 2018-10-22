@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_prehistory.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.game.Player
-import ru.rpuxa.bomjara.settings.Settings
+import ru.rpuxa.bomjara.settings.settings
 import ru.rpuxa.bomjara.startActivity
 
 class PrehistoryActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class PrehistoryActivity : AppCompatActivity() {
             }
             Player.CURRENT.age++
             startActivity<ContentActivity>()
-            Settings.lastSave = Player.CURRENT.id
+            settings.lastSave = Player.CURRENT.id
 
         }
     }

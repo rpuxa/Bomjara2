@@ -27,6 +27,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     var courses = IntArray(Actions.COURSES.size)
     var age = 0
     var efficiency = 100
+    var daysWithoutCaught = 0
 
     var caughtByPolice = false
     var deadByZeroHealth = false
@@ -82,6 +83,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
 
         @CallSuper
         fun onCaughtByPolice() {
+            Player.CURRENT.daysWithoutCaught = 0
             Player.CURRENT.caughtByPolice = true
         }
 
@@ -90,6 +92,8 @@ class Player(var id: Long, var name: String, var old: Boolean) {
         fun onMaxConditionChanged()
 
         fun onConditionChanged()
+
+        fun showRateDialog()
 
         val activity: FragmentActivity
     }

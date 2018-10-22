@@ -12,7 +12,7 @@ import ru.rpuxa.bomjara.actions.Actions.ENERGY
 import ru.rpuxa.bomjara.actions.Actions.FOOD
 import ru.rpuxa.bomjara.actions.Actions.HEALTH
 import ru.rpuxa.bomjara.actions.Actions.JOBS
-import ru.rpuxa.bomjara.settings.Settings
+import ru.rpuxa.bomjara.settings.settings
 import ru.rpuxa.bomjara.R.id as i
 
 class TipFragment : Fragment() {
@@ -28,7 +28,7 @@ class TipFragment : Fragment() {
         val allTips = HashSet<View>()
 
         fun setTip(view: View, id: Int) {
-            if (!Settings.showTips) {
+            if (!settings.showTips) {
                 view.visibility = View.GONE
                 return
             }
@@ -60,7 +60,7 @@ class TipFragment : Fragment() {
                         .setTitle("Убрать подсказки?")
                         .setMessage("Включить их можно будет в настройках")
                         .setPositiveButton("Убрать") { _, _ ->
-                            Settings.showTips = false
+                            settings.showTips = false
                             allTips.forEach { tip -> tip.visibility = View.GONE }
                         }
                         .setNegativeButton("Отмена", null)

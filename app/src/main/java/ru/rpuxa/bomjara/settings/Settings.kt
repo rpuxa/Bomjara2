@@ -8,7 +8,7 @@ import java.io.File
 
 const val SETTINGS_FILE_NAME = "settings2.0"
 
-val Settings: ISettings by lazy {
+val settings: ISettings by lazy {
     SuperDeserializator.deserialize(App.files, SETTINGS_FILE_NAME) as? CacheSettings?
             ?: CacheSettings()
 }
@@ -16,17 +16,18 @@ val Settings: ISettings by lazy {
 
 fun saveSettings(file: File) {
     Thread {
-        file.writeObject(Settings.serialize(), SETTINGS_FILE_NAME)
-
+        file.writeObject(settings.serialize(), SETTINGS_FILE_NAME)
     }.start()
 }
 
 class CacheSettings : ISettings {
     override var showTips = true
     override var lastSave = -1488228L
+    override var wasRated = false
 }
 
 interface ISettings : SuperSerializable {
     var showTips: Boolean
     var lastSave: Long
+    var wasRated: Boolean
 }

@@ -3,7 +3,7 @@ package ru.rpuxa.bomjara.save
 import Game.Serialization.SerializablePlayer
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.random
-import ru.rpuxa.bomjara.settings.Settings
+import ru.rpuxa.bomjara.settings.settings
 import ru.rpuxa.bomjara.writeObject
 import java.io.File
 import java.io.FileInputStream
@@ -56,7 +56,7 @@ object SaveLoader {
             val converted = convertOld(player)
             saves.list.add(converted)
             oldSave.delete()
-            Settings.lastSave = converted.id
+            settings.lastSave = converted.id
         } catch (e: ClassCastException) {
             e.printStackTrace()
         }
