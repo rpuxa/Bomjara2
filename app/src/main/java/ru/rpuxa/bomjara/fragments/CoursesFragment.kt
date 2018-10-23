@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.course.view.*
+import kotlinx.android.synthetic.main.courses.*
 import kotlinx.android.synthetic.main.courses.view.*
 import kotlinx.android.synthetic.main.processed_course.view.*
 import ru.rpuxa.bomjara.R
@@ -24,6 +25,7 @@ class CoursesFragment : CacheFragment() {
     val completeAdapter = CompletedCoursesAdapter(Actions.COURSES)
 
     override fun onChange(view: View) {
+
         view.completed_courses.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = completeAdapter
@@ -36,6 +38,12 @@ class CoursesFragment : CacheFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = currentAdapter
         }
+
+        if (completeAdapter.courses.isEmpty())
+            completed_courses_card_view.visibility = View.GONE
+
+        if (currentAdapter.courses.isEmpty())
+            current_courses_card_view.visibility = View.GONE
     }
 
     inner class AvailableCoursesAdapter(list: Array<Course>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
@@ -70,6 +78,7 @@ class CoursesFragment : CacheFragment() {
                         currentAdapter.courses.add(0, courses.removeAt(adapterPosition))
                         notifyItemRemoved(adapterPosition)
                         currentAdapter.notifyItemInserted(0)
+                        current_courses_card_view.visibility = View.VISIBLE
                     } else
                         toast(getString(R.string.money_needed))
                 }
@@ -113,10 +122,13 @@ class CoursesFragment : CacheFragment() {
                     completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
                     notifyItemRemoved(holder.adapterPosition)
                     completeAdapter.notifyItemInserted(0)
+                    completed_courses_card_view.visibility = View.VISIBLE
                     toast("Курс пройден!")
                 } else {
                     notifyItemChanged(holder.adapterPosition)
                 }
+                if (courses.isEmpty())
+                    current_courses_card_view.visibility = View.GONE
                 Player.CURRENT += Condition(-5, -5, -5)
             }
         }

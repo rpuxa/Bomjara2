@@ -18,6 +18,8 @@ import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.game.CurrencyExchange
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.game.player.Money
+import ru.rpuxa.bomjara.statistic.Statistic
+import ru.rpuxa.bomjara.views.RateDialog
 
 class ContentActivity : AppCompatActivity() {
 
@@ -26,6 +28,7 @@ class ContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content)
+        Statistic.load(Player.CURRENT)
         Player.CURRENT.listener = PlayerListener()
 
         pager.adapter = ContentAdapter(supportFragmentManager)
@@ -134,6 +137,7 @@ class ContentActivity : AppCompatActivity() {
                 }
                 anim.start()
             }
+
             Player.CURRENT.money.apply {
                 set(status_bars.rubles, rubles, RUB)
                 set(status_bars.euros, euros, EURO)
@@ -247,8 +251,7 @@ class ContentActivity : AppCompatActivity() {
         }
 
         override fun showRateDialog() {
-            //TODO
+            RateDialog().show(fragmentManager, RateDialog.AFTER_50_DAYS)
         }
     }
-
 }

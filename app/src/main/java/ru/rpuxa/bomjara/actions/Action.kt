@@ -5,8 +5,10 @@ import ru.rpuxa.bomjara.game.player.Condition
 import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.random
 import ru.rpuxa.bomjara.settings.settings
+import ru.rpuxa.bomjara.statistic.Statistic
 
 class Action(
+        val id: Int,
         val name: String,
         val addMoney: Money,
         val addCondition: Condition,
@@ -43,6 +45,7 @@ class Action(
                 settings.wasRated = true
             }
         }
+        Statistic.countAction(id)
     }
 
     companion object {

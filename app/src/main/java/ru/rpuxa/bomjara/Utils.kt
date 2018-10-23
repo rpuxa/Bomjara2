@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -141,3 +143,6 @@ fun <T> File.readObject(fileName: String): T? {
     }
 }
 
+fun Context.browser(url: String) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+
+fun Context.browser(@StringRes res: Int) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(res))))
