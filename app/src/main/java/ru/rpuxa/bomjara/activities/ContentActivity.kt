@@ -1,17 +1,18 @@
 package ru.rpuxa.bomjara.activities
 
 import android.animation.ValueAnimator
+import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.content.*
-import kotlinx.android.synthetic.main.status_bars.*
-import kotlinx.android.synthetic.main.status_bars.view.*
 import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.R.drawable
 import ru.rpuxa.bomjara.actions.Actions
@@ -21,6 +22,7 @@ import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.statistic.Statistic
 import ru.rpuxa.bomjara.views.RateDialog
 
+
 class ContentActivity : AppCompatActivity() {
 
     val ad get() = (application as App).videoAd
@@ -28,7 +30,7 @@ class ContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content)
-        Statistic.load(Player.CURRENT)
+        Statistic.loadCurrent(Player.CURRENT)
         Player.CURRENT.listener = PlayerListener()
 
         pager.adapter = ContentAdapter(supportFragmentManager)
@@ -67,7 +69,6 @@ class ContentActivity : AppCompatActivity() {
             }
         }
 
-
         if (Player.CURRENT.old) {
             Player.CURRENT.old = false
             val gift = Actions.penalty
@@ -81,6 +82,7 @@ class ContentActivity : AppCompatActivity() {
             Player.CURRENT.add(Money(rubles = gift.toLong()))
         }
 
+        Statistic.sendStatistics()
         save()
     }
 
@@ -95,15 +97,11 @@ class ContentActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun gotoMainMenu() {
-        startActivity<MenuActivity>()
-    }
-
     override fun onBackPressed() {
         AlertDialog.Builder(this)
                 .setTitle(getString(R.string.exit_to_main_menu))
                 .setPositiveButton(getString(R.string.exit)) { _, _ ->
-                    gotoMainMenu()
+                    startActivity<MenuActivity>()
                 }
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show()
@@ -175,7 +173,7 @@ class ContentActivity : AppCompatActivity() {
                     .setIcon(R.drawable.dead)
                     .setCancelable(false)
                     .setNegativeButton("Начать заново") { _, _ ->
-                        gotoMainMenu()
+                        startActivity<MenuActivity>()
                     }
                     .setPositiveButton("Воскресить!", null)
                     .show()
@@ -250,8 +248,25 @@ class ContentActivity : AppCompatActivity() {
             }
         }
 
+
         override fun showRateDialog() {
-            RateDialog().show(fragmentManager, RateDialog.AFTER_50_DAYS)
+            val contentIntent = PendingIntent.getActivity(
+                    this@ContentActivity,
+                    0,
+                    Intent(this@ContentActivity, MenuActivity::class.java).apply { putExtra(RateDialog.RATE_DIALOG, true) },
+                    PendingIntent.FLAG_CANCEL_CURRENT
+            )
+
+            val builder = NotificationCompat.Builder(this@ContentActivity)
+
+            builder.setContentIntent(contentIntent)
+                    .setSmallIcon(R.drawable.logo)
+                    .setContentTitle("Симулятор бомжа 2.0")
+                    .setContentText("Нравится ли вам игра?")
+                    .setAutoCancel(true)
+
+            val notificationManager = NotificationManagerCompat.from(this@ContentActivity)
+            notificationManager.notify(-8819293, builder.build())
         }
     }
 }

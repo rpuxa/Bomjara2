@@ -6,6 +6,7 @@ import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.random
 import ru.rpuxa.bomjara.settings.settings
 import ru.rpuxa.bomjara.statistic.Statistic
+import ru.rpuxa.bomjara.views.RateDialog
 
 class Action(
         val id: Int,
@@ -40,9 +41,8 @@ class Action(
             player.listener?.onCaughtByPolice()
         } else {
             player.daysWithoutCaught++
-            if (!settings.wasRated && player.age > 100) {
+            if (!settings.wasRated && !RateDialog.shown && player.age > 100) {
                 player.listener?.showRateDialog()
-                settings.wasRated = true
             }
         }
         Statistic.countAction(id)

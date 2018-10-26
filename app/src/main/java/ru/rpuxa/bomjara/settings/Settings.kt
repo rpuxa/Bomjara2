@@ -24,10 +24,12 @@ class CacheSettings : ISettings {
     override var showTips = true
     override var lastSave = -1488228L
     override var wasRated = false
+    override var showVkGroupInvite = true
 }
 
 interface ISettings : SuperSerializable {
     var showTips: Boolean
     var lastSave: Long
+    var showVkGroupInvite: Boolean
     var wasRated: Boolean
 }

@@ -16,9 +16,11 @@ import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.save.SaveLoader
 import ru.rpuxa.bomjara.settings.saveSettings
+import ru.rpuxa.bomjara.statistic.Statistic
 import java.io.*
 import java.util.*
 import kotlin.math.abs
+
 
 inline val Int.rub get() = Money(rubles = toLong())
 inline val Int.euro get() = Money(euros = toLong())
@@ -101,11 +103,19 @@ fun changeVisibility(visibility: Int, vararg views: View) {
 }
 
 fun Context.save() {
+    val file = filesDir
     Thread {
         SaveLoader.savePlayer(Player.CURRENT)
-        SaveLoader.save(filesDir)
-        saveSettings(filesDir)
+        SaveLoader.save(file)
+        saveSettings(file)
+        Statistic.save(file)
     }.start()
+}
+
+fun Context.load() {
+    val file = filesDir
+    SaveLoader.load(file)
+    Statistic.load(file, packageManager.getPackageInfo(this.packageName, 0).versionCode)
 }
 
 inline fun <reified T : Activity> Activity.startActivity() =
@@ -135,7 +145,7 @@ fun File.writeObject(obj: Any, fileName: String) {
 fun <T> File.readObject(fileName: String): T? {
     return try {
         ObjectInputStream(FileInputStream(File(this, fileName))).use {
-            it.readObject() as T
+            it.readObject() as? T
         }
     } catch (e: Exception) {
         e.printStackTrace()

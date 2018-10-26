@@ -3,12 +3,12 @@ package ru.rpuxa.bomjara.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.info.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.browser
 import ru.rpuxa.bomjara.divider
 import ru.rpuxa.bomjara.game.Player
+import ru.rpuxa.bomjara.settings.settings
 
 class InfoFragment : CacheFragment() {
 
@@ -38,6 +38,11 @@ class InfoFragment : CacheFragment() {
             max_health.text = player.maxCondition.health.toString()
             vk.setOnClickListener {
                 context.browser(R.string.vk_link)
+            }
+
+            vk_card_view.visibility = if (settings.showVkGroupInvite) View.VISIBLE else View.GONE
+            vk_card_view.setOnClickListener {
+                context.browser(R.string.vk_group_link)
             }
         }
     }

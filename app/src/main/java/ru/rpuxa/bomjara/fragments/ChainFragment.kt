@@ -1,14 +1,12 @@
 package ru.rpuxa.bomjara.fragments
 
 import android.view.View
-import kotlinx.android.synthetic.main.chain.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.changeVisibility
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.game.player.Possessions
 import ru.rpuxa.bomjara.getCurrencyIcon
-import ru.rpuxa.bomjara.statistic.Statistic
 import ru.rpuxa.bomjara.toast
 import kotlin.reflect.KMutableProperty0
 
@@ -64,7 +62,6 @@ abstract class ChainFragment : CacheFragment() {
             install(name0, icon0, changeText, elements, ref)
             toast("Выполнено!")
             ActionsListFragment.updateActions()
-            Statistic.updatePossessions(Player.CURRENT)
         }
     }
 }

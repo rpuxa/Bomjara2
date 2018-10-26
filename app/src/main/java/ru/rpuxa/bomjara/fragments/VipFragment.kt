@@ -8,8 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.vip_item.view.*
-import kotlinx.android.synthetic.main.vip_opened.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.actions.Vip
@@ -19,7 +17,7 @@ import ru.rpuxa.bomjara.toast
 
 class VipFragment : Fragment() {
 
-    val ad get() = (activity.application as App).videoAd
+    private val ad get() = (activity.application as App).videoAd
 
     private val closed get() = Player.CURRENT.possessions.location < 2
 
@@ -41,7 +39,6 @@ class VipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (closed)
             return
-        view.vip_diamonds.text = Player.CURRENT.money.diamonds.toString()
         view.updateMoney()
         view.vip_list.layoutManager = LinearLayoutManager(context)
         view.vip_list.adapter = VipAdapter(Actions.VIPS)
@@ -58,7 +55,7 @@ class VipFragment : Fragment() {
     }
 
     private fun View.updateMoney() {
-
+        vip_diamonds.text = Player.CURRENT.money.diamonds.toString()
     }
 
     inner class VipAdapter(private val list: Array<Vip>) : RecyclerView.Adapter<VipAdapter.VipHolder>() {

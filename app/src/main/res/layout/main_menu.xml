@@ -37,26 +37,16 @@
             android:id="@+id/quit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="32dp"
+            android:layout_marginBottom="8dp"
             android:text="Выйти"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/saves"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/saves"
-            app:layout_constraintTop_toBottomOf="@+id/rate" />
-
-        <Button
-            android:id="@+id/rate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Оценить"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            app:layout_constraintEnd_toEndOf="@+id/saves"
-            app:layout_constraintStart_toStartOf="@+id/saves"
-            app:layout_constraintTop_toBottomOf="@+id/menu_settings" />
+            app:layout_constraintTop_toBottomOf="@+id/menu_settings"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/menu_settings"
