@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
+import kotlinx.android.synthetic.main.main_menu.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.load

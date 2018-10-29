@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -18,8 +19,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
         android:progress="50"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/process"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/course_name" />
 
@@ -27,17 +30,19 @@
         android:id="@+id/process"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="100"
-        app:layout_constraintBottom_toBottomOf="@+id/learning"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
         app:layout_constraintEnd_toStartOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="@+id/learning" />
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
         android:text="/"
         app:layout_constraintEnd_toStartOf="@+id/max"
         app:layout_constraintTop_toTopOf="@+id/process" />
@@ -46,9 +51,8 @@
         android:id="@+id/max"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:text="400"
-        app:layout_constraintEnd_toStartOf="@+id/learning"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/process" />
 
     <Button
@@ -58,5 +62,40 @@
         android:text="Изучать"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        app:layout_constraintTop_toBottomOf="@+id/process" />
+
+    <Button
+        android:id="@+id/skip_course"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Завершить"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/process" />
+
+    <TextView
+        android:id="@+id/curse_skip_cost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="-4"
+        app:layout_constraintBottom_toBottomOf="@+id/skip_course"
+        app:layout_constraintStart_toEndOf="@+id/skip_course"
+        app:layout_constraintTop_toTopOf="@+id/skip_course" />
+
+    <ImageView
+        android:id="@+id/course_skip_currency"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="@+id/curse_skip_cost"
+        app:layout_constraintEnd_toStartOf="@+id/learning"
+        app:layout_constraintStart_toEndOf="@+id/curse_skip_cost"
+        app:layout_constraintTop_toTopOf="@+id/curse_skip_cost"
+        app:srcCompat="@drawable/bitcoin" />
 </android.support.constraint.ConstraintLayout>

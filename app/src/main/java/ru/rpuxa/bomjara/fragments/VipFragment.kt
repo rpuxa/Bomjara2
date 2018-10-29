@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.vip_item.view.*
+import kotlinx.android.synthetic.main.vip_opened.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.actions.Vip
@@ -78,7 +80,7 @@ class VipFragment : Fragment() {
             holder.cost.text = "-" + vip.cost.toString()
             holder.name.setOnClickListener {
                 toast(if (vip.buy()) "Куплено!" else context.getString(R.string.money_needed))
-                holder.view.updateMoney()
+                openedView?.updateMoney()
             }
         }
     }

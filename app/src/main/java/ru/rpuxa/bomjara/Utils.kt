@@ -72,6 +72,9 @@ fun Context.toast(msg: String, isShort: Boolean = true) =
 fun Fragment.toast(msg: String, isShort: Boolean = true) =
         context.toast(msg, isShort)
 
+fun Context.toast(@StringRes id: Int, isShort: Boolean = true) = toast(getString(id), isShort)
+
+fun Fragment.toast(@StringRes id: Int, isShort: Boolean = true) = toast(getString(id), isShort)
 
 fun Long.divider(): String {
     var s = toString()

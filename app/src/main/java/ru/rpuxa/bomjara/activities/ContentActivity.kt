@@ -13,8 +13,11 @@ import android.view.View
 import android.widget.TextView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import kotlinx.android.synthetic.main.content.*
+import kotlinx.android.synthetic.main.status_bars.*
+import kotlinx.android.synthetic.main.status_bars.view.*
 import ru.rpuxa.bomjara.*
-import ru.rpuxa.bomjara.R.drawable
+import ru.rpuxa.bomjara.R.drawable.*
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.game.CurrencyExchange
 import ru.rpuxa.bomjara.game.Player
@@ -36,28 +39,28 @@ class ContentActivity : AppCompatActivity() {
         pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
                 .setIcons(
-                        drawable.info,
-                        drawable.currencies,
-                        drawable.location,
-                        drawable.transport,
-                        drawable.courses,
-                        drawable.energy,
-                        drawable.food,
-                        drawable.health,
-                        drawable.job,
-                        drawable.vip
+                        info,
+                        currencies,
+                        location,
+                        transport,
+                        courses,
+                        energy,
+                        food,
+                        health,
+                        job,
+                        vip
                 )
                 .setColoredIcons(
-                        drawable.colored_info,
-                        drawable.colored_currencies,
-                        drawable.colored_location,
-                        drawable.colored_transport,
-                        drawable.colored_courses,
-                        drawable.colored_energy,
-                        drawable.colored_food,
-                        drawable.colored_health,
-                        drawable.colored_job,
-                        drawable.colored_vip
+                        colored_info,
+                        colored_currencies,
+                        colored_location,
+                        colored_transport,
+                        colored_courses,
+                        colored_energy,
+                        colored_food,
+                        colored_health,
+                        colored_job,
+                        colored_vip
                 )
                 .setViewPager(pager)
 
@@ -68,6 +71,14 @@ class ContentActivity : AppCompatActivity() {
                 bottom_banner.visibility = View.GONE
             }
         }
+
+
+        //DEBUUUG
+        if (BuildConfig.DEBUG) {
+        }
+
+
+
 
         if (Player.CURRENT.old) {
             Player.CURRENT.old = false

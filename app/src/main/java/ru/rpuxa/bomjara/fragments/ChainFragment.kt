@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara.fragments
 
 import android.view.View
+import kotlinx.android.synthetic.main.chain.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.changeVisibility

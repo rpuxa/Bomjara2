@@ -10,13 +10,11 @@ import kotlinx.android.synthetic.main.course.view.*
 import kotlinx.android.synthetic.main.courses.*
 import kotlinx.android.synthetic.main.courses.view.*
 import kotlinx.android.synthetic.main.processed_course.view.*
-import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.actions.Course
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.game.player.Condition
-import ru.rpuxa.bomjara.getCurrencyIcon
-import ru.rpuxa.bomjara.toast
 
 class CoursesFragment : CacheFragment() {
 
@@ -96,6 +94,9 @@ class CoursesFragment : CacheFragment() {
             val max = view.max!!
             val bar = view.progressBar!!
             val button = view.learning!!
+            val skip = view.skip_course
+            val skipCost = view.curse_skip_cost
+            val skipCurrency = view.course_skip_currency
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentCoursesHolder {
@@ -108,6 +109,10 @@ class CoursesFragment : CacheFragment() {
 
         override fun onBindViewHolder(holder: CurrentCoursesHolder, position: Int) {
             val course = courses[position]
+            fun cost() = course.skipCost * (1 - Player.CURRENT.courses[course.id].toDouble() / course.length)
+            fun updateCost() {
+                holder.skipCost.text = cost().count.divider()
+            }
             holder.name.text = course.name
             val p = Player.CURRENT.courses[course.id]
             holder.process.text = p.toString()
@@ -118,19 +123,36 @@ class CoursesFragment : CacheFragment() {
 
             holder.button.setOnClickListener {
                 Player.CURRENT.courses[course.id]++
-                if (Player.CURRENT.courses[course.id] == course.length) {
-                    completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
-                    notifyItemRemoved(holder.adapterPosition)
-                    completeAdapter.notifyItemInserted(0)
-                    completed_courses_card_view.visibility = View.VISIBLE
-                    toast("Курс пройден!")
-                } else {
-                    notifyItemChanged(holder.adapterPosition)
-                }
-                if (courses.isEmpty())
-                    current_courses_card_view.visibility = View.GONE
+                update(course, holder)
                 Player.CURRENT += Condition(-5, -5, -5)
+                updateCost()
             }
+
+            holder.skip.setOnClickListener {
+                if (Player.CURRENT.add(cost())) {
+                    Player.CURRENT.courses[course.id] = course.length
+                    update(course, holder)
+                } else {
+                    toast(R.string.money_needed)
+                }
+            }
+            updateCost()
+
+            holder.skipCurrency.setImageBitmap(context.getCurrencyIcon(course.money))
+        }
+
+        private fun update(course: Course, holder: CurrentCoursesHolder) {
+            if (Player.CURRENT.courses[course.id] == course.length) {
+                completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
+                notifyItemRemoved(holder.adapterPosition)
+                completeAdapter.notifyItemInserted(0)
+                completed_courses_card_view.visibility = View.VISIBLE
+                toast("Курс пройден!")
+            } else {
+                notifyItemChanged(holder.adapterPosition)
+            }
+            if (courses.isEmpty())
+                current_courses_card_view.visibility = View.GONE
         }
     }
 
@@ -148,5 +170,10 @@ class CoursesFragment : CacheFragment() {
         override fun onBindViewHolder(holder: CompletedCoursesHolder, position: Int) {
             holder.view.text = courses[position].name
         }
+    }
+
+    override fun onPause() {
+        context.save()
+        super.onPause()
     }
 }

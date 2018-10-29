@@ -3,6 +3,8 @@ package ru.rpuxa.bomjara.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import kotlinx.android.synthetic.main.info.*
+import kotlinx.android.synthetic.main.vk_group.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.browser

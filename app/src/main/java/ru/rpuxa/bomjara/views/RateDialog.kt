@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.rate_dialog.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.browser
 import ru.rpuxa.bomjara.changeVisibility
