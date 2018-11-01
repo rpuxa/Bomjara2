@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara.activities
+package ru.rpuxa.bomjara.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle

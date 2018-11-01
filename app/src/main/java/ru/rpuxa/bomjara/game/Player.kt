@@ -74,7 +74,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
 
         @CallSuper
         fun onDead(hunger: Boolean) {
-            val player = Player.CURRENT
+            val player = Player.current
             if (hunger)
                 player.deadByHungry = true
             else
@@ -83,8 +83,8 @@ class Player(var id: Long, var name: String, var old: Boolean) {
 
         @CallSuper
         fun onCaughtByPolice() {
-            Player.CURRENT.daysWithoutCaught = 0
-            Player.CURRENT.caughtByPolice = true
+            Player.current.daysWithoutCaught = 0
+            Player.current.caughtByPolice = true
         }
 
         fun onMoneyChanged(positive: Boolean, currency: Int, addCount: Long)
@@ -99,7 +99,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     }
 
     companion object {
-        lateinit var CURRENT: Player
+        lateinit var current: Player
 
 
         fun fromSave(save: Save) = Player(save.id, save.name, save.old).apply {

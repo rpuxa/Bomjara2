@@ -7,9 +7,9 @@ import ru.rpuxa.bomjara.statistic.Statistic
 class Vip(val id: Int, val name: String, val cost: Int, val onBuy: (Player) -> Unit) {
 
     fun buy(): Boolean {
-        if (!Player.CURRENT.add(-Money(diamonds = cost.toLong())))
+        if (!Player.current.add(-Money(diamonds = cost.toLong())))
             return false
-        onBuy(Player.CURRENT)
+        onBuy(Player.current)
         Statistic.countVip(id)
         return true
     }

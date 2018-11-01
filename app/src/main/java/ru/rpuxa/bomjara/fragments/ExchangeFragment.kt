@@ -15,7 +15,7 @@ class ExchangeFragment : CacheFragment() {
     override val layout = R.layout.exchange
 
     private val bottles
-        get() = Player.CURRENT.money.bottles
+        get() = Player.current.money.bottles
 
     override fun onChange(view: View) {
 
@@ -79,13 +79,13 @@ class ExchangeFragment : CacheFragment() {
 
 
     private fun View.setPercent(divide: Int) {
-        val count = Player.CURRENT.money.countFromCurrency(from) / divide
+        val count = Player.current.money.countFromCurrency(from) / divide
         from_count.setText(count.toString())
         update(from, to)
     }
 
     private fun View.update(fromCurrency: Int, toCurrency: Int) {
-        all.text = Player.CURRENT.money.countFromCurrency(from).toString()
+        all.text = Player.current.money.countFromCurrency(from).toString()
         val from = from_count.text.toString().toLongOrNull() ?: 0L
         val to = CurrencyExchange.convert(from, fromCurrency, toCurrency)
         to_count.text = to.divider()
@@ -100,9 +100,9 @@ class ExchangeFragment : CacheFragment() {
         when {
             from == to -> toast("Выберите разные валюты")
             count <= 0L || convertedCount == 0L -> toast("Введите положительную сумму")
-            !Player.CURRENT.add(-count.currency(from)) -> toast(getString(R.string.money_needed))
+            !Player.current.add(-count.currency(from)) -> toast(getString(R.string.money_needed))
             else -> {
-                Player.CURRENT.add(convertedCount.currency(to))
+                Player.current.add(convertedCount.currency(to))
                 toast("Перевод выполнен")
                 update(from, to)
             }

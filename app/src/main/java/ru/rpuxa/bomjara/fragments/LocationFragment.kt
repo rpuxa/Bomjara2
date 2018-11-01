@@ -15,7 +15,7 @@ class LocationFragment : ChainFragment() {
                 R.drawable.colored_location,
                 "Перейти",
                 Actions.LOCATIONS,
-                Player.CURRENT.possessions::location
+                Player.current.possessions::location
         )
 
         view.friend_chain.install(
@@ -23,7 +23,7 @@ class LocationFragment : ChainFragment() {
                 R.drawable.colored_friend,
                 "Подружиться",
                 Actions.FRIENDS,
-                Player.CURRENT.possessions::friend
+                Player.current.possessions::friend
         )
     }
 }

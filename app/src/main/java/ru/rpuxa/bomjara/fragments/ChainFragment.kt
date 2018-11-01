@@ -35,10 +35,10 @@ abstract class ChainFragment : CacheFragment() {
         cost.text = money.toString()
         currency.setImageBitmap(context.getCurrencyIcon(money))
         change.setOnClickListener {
-            if (Player.CURRENT.doingAction)
+            if (Player.current.doingAction)
                 return@setOnClickListener
 
-            val enoughFor = Player.CURRENT.possessions.enoughFor(possessions)
+            val enoughFor = Player.current.possessions.enoughFor(possessions)
             run {
                 when (enoughFor.first) {
                     Possessions.LOCATION -> toast("Требуется локация - ${Actions.LOCATIONS[enoughFor.second].name}")
@@ -50,11 +50,11 @@ abstract class ChainFragment : CacheFragment() {
                 return@setOnClickListener
             }
 
-            if (course != -1 && Player.CURRENT.courses[course] < Actions.COURSES[course].length) {
+            if (course != -1 && Player.current.courses[course] < Actions.COURSES[course].length) {
                 toast("Требуется пройти курс - ${Actions.COURSES[course].name}")
                 return@setOnClickListener
             }
-            if (!Player.CURRENT.add(money)) {
+            if (!Player.current.add(money)) {
                 toast(getString(R.string.money_needed))
                 return@setOnClickListener
             }

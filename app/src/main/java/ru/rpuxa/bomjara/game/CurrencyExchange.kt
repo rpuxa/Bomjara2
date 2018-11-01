@@ -14,10 +14,10 @@ object CurrencyExchange {
     private const val BITCOINS_RATE = 2000
 
     fun handOverBottles(count: Long): Long {
-        if (!Player.CURRENT.add(Money(bottles = -count)))
+        if (!Player.current.add(Money(bottles = -count)))
             throw IllegalStateException("Cant hand over more bottles than have")
         val rub = Math.ceil(BOTTLES_RATE * count).toLong()
-        Player.CURRENT.add(Money(rubles = rub))
+        Player.current.add(Money(rubles = rub))
         return rub
     }
 

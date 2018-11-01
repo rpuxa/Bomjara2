@@ -45,7 +45,7 @@ class CoursesFragment : CacheFragment() {
     }
 
     inner class AvailableCoursesAdapter(list: Array<Course>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
-        private val courses = list.filter { Player.CURRENT.courses[it.id] == 0 } as MutableList<Course>
+        private val courses = list.filter { Player.current.courses[it.id] == 0 } as MutableList<Course>
 
         inner class AvailableCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
             val name = view.name!!
@@ -70,8 +70,8 @@ class CoursesFragment : CacheFragment() {
                 cost.text = course.money.toString()
                 currency.setImageBitmap(context.getCurrencyIcon(course.money))
                 learn.setOnClickListener {
-                    if (Player.CURRENT.add(course.money)) {
-                        Player.CURRENT.courses[courses[position].id]++
+                    if (Player.current.add(course.money)) {
+                        Player.current.courses[courses[position].id]++
                         val adapterPosition = holder.adapterPosition
                         currentAdapter.courses.add(0, courses.removeAt(adapterPosition))
                         notifyItemRemoved(adapterPosition)
@@ -85,7 +85,7 @@ class CoursesFragment : CacheFragment() {
     }
 
     inner class CurrentCoursesAdapter(list: Array<Course>) : RecyclerView.Adapter<CurrentCoursesAdapter.CurrentCoursesHolder>() {
-        val courses = list.filter { Player.CURRENT.courses[it.id] in 1..(it.length - 1) } as MutableList<Course>
+        val courses = list.filter { Player.current.courses[it.id] in 1..(it.length - 1) } as MutableList<Course>
 
 
         inner class CurrentCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -109,12 +109,12 @@ class CoursesFragment : CacheFragment() {
 
         override fun onBindViewHolder(holder: CurrentCoursesHolder, position: Int) {
             val course = courses[position]
-            fun cost() = course.skipCost * (1 - Player.CURRENT.courses[course.id].toDouble() / course.length)
+            fun cost() = course.skipCost * (1 - Player.current.courses[course.id].toDouble() / course.length)
             fun updateCost() {
                 holder.skipCost.text = cost().count.divider()
             }
             holder.name.text = course.name
-            val p = Player.CURRENT.courses[course.id]
+            val p = Player.current.courses[course.id]
             holder.process.text = p.toString()
             holder.max.text = course.length.toString()
 
@@ -122,15 +122,15 @@ class CoursesFragment : CacheFragment() {
             holder.bar.max = course.length
 
             holder.button.setOnClickListener {
-                Player.CURRENT.courses[course.id]++
+                Player.current.courses[course.id]++
                 update(course, holder)
-                Player.CURRENT += Condition(-5, -5, -5)
+                Player.current += Condition(-5, -5, -5)
                 updateCost()
             }
 
             holder.skip.setOnClickListener {
-                if (Player.CURRENT.add(cost())) {
-                    Player.CURRENT.courses[course.id] = course.length
+                if (Player.current.add(cost())) {
+                    Player.current.courses[course.id] = course.length
                     update(course, holder)
                 } else {
                     toast(R.string.money_needed)
@@ -142,7 +142,7 @@ class CoursesFragment : CacheFragment() {
         }
 
         private fun update(course: Course, holder: CurrentCoursesHolder) {
-            if (Player.CURRENT.courses[course.id] == course.length) {
+            if (Player.current.courses[course.id] == course.length) {
                 completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
                 notifyItemRemoved(holder.adapterPosition)
                 completeAdapter.notifyItemInserted(0)
@@ -158,7 +158,7 @@ class CoursesFragment : CacheFragment() {
 
     inner class CompletedCoursesAdapter(list: Array<Course>) : RecyclerView.Adapter<CompletedCoursesAdapter.CompletedCoursesHolder>() {
 
-        val courses = list.filter { Player.CURRENT.courses[it.id] >= it.length } as MutableList<Course>
+        val courses = list.filter { Player.current.courses[it.id] >= it.length } as MutableList<Course>
 
         inner class CompletedCoursesHolder(val view: TextView) : RecyclerView.ViewHolder(view)
 

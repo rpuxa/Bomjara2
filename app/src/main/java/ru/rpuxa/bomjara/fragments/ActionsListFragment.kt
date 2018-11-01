@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.actions_list.view.*
 import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.actions.Action
 import ru.rpuxa.bomjara.actions.Actions
-import ru.rpuxa.bomjara.activities.TipFragment
 import ru.rpuxa.bomjara.game.Player
 
 class ActionsListFragment : CacheFragment() {
@@ -46,9 +45,9 @@ class ActionsListFragment : CacheFragment() {
     }
 
 
-    class ActionsAdapter(private val list: List<Action>) : RecyclerView.Adapter<ActionsAdapter.ActionsViewHolder>() {
+    inner class ActionsAdapter(private val list: List<Action>) : RecyclerView.Adapter<ActionsAdapter.ActionsViewHolder>() {
 
-        class ActionsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class ActionsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val button = view.action_button!!
             val illegal = view.illegal!!
             val bar = view.progress_bar!!
@@ -78,24 +77,24 @@ class ActionsListFragment : CacheFragment() {
         }
 
         private fun ActionsViewHolder.action(action: Action, context: Context) {
-            if (!Player.CURRENT.doingAction) {
+            if (!Player.current.doingAction) {
 
-                when (action.canPerform(Player.CURRENT)) {
+                when (action.canPerform(Player.current)) {
                     Action.NOTHING_NEEDED -> {
-                        Player.CURRENT.doingAction = true
+                        Player.current.doingAction = true
                         bar.visibility = View.VISIBLE
                         illegal.visibility = View.INVISIBLE
                         bar.start(500) {
-                            Player.CURRENT.doingAction = false
+                            Player.current.doingAction = false
                             if (action.illegal)
                                 illegal.visibility = View.VISIBLE
                             bar.visibility = View.INVISIBLE
-                            action.perform(Player.CURRENT)
+                            action.perform(Player.current)
                             context.save()
                         }
                     }
-                    Action.MONEY_NEEDED -> context.toast(context.getString(R.string.money_needed))
-                    Action.ENERGY_NEEDED -> context.toast(context.getString(R.string.cant_work))
+                    Action.MONEY_NEEDED -> toast(context.getString(R.string.money_needed))
+                    Action.ENERGY_NEEDED -> toast(context.getString(R.string.cant_work))
                 }
             }
         }

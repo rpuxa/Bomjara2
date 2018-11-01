@@ -43,19 +43,19 @@ class PrehistoryActivity : AppCompatActivity() {
         start_survive.setOnClickListener {
             when {
                 radio1.isChecked -> {
-                    Player.CURRENT.money.rubles = 500
+                    Player.current.money.rubles = 500
                 }
                 radio2.isChecked -> {
-                    Player.CURRENT.maxCondition.health = 120
+                    Player.current.maxCondition.health = 120
                 }
                 radio3.isChecked -> {
-                    Player.CURRENT.possessions.transport = 1
-                    Player.CURRENT.courses[0] = Actions.COURSES[0].length
+                    Player.current.possessions.transport = 1
+                    Player.current.courses[0] = Actions.COURSES[0].length
                 }
             }
-            Player.CURRENT.age++
+            Player.current.age++
             startActivity<ContentActivity>()
-            settings.lastSave = Player.CURRENT.id
+            settings.lastSave = Player.current.id
 
         }
     }

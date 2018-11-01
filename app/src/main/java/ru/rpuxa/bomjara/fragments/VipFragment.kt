@@ -21,7 +21,7 @@ class VipFragment : Fragment() {
 
     private val ad get() = (activity.application as App).videoAd
 
-    private val closed get() = Player.CURRENT.possessions.location < 2
+    private val closed get() = Player.current.possessions.location < 2
 
     private var closedView: View? = null
     private var openedView: View? = null
@@ -46,7 +46,7 @@ class VipFragment : Fragment() {
         view.vip_list.adapter = VipAdapter(Actions.VIPS)
         view.add_vip_diamonds.setOnClickListener {
             val res = ad.show {
-                Player.CURRENT.money.diamonds += 3
+                Player.current.money.diamonds += 3
                 toast("Получайте награду")
                 view.updateMoney()
             }
@@ -57,7 +57,7 @@ class VipFragment : Fragment() {
     }
 
     private fun View.updateMoney() {
-        vip_diamonds.text = Player.CURRENT.money.diamonds.toString()
+        vip_diamonds.text = Player.current.money.diamonds.toString()
     }
 
     inner class VipAdapter(private val list: Array<Vip>) : RecyclerView.Adapter<VipAdapter.VipHolder>() {

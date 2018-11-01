@@ -76,7 +76,7 @@
 
     <fragment
         android:id="@+id/tip_vip"
-        android:name="ru.rpuxa.bomjara.activities.TipFragment"
+        android:name="ru.rpuxa.bomjara.fragments.TipFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

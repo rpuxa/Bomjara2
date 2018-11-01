@@ -18,7 +18,7 @@ class InfoFragment : CacheFragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val player = Player.CURRENT
+        val player = Player.current
         with(view) {
             save_name.text = player.name
             age.text = player.stringAge

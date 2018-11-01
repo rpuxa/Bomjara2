@@ -66,13 +66,16 @@ fun Context.getMenuIcon(menu: Int) =
                 }
         )!!
 
-fun Context.toast(msg: String, isShort: Boolean = true) =
+fun Activity.toast(msg: String, isShort: Boolean = true) {
+    runOnUiThread {
         Toast.makeText(this, msg, if (isShort) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+    }
+}
 
 fun Fragment.toast(msg: String, isShort: Boolean = true) =
-        context.toast(msg, isShort)
+        activity.toast(msg, isShort)
 
-fun Context.toast(@StringRes id: Int, isShort: Boolean = true) = toast(getString(id), isShort)
+fun Activity.toast(@StringRes id: Int, isShort: Boolean = true) = toast(getString(id), isShort)
 
 fun Fragment.toast(@StringRes id: Int, isShort: Boolean = true) = toast(getString(id), isShort)
 
@@ -107,12 +110,10 @@ fun changeVisibility(visibility: Int, vararg views: View) {
 
 fun Context.save() {
     val file = filesDir
-    Thread {
-        SaveLoader.savePlayer(Player.CURRENT)
-        SaveLoader.save(file)
-        saveSettings(file)
-        Statistic.save(file)
-    }.start()
+    SaveLoader.savePlayer(Player.current)
+    SaveLoader.save(file)
+    saveSettings(file)
+    Statistic.save(file)
 }
 
 fun Context.load() {
@@ -158,4 +159,9 @@ fun <T> File.readObject(fileName: String): T? {
 
 fun Context.browser(url: String) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
 
-fun Context.browser(@StringRes res: Int) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(res))))
+fun Context.browser(@StringRes res: Int) = browser(getString(res))
+
+val MONTHS = arrayOf(
+        "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+)

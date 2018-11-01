@@ -33,8 +33,8 @@ class ContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content)
-        Statistic.loadCurrent(Player.CURRENT)
-        Player.CURRENT.listener = PlayerListener()
+        Statistic.loadCurrent(Player.current)
+        Player.current.listener = PlayerListener()
 
         pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
@@ -48,7 +48,8 @@ class ContentActivity : AppCompatActivity() {
                         food,
                         health,
                         job,
-                        vip
+                        vip,
+                        bomj_media
                 )
                 .setColoredIcons(
                         colored_info,
@@ -60,7 +61,8 @@ class ContentActivity : AppCompatActivity() {
                         colored_food,
                         colored_health,
                         colored_job,
-                        colored_vip
+                        colored_vip,
+                        colored_bomj_media
                 )
                 .setViewPager(pager)
 
@@ -75,13 +77,14 @@ class ContentActivity : AppCompatActivity() {
 
         //DEBUUUG
         if (BuildConfig.DEBUG) {
+
         }
 
 
 
 
-        if (Player.CURRENT.old) {
-            Player.CURRENT.old = false
+        if (Player.current.old) {
+            Player.current.old = false
             val gift = Actions.penalty
             AlertDialog.Builder(this)
                     .setTitle("Спасибо за установку обновления")
@@ -90,7 +93,7 @@ class ContentActivity : AppCompatActivity() {
                             "при помощи подсказок. Так же держите от нас подарок - $gift рублей")
                     .setPositiveButton("Спасибо", null)
                     .show()
-            Player.CURRENT.add(Money(rubles = gift.toLong()))
+            Player.current.add(Money(rubles = gift.toLong()))
         }
 
         Statistic.sendStatistics()
@@ -104,7 +107,7 @@ class ContentActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         save()
-        Player.CURRENT.listener = null
+        Player.current.listener = null
         super.onDestroy()
     }
 
@@ -147,7 +150,7 @@ class ContentActivity : AppCompatActivity() {
                 anim.start()
             }
 
-            Player.CURRENT.money.apply {
+            Player.current.money.apply {
                 set(status_bars.rubles, rubles, RUB)
                 set(status_bars.euros, euros, EURO)
                 set(status_bars.bitcoins, bitcoins, BITCOIN)
@@ -156,7 +159,7 @@ class ContentActivity : AppCompatActivity() {
 
 
         override fun onConditionChanged() {
-            Player.CURRENT.condition.apply {
+            Player.current.condition.apply {
                 energy_bar.animatedProgress = energy
                 fullness_bar.animatedProgress = fullness
                 health_bar.animatedProgress = health
@@ -164,7 +167,7 @@ class ContentActivity : AppCompatActivity() {
         }
 
         override fun onMaxConditionChanged() {
-            Player.CURRENT.maxCondition.apply {
+            Player.current.maxCondition.apply {
                 fullness_bar.max = fullness
                 energy_bar.max = energy
                 health_bar.max = health
@@ -173,7 +176,7 @@ class ContentActivity : AppCompatActivity() {
 
         override fun onDead(hunger: Boolean) {
             super.onDead(hunger)
-            val player = Player.CURRENT
+            val player = Player.current
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Бомж умер от " + if (hunger) "голода" else "болезни")
                     .setMessage(
@@ -208,7 +211,7 @@ class ContentActivity : AppCompatActivity() {
 
         override fun onCaughtByPolice() {
             super.onCaughtByPolice()
-            val player = Player.CURRENT
+            val player = Player.current
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Вас поймали менты!")
                     .setMessage(
@@ -236,21 +239,21 @@ class ContentActivity : AppCompatActivity() {
             }
 
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener penalty@{
-                if (Player.CURRENT.add((-Actions.penalty).rub)) {
+                if (Player.current.add((-Actions.penalty).rub)) {
                     dialog.dismiss()
                     return@penalty
                 }
-                Player.CURRENT.add(Money(rubles = CurrencyExchange.convert(Player.CURRENT.money.euros, EURO, RUB)))
-                Player.CURRENT.money.euros = 0
-                if (Player.CURRENT.add((-Actions.penalty).rub)) {
+                Player.current.add(Money(rubles = CurrencyExchange.convert(Player.current.money.euros, EURO, RUB)))
+                Player.current.money.euros = 0
+                if (Player.current.add((-Actions.penalty).rub)) {
                     toast("Для выплаты штрафа все ваши евро были переведены в рубли", false)
                     dialog.dismiss()
                     return@penalty
                 }
 
-                Player.CURRENT.add(Money(rubles = CurrencyExchange.convert(Player.CURRENT.money.bitcoins, BITCOIN, RUB)))
-                Player.CURRENT.money.bitcoins = 0
-                if (Player.CURRENT.add((-Actions.penalty).rub)) {
+                Player.current.add(Money(rubles = CurrencyExchange.convert(Player.current.money.bitcoins, BITCOIN, RUB)))
+                Player.current.money.bitcoins = 0
+                if (Player.current.add((-Actions.penalty).rub)) {
                     toast("Для выплаты штрафа все ваши евро и биткоины были переведены в рубли", false)
                     dialog.dismiss()
                     return@penalty

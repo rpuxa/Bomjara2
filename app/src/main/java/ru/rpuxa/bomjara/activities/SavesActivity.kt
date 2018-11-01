@@ -74,7 +74,7 @@ class SavesActivity : AppCompatActivity() {
     }
 
     private fun startGame(player: Player) {
-        Player.CURRENT = player
+        Player.current = player
         if (player.age == 0)
             startActivity<PrehistoryActivity>()
         else {

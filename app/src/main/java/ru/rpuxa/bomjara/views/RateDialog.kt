@@ -47,7 +47,7 @@ class RateDialog : DialogFragment() {
                 if (review.isNotBlank())
                     Statistic.sendReview(rating_bar.rating, review)
                 dismiss()
-                context.toast("Спасибо!")
+                activity.toast("Спасибо!")
                 settings.wasRated = true
             }
         }

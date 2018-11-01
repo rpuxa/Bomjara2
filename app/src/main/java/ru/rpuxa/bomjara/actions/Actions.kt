@@ -33,16 +33,16 @@ object Actions {
     val VIPS = arrayOf(
             Vip(0, "+10 к макс. запасу сытости", 9) {
                 it.maxCondition.fullness += 10
-                Player.CURRENT.listener?.onMaxConditionChanged()
+                Player.current.listener?.onMaxConditionChanged()
             },
             Vip(1, "+10 к макс. запасу здоровья", 9) {
                 it.maxCondition.health += 10
-                Player.CURRENT.listener?.onMaxConditionChanged()
+                Player.current.listener?.onMaxConditionChanged()
 
             },
             Vip(2, "+10 к макс. запасу бодрости", 9) {
                 it.maxCondition.energy += 10
-                Player.CURRENT.listener?.onMaxConditionChanged()
+                Player.current.listener?.onMaxConditionChanged()
             },
             Vip(3, "+10% к эффективности работы", 15) {
                 it.efficiency += 10
@@ -54,8 +54,8 @@ object Actions {
     )
 
     operator fun get(menu: Int): List<Action> {
-        val loc = Player.CURRENT.possessions.location
-        val friend = Player.CURRENT.possessions.friend
+        val loc = Player.current.possessions.location
+        val friend = Player.current.possessions.friend
 
         return actions.asSequence()
                 .filter { it.location == (if (menu == JOBS) friend else loc) && it.menu == menu }
@@ -65,7 +65,7 @@ object Actions {
     }
 
 
-    val penalty get() = PENALTIES[Player.CURRENT.possessions.location]
+    val penalty get() = PENALTIES[Player.current.possessions.location]
     val actionsSize get() = actions.size
 
     fun getMenuName(menu: Int) = when (menu) {

@@ -6,17 +6,15 @@ import ru.rpuxa.bomjara.cache.SuperSerializable
 import ru.rpuxa.bomjara.cache.ToSerialize
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.readObject
+import ru.rpuxa.bomjara.server.Server.REVIEW
+import ru.rpuxa.bomjara.server.Server.STATISTIC
+import ru.rpuxa.bomjara.server.Server.send
 import ru.rpuxa.bomjara.writeObject
 import ru.rpuxa.bomjserver.Review
-import ru.rpuxa.bomjserver.ServerCommand
 import java.io.File
-import java.io.ObjectOutputStream
-import java.net.InetSocketAddress
-import java.net.Socket
 
 object Statistic {
 
-    private const val IP_SERVER = "89.223.31.120"
     private const val FILE = "statistic2.0"
 
     var versionCode = -1
@@ -38,8 +36,8 @@ object Statistic {
         currentStatistic = find
     }
 
-    fun sendStatistics() = Thread {
-        Player.CURRENT.apply {
+    fun sendStatistics() {
+        Player.current.apply {
             currentStatistic.apply {
                 val statistic = HashMap<Int, Any>().apply {
                     put(ID, saveId)
@@ -57,22 +55,13 @@ object Statistic {
                 send(STATISTIC, statistic)
             }
         }
-    }.start()
+    }
 
     fun sendReview(rating: Float, review: String) = Thread {
         send(REVIEW, Review(rating, review))
     }.start()
 
-    private fun send(id: Int, data: Any) {
-        try {
-            val socket = Socket()
-            socket.connect(InetSocketAddress(IP_SERVER, 7158), 10_000)
-            ObjectOutputStream(socket.getOutputStream()).writeObject(ServerCommand(id, data))
-            socket.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+
 
     fun save(file: File) {
         file.writeObject(statistics.map { it.serialize() }, FILE)
@@ -114,11 +103,7 @@ class SaveStatistic(save: SaveStatistic? = null, player: Player? = null) : Super
     }
 }
 
-fun zeroList(size: Int) = ArrayList<Int>().apply { repeat(size) { add(0) } }
-
-
-const val STATISTIC = 0
-const val REVIEW = 1
+fun zeroList(size: Int) = ArrayList<Int>(size).apply { repeat(size) { add(0) } }
 
 const val ID = 0
 const val ACTIONS = 1

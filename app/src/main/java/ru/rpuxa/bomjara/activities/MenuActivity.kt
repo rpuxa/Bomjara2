@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.main_menu.*
 import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.fragments.TipFragment
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.load
 import ru.rpuxa.bomjara.save.SaveLoader
@@ -55,7 +56,7 @@ class MenuActivity : AppCompatActivity() {
         } else {
             continue_game.text = "Продолжить игру"
             continue_game.setOnClickListener {
-                Player.CURRENT = Player.fromSave(save)
+                Player.current = Player.fromSave(save)
                 startActivity<ContentActivity>()
             }
         }
