@@ -6,8 +6,6 @@ class Condition(var energy: Int = 0,
                 var fullness: Int = 0,
                 var health: Int = 0
 ) {
-    val positive: Boolean
-        get() = energy >= 0 && fullness >= 0 && health >= 0
 
     operator fun plusAssign(condition: Condition) {
         energy += condition.energy
