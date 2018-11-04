@@ -14,7 +14,7 @@ class TransportChain : ChainFragment() {
                 "Транспорт",
                 R.drawable.colored_transport,
                 "Пересесть",
-                Actions.TRANSPORTS,
+                Actions.transports,
                 Player.current.possessions::transport
         )
 
@@ -22,7 +22,7 @@ class TransportChain : ChainFragment() {
                 "Дом",
                 R.drawable.colored_home,
                 "Переехать",
-                Actions.HOMES,
+                Actions.homes,
                 Player.current.possessions::home
         )
     }

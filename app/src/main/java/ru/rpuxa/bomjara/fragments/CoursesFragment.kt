@@ -19,8 +19,8 @@ import ru.rpuxa.bomjara.game.player.Condition
 class CoursesFragment : CacheFragment() {
 
     override val layout = R.layout.courses
-    val currentAdapter = CurrentCoursesAdapter(Actions.COURSES)
-    val completeAdapter = CompletedCoursesAdapter(Actions.COURSES)
+    val currentAdapter = CurrentCoursesAdapter(Actions.courses)
+    val completeAdapter = CompletedCoursesAdapter(Actions.courses)
 
     override fun onChange(view: View) {
 
@@ -30,7 +30,7 @@ class CoursesFragment : CacheFragment() {
         }
         view.available_curses.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = AvailableCoursesAdapter(Actions.COURSES)
+            adapter = AvailableCoursesAdapter(Actions.courses)
         }
         view.current_courses.apply {
             layoutManager = LinearLayoutManager(context)

@@ -10,10 +10,12 @@ import ru.rpuxa.bomjara.views.RateDialog
 
 class Action(
         val id: Int,
+        val level: Int,
+        val menu: Int,
         val name: String,
         val addMoney: Money,
         val addCondition: Condition,
-        val illegal: Boolean = false
+        val illegal: Boolean
 ) {
 
 
@@ -34,9 +36,8 @@ class Action(
         else
             player.add(addMoney)
         player += addCondition
-        if (random.nextInt(40) == 10) {
+        if (random.nextInt(40) == 10)
             player.addDiamond()
-        }
         if (illegal && player.daysWithoutCaught >= 2 && random.nextInt(10) == 5) {
             player.listener?.onCaughtByPolice()
         } else {

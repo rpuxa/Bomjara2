@@ -9,16 +9,19 @@ import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
+import ru.rpuxa.bomjara.actions.Actions
 import ru.rpuxa.bomjara.actions.Actions.ENERGY
 import ru.rpuxa.bomjara.actions.Actions.FOOD
 import ru.rpuxa.bomjara.actions.Actions.HEALTH
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.save.SaveLoader
+import ru.rpuxa.bomjara.server.Server
 import ru.rpuxa.bomjara.settings.saveSettings
 import ru.rpuxa.bomjara.statistic.Statistic
 import java.io.*
 import java.util.*
+import kotlin.concurrent.thread
 import kotlin.math.abs
 
 
@@ -31,11 +34,9 @@ fun Long.currency(id: Int) = when (id) {
     RUB -> Money(rubles = this)
     EURO -> Money(euros = this)
     BITCOIN -> Money(bitcoins = this)
+    BOTTLES -> Money(bottles = this)
     else -> throw IllegalStateException()
 }
-
-val FREE = Money()
-
 
 const val NONE = -1488
 const val RUB = 0
@@ -114,12 +115,15 @@ fun Context.save() {
     SaveLoader.save(file)
     saveSettings(file)
     Statistic.save(file)
+    Actions.save(file)
 }
 
 fun Context.load() {
     val file = filesDir
+    Actions.load(file, assets.open("actions.bomj"))
     SaveLoader.load(file)
     Statistic.load(file, packageManager.getPackageInfo(this.packageName, 0).versionCode)
+    Actions.loadFromServer()
 }
 
 inline fun <reified T : Activity> Activity.startActivity() =

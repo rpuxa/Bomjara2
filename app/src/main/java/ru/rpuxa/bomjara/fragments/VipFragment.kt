@@ -43,7 +43,7 @@ class VipFragment : Fragment() {
             return
         view.updateMoney()
         view.vip_list.layoutManager = LinearLayoutManager(context)
-        view.vip_list.adapter = VipAdapter(Actions.VIPS)
+        view.vip_list.adapter = VipAdapter(Actions.vips)
         view.add_vip_diamonds.setOnClickListener {
             val res = ad.show {
                 Player.current.money.diamonds += 3

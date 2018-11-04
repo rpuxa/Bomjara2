@@ -24,7 +24,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     var maxCondition = Condition(100, 100, 100)
     var money = Money(rubles = 50)
     var possessions = Possessions()
-    var courses = IntArray(Actions.COURSES.size)
+    var courses = IntArray(Actions.courses.size)
     var age = 0
     var efficiency = 100
     var daysWithoutCaught = 0

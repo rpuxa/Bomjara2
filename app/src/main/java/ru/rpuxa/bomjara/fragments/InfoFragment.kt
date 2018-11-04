@@ -23,10 +23,10 @@ class InfoFragment : CacheFragment() {
             save_name.text = player.name
             age.text = player.stringAge
 
-            location.text = Actions.LOCATIONS[player.possessions.location].name
-            friend.text = Actions.FRIENDS[player.possessions.friend].name
-            home.text = Actions.HOMES[player.possessions.home].name
-            transport.text = Actions.TRANSPORTS[player.possessions.transport].name
+            location.text = Actions.locations[player.possessions.location].name
+            friend.text = Actions.friends[player.possessions.friend].name
+            home.text = Actions.homes[player.possessions.home].name
+            transport.text = Actions.transports[player.possessions.transport].name
 
             rubles.text = player.money.rubles.divider()
             euros.text = player.money.euros.divider()

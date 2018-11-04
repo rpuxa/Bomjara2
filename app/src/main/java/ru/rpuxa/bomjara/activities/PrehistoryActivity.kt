@@ -50,7 +50,7 @@ class PrehistoryActivity : AppCompatActivity() {
                 }
                 radio3.isChecked -> {
                     Player.current.possessions.transport = 1
-                    Player.current.courses[0] = Actions.COURSES[0].length
+                    Player.current.courses[0] = Actions.courses[0].length
                 }
             }
             Player.current.age++

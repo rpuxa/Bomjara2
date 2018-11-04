@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 object Server {
 
-    private const val IP_SERVER = "89.223.31.120"
+    private const val IP_SERVER = "10.222.235.149"
 
     private val commands = ArrayDeque<Cmd>()
     private val running = AtomicBoolean(false)
@@ -25,17 +25,22 @@ object Server {
             val oos = ObjectOutputStream(socket.getOutputStream())
             val ois = ObjectInputStream(socket.getInputStream())
             while (commands.isNotEmpty()) {
-                val cmd = commands.peekFirst()
-                oos.writeObject(cmd.serverCommand)
-                oos.flush()
-                val ans = ois.readObject() as ServerCommand
-                try {
-                    cmd.listener(ans)
-                } catch (e: Throwable) {
-                    throw e
-                }
+                while (commands.isNotEmpty()) {
+                    val cmd = commands.peekFirst()
+                    oos.writeObject(cmd.serverCommand)
+                    oos.flush()
+                    val ans = ois.readObject() as ServerCommand
+                    try {
+                        cmd.listener(ans)
+                    } catch (e: Throwable) {
+                        throw e
+                    }
 
-                commands.pollFirst()
+                    commands.pollFirst()
+                }
+                val startTime = System.currentTimeMillis()
+                while (commands.isEmpty() && System.currentTimeMillis() - startTime < 3000)
+                    Thread.sleep(50)
             }
             try {
                 oos.close()
@@ -63,9 +68,11 @@ object Server {
 
     private data class Cmd(val serverCommand: ServerCommand, val listener: (ServerCommand?) -> Unit)
 
+    const val EMPTY_MESSAGE = -1
     const val STATISTIC = 0
     const val REVIEW = 1
     const val NEWS_COUNT = 2
     const val GET_NEWS = 3
+    const val GET_CACHED_ACTIONS = 4
 }
 

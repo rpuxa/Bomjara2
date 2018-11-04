@@ -14,7 +14,7 @@ class LocationFragment : ChainFragment() {
                 "Местоположение",
                 R.drawable.colored_location,
                 "Перейти",
-                Actions.LOCATIONS,
+                Actions.locations,
                 Player.current.possessions::location
         )
 
@@ -22,7 +22,7 @@ class LocationFragment : ChainFragment() {
                 "Кореш",
                 R.drawable.colored_friend,
                 "Подружиться",
-                Actions.FRIENDS,
+                Actions.friends,
                 Player.current.possessions::friend
         )
     }

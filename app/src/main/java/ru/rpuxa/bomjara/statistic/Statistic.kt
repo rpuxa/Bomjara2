@@ -84,12 +84,12 @@ class SaveStatistic(save: SaveStatistic? = null, player: Player? = null) : Super
 
     var saveId = -14882342368765
     val version get() = Statistic.versionCode
-    var actionsUsingCount: ArrayList<Int> = zeroList(Actions.actionsSize).apply {
+    var actionsUsingCount: ArrayList<Int> = zeroList(Actions.actions.size).apply {
         if (save != null)
             for (i in indices)
                 set(i, save.actionsUsingCount[i])
     }
-    var boughtVips: ArrayList<Int> = zeroList(Actions.VIPS.size).apply {
+    var boughtVips: ArrayList<Int> = zeroList(Actions.vips.size).apply {
         if (save != null)
             for (i in indices)
                 set(i, save.boughtVips[i])

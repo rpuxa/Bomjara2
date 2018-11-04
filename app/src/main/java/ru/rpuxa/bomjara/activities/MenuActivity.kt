@@ -21,7 +21,6 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this, getString(R.string.ad_id))
         TipFragment.allTips.clear()
-        load()
         if (intent?.extras?.get(RateDialog.RATE_DIALOG) as? Boolean == true) {
             RateDialog().show(fragmentManager, "rate")
         }
@@ -50,7 +49,8 @@ class MenuActivity : AppCompatActivity() {
         if (save == null) {
             continue_game.text = "Новая игра"
             continue_game.setOnClickListener {
-                val i = Intent(this, SavesActivity::class.java).apply { putExtra("new", true) }
+                val i = Intent(this, SavesActivity::class.java)
+                i.putExtra("new", true)
                 startActivity(i)
             }
         } else {

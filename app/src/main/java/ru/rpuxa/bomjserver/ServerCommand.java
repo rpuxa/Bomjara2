@@ -2,6 +2,7 @@ package ru.rpuxa.bomjserver;
 
 import java.io.Serializable;
 
+@DontEditSerializable
 public class ServerCommand implements Serializable {
     private final int id;
     private final Object data;

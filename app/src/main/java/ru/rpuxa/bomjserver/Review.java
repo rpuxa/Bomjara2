@@ -2,6 +2,8 @@ package ru.rpuxa.bomjserver;
 
 import java.io.Serializable;
 
+
+@DontEditSerializable
 public class Review implements Serializable {
     private final float rating;
     private final String rev;
