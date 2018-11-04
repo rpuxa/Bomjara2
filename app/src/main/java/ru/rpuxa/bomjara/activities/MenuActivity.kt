@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.main_menu.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.fragments.TipFragment
 import ru.rpuxa.bomjara.game.Player
-import ru.rpuxa.bomjara.load
 import ru.rpuxa.bomjara.save.SaveLoader
 import ru.rpuxa.bomjara.settings.saveSettings
 import ru.rpuxa.bomjara.startActivity
@@ -52,6 +51,7 @@ class MenuActivity : AppCompatActivity() {
                 val i = Intent(this, SavesActivity::class.java)
                 i.putExtra("new", true)
                 startActivity(i)
+                overridePendingTransition(R.anim.right_in, R.anim.left_out)
             }
         } else {
             continue_game.text = "Продолжить игру"

@@ -17,7 +17,7 @@ object SaveLoader {
     }
 
     class Saves21 : SuperSerializable {
-        var list: MutableList<Save21> = ArrayList()
+        var list = ArrayList<Save21>()
     }
 
     private const val SAVES_FILE_NAME = "saves2.0"
@@ -26,13 +26,16 @@ object SaveLoader {
     var saves21 = Saves21()
 
     fun save(file: File) {
-        file.writeObject(saves21.serialize(), SAVES21_FILE_NAME)
+        val obj = saves21.serialize()
+        file.writeObject(obj, SAVES21_FILE_NAME)
     }
 
     fun load(file: File) {
-        val list = (SuperDeserializator.deserialize(file, SAVES_FILE_NAME) as? Saves)?.list?.map { it.toSave21() }
+        val deserialize = SuperDeserializator.deserialize(file, SAVES_FILE_NAME)
+        val list = (deserialize as? Saves)?.list?.map { it.toSave21() }?.toList()
         if (list != null) {
-            saves21.list = list as MutableList<Save21>
+            saves21.list.clear()
+            saves21.list.addAll(list)
             File(file, SAVES_FILE_NAME).delete()
         } else {
             val saves = SuperDeserializator.deserialize(file, SAVES21_FILE_NAME) as? Saves21
@@ -71,7 +74,7 @@ object SaveLoader {
         val fields = player.fields
         val maxIndicators = fields[15] as DoubleArray
 
-        return Save(
+        return Save21(
                 random.nextLong(),
                 true,
                 "Старое сохранение",
@@ -96,14 +99,14 @@ object SaveLoader {
                 false,
                 false,
                 false
-        ).toSave21()
+        )
     }
 
     private fun Save.toSave21(): Save21 {
-        return Save21(id, old, name, age, bottles, rubles, euros,
+        return Save21(
+                id, old, name, age, bottles, rubles, euros,
                 bitcoins, diamonds, location, friend, home, transport, efficiency,
-                maxEnergy, maxFullness, maxHealth, energy, fullness, health,
-                courses.mapIndexed { index, i -> index to i }.toMap() as MutableMap<Int, Int>,
+                maxEnergy, maxFullness, maxHealth, energy, fullness, health, courses,
                 deadByHungry, deadByZeroHealth, caughtByPolice
         )
     }

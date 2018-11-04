@@ -9,7 +9,6 @@ import ru.rpuxa.bomjara.game.player.Money
 import ru.rpuxa.bomjara.game.player.Possessions
 import ru.rpuxa.bomjara.gauss
 import ru.rpuxa.bomjara.getStringAge
-import ru.rpuxa.bomjara.save.Save
 import ru.rpuxa.bomjara.save.Save21
 import ru.rpuxa.bomjara.toast
 
@@ -25,17 +24,15 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     var maxCondition = Condition(100, 100, 100)
     var money = Money(rubles = 50)
     var possessions = Possessions()
-    var courses: MutableMap<Int, Int> = HashMap<Int, Int>().apply { Actions.courses.forEach { put(it.id, 0) } }
+    var courses = IntArray(Actions.courses.size)
     var age = 0
     var efficiency = 100
     var daysWithoutCaught = 0
-
     var caughtByPolice = false
     var deadByZeroHealth = false
     var deadByHungry = false
-
-
     var doingAction = false
+
     operator fun plusAssign(add: Condition) {
         condition += add * gauss
         condition.truncate(maxCondition)

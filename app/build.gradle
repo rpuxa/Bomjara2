@@ -5,6 +5,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Bomjara'
+            keyPassword 'idfnm7158'
+            storeFile file('C:/Projects/Android/Bomjara2/keyStore.jks')
+            storePassword 'idfnm7158'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "ru.rpuxa.bomjara"
@@ -18,6 +26,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     buildToolsVersion '28.0.3'
@@ -25,7 +34,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     lintOptions {
         checkReleaseBuilds false
     }
