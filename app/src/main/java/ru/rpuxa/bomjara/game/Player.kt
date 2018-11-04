@@ -10,6 +10,7 @@ import ru.rpuxa.bomjara.game.player.Possessions
 import ru.rpuxa.bomjara.gauss
 import ru.rpuxa.bomjara.getStringAge
 import ru.rpuxa.bomjara.save.Save
+import ru.rpuxa.bomjara.save.Save21
 import ru.rpuxa.bomjara.toast
 
 class Player(var id: Long, var name: String, var old: Boolean) {
@@ -24,7 +25,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     var maxCondition = Condition(100, 100, 100)
     var money = Money(rubles = 50)
     var possessions = Possessions()
-    var courses = IntArray(Actions.courses.size)
+    var courses: MutableMap<Int, Int> = HashMap<Int, Int>().apply { Actions.courses.forEach { put(it.id, 0) } }
     var age = 0
     var efficiency = 100
     var daysWithoutCaught = 0
@@ -102,7 +103,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
         lateinit var current: Player
 
 
-        fun fromSave(save: Save) = Player(save.id, save.name, save.old).apply {
+        fun fromSave(save: Save21) = Player(save.id, save.name, save.old).apply {
             age = save.age
             money = Money(save.rubles, save.euros, save.bitcoins, save.bottles, save.diamonds)
             possessions = Possessions(save.transport, save.home, save.friend, save.location)
@@ -117,7 +118,7 @@ class Player(var id: Long, var name: String, var old: Boolean) {
     }
 
 
-    fun toSave() = Save(
+    fun toSave21() = Save21(
             id,
             old,
             name,

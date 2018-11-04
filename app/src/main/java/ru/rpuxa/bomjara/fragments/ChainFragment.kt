@@ -51,7 +51,7 @@ abstract class ChainFragment : CacheFragment() {
                 return@setOnClickListener
             }
 
-            if (course != -1 && Player.current.courses[course] < Actions.courses[course].length) {
+            if (course != -1 && Player.current.courses[course]!! < Actions.courses[course].length) {
                 toast("Требуется пройти курс - ${Actions.courses[course].name}")
                 return@setOnClickListener
             }

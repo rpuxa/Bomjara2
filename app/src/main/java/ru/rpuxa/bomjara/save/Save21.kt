@@ -1,9 +1,8 @@
 package ru.rpuxa.bomjara.save
 
-import java.io.Serializable
+import ru.rpuxa.bomjara.cache.SuperSerializable
 
-@Deprecated("")
-class Save(
+class Save21(
         val id: Long,
         val old: Boolean,
         var name: String,
@@ -24,8 +23,8 @@ class Save(
         val energy: Int,
         val fullness: Int,
         val health: Int,
-        val courses: IntArray,
+        val courses: MutableMap<Int, Int>,
         val deadByHungry: Boolean,
         val deadByZeroHealth: Boolean,
         val caughtByPolice: Boolean
-) : Serializable
+) : SuperSerializable

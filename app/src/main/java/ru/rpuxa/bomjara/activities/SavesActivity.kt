@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.save_card_view.view.*
 import ru.rpuxa.bomjara.*
 import ru.rpuxa.bomjara.game.Player
 import ru.rpuxa.bomjara.save.Save
+import ru.rpuxa.bomjara.save.Save21
 import ru.rpuxa.bomjara.save.SaveLoader
 import ru.rpuxa.bomjara.settings.settings
 
@@ -35,7 +36,7 @@ class SavesActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        val savesAdapter = SavesAdapter(SaveLoader.saves.list)
+        val savesAdapter = SavesAdapter(SaveLoader.saves21.list)
         recycler.adapter = savesAdapter
 
         new_save.setOnClickListener {
@@ -93,7 +94,7 @@ class SavesActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.left_in, R.anim.rigth_out)
     }
 
-    inner class SavesAdapter(private val list: List<Save>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
+    inner class SavesAdapter(private val list: List<Save21>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
 
         inner class SaveViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             val saveName = view.name!!

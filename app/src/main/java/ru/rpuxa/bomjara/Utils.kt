@@ -150,9 +150,9 @@ fun File.writeObject(obj: Any, fileName: String) {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T> File.readObject(fileName: String): T? {
+fun <T> File.readObject(fileName: String?): T? {
     return try {
-        ObjectInputStream(FileInputStream(File(this, fileName))).use {
+        ObjectInputStream(FileInputStream(if (fileName == null) this else File(this, fileName))).use {
             it.readObject() as? T
         }
     } catch (e: Exception) {
