@@ -13,4 +13,6 @@ interface Vip {
     val cost: Int
 
     val onBuy: (Player) -> Unit
+
+    fun buy(player: Player): Boolean
 }

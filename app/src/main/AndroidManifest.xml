@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".activities.App"
+        android:name=".impl.activities.App"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".impl.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -26,21 +26,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SavesActivity"
+            android:name=".impl.activities.SavesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.MenuActivity"
+            android:name=".impl.activities.MenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ContentActivity"
+            android:name=".impl.activities.ContentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".impl.activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.PrehistoryActivity"
+            android:name=".impl.activities.PrehistoryActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.MediaActivity"></activity>
+        <activity android:name=".impl.activities.MediaActivity"></activity>
     </application>
 
 </manifest>

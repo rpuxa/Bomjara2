@@ -12,7 +12,7 @@
 
         <fragment
             android:id="@+id/tip_transport"
-            android:name="ru.rpuxa.bomjara.fragments.TipFragment"
+            android:name="ru.rpuxa.bomjara.impl.fragments.TipFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"

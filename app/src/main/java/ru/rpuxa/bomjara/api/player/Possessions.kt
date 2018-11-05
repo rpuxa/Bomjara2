@@ -1,6 +1,6 @@
 package ru.rpuxa.bomjara.api.player
 
-import ru.rpuxa.bomjara.game.player.Possessions
+import ru.rpuxa.bomjara.impl.player.DefaultPossessions
 
 
 interface Possessions {
@@ -13,5 +13,5 @@ interface Possessions {
 
     var location: Int
 
-    fun enoughFor(standard: Possessions): MonoPossession?
+    fun enoughFor(standard: DefaultPossessions): MonoPossession?
 }

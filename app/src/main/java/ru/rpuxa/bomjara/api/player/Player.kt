@@ -1,10 +1,16 @@
 package ru.rpuxa.bomjara.api.player
 
-import android.support.v4.app.FragmentActivity
+import android.support.annotation.CallSuper
 
 typealias CompletedCourses = IntArray
 
 interface Player {
+    val id: Long
+
+    var name: String
+
+    var old: Boolean
+
     var listener: Listener?
 
     val condition: Condition
@@ -32,19 +38,38 @@ interface Player {
     var doingAction: Boolean
 
 
+    fun addCondition(condition: Condition)
+
+    fun addMoney(money: MonoCurrency): Boolean
+
+    fun addSalary(money: MonoCurrency)
+
+    fun addDiamond()
+
+    fun dispatchListener()
+
     interface Listener {
-        fun onDead(hunger: Boolean)
 
-        fun onCaughtByPolice()
+        @CallSuper
+        fun onDead(player: Player, hunger: Boolean) {
+            if (hunger)
+                player.deadByHungry = true
+            else
+                player.deadByZeroHealth = true
+        }
 
-        fun onMoneyChanged(positive: Boolean, currency: Int, addCount: Long)
+        @CallSuper
+        fun onCaughtByPolice(player: Player) {
+            player.daysWithoutCaught = 0
+            player.caughtByPolice = true
+        }
 
-        fun onMaxConditionChanged()
+        fun onMoneyChanged(player: Player, positive: Boolean, currency: Int, addCount: Long)
 
-        fun onConditionChanged()
+        fun onMaxConditionChanged(player: Player)
+
+        fun onConditionChanged(player: Player)
 
         fun showRateDialog()
-
-        val activity: FragmentActivity
     }
 }

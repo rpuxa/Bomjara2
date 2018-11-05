@@ -1,8 +1,9 @@
 package ru.rpuxa.bomjara.api.actions
 
-import ru.rpuxa.bomjara.actions.Action
-import ru.rpuxa.bomjara.actions.ChainElement
-import ru.rpuxa.bomjara.actions.Course
+import ru.rpuxa.bomjara.api.player.Player
+import ru.rpuxa.bomjara.impl.actions.DefaultCourse
+import java.io.File
+import java.io.InputStream
 
 interface ActionsBase {
 
@@ -16,9 +17,15 @@ interface ActionsBase {
 
     val homes: Array<ChainElement>
 
-    val courses: Array<Course>
+    val courses: Array<DefaultCourse>
 
     val vips: Array<Vip>
 
-    fun getPenalty(player: Player)
+    fun getPenalty(player: Player): Int
+
+    fun getActionsByLevel(level: Int, menu: Int): Collection<Action>
+
+    fun load(filesDir: File, assetsInputStream: InputStream)
+
+    fun save(filesDir: File)
 }

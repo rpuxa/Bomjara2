@@ -12,19 +12,15 @@ interface Money {
 
     var diamonds: Long
 
+    val currencies: LongArray
+
     operator fun get(currency: Currencies) = get(currency.id)
 
-    operator fun get(currencyId: Int)
+    operator fun get(currencyId: Int): Long
 
     fun canAdd(money: Money): Boolean
 
-    fun add(money: Money): Boolean
+    fun addAssign(money: Money): Boolean
 
-    fun multiply(x: Double): Money
-
-    fun multiply(i: Int) = multiply(i.toDouble())
-
-    fun inv(): Money
-
-    override fun toString(): String
+    fun clone(): Money
 }
