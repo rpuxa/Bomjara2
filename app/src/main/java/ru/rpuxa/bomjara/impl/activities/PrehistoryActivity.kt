@@ -5,8 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_prehistory.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions
-import ru.rpuxa.bomjara.settings.settings
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.startActivity
 
 class PrehistoryActivity : AppCompatActivity() {
@@ -42,19 +43,19 @@ class PrehistoryActivity : AppCompatActivity() {
         start_survive.setOnClickListener {
             when {
                 radio1.isChecked -> {
-                    Data.player.money.rubles = 500
+                    player.money.rubles = 500
                 }
                 radio2.isChecked -> {
-                    Data.player.maxCondition.health = 120
+                    player.maxCondition.health = 120
                 }
                 radio3.isChecked -> {
-                    Data.player.possessions.transport = 1
-                    Data.player.courses[0] = Actions.courses[0].length
+                    player.possessions.transport = 1
+                    player.courses[0] = actionsBase.courses[0].length
                 }
             }
-            Data.player.age++
+            player.age++
             startActivity<ContentActivity>()
-            settings.lastSave = Data.player.id
+            settings.lastSave = player.id
 
         }
     }

@@ -12,14 +12,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_save.*
 import kotlinx.android.synthetic.main.save_card_view.view.*
-import ru.rpuxa.bomjara.*
-import ru.rpuxa.bomjara.impl.getStringAge
-import ru.rpuxa.bomjara.impl.random
+import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.api.player.Player
+import ru.rpuxa.bomjara.impl.*
+import ru.rpuxa.bomjara.impl.Data.saveLoader
+import ru.rpuxa.bomjara.impl.Data.settings
+import ru.rpuxa.bomjara.impl.player.NewPlayer
+import ru.rpuxa.bomjara.impl.player.PlayerFromSave
 import ru.rpuxa.bomjara.impl.save.Save21
-import ru.rpuxa.bomjara.impl.startActivity
-import ru.rpuxa.bomjara.impl.toast
-import ru.rpuxa.bomjara.save.SaveLoader
-import ru.rpuxa.bomjara.settings.settings
 
 
 class SavesActivity : AppCompatActivity() {
@@ -38,12 +38,12 @@ class SavesActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         recycler.layoutManager = LinearLayoutManager(this)
-        val savesAdapter = SavesAdapter(SaveLoader.saves21.list)
+        val savesAdapter = SavesAdapter(saveLoader.saves)
         recycler.adapter = savesAdapter
 
         new_save.setOnClickListener {
             pickNameDialog(randName) { name ->
-                startGame(Player(random.nextLong(), name, false))
+                startGame(NewPlayer(random.nextLong(), name, false))
             }
         }
         if (new != null && new is Boolean && new) {
@@ -127,7 +127,7 @@ class SavesActivity : AppCompatActivity() {
             }
 
             holder.view.setOnClickListener {
-                startGame(Player.fromSave(save))
+                startGame(PlayerFromSave(save))
             }
 
             popup.setOnMenuItemClickListener {
@@ -143,7 +143,7 @@ class SavesActivity : AppCompatActivity() {
                         AlertDialog.Builder(holder.view.context)
                                 .setTitle(getString(R.string.delete_save))
                                 .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                                    SaveLoader.delete(save)
+                                    saveLoader.deleteSave(save)
                                     toast(getString(R.string.deleted))
                                     notifyItemRemoved(holder.adapterPosition)
                                 }
@@ -159,7 +159,7 @@ class SavesActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        SaveLoader.save(filesDir)
+        saveLoader.saveToFile(filesDir)
         super.onPause()
     }
 

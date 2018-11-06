@@ -10,36 +10,44 @@ class DefaultCondition(
         override var health: Int = 0
 ) : Condition {
 
-    override fun add(condition: Condition): Condition {
-        val addedCondition = DefaultCondition(
-                energy + condition.energy,
-                fullness + condition.fullness,
-                health + condition.health
-        )
+    override fun addAssign(condition: Condition) {
+        energy += condition.energy
+        fullness += condition.fullness
+        health += condition.health
 
-        if (addedCondition.energy < 0)
-            addedCondition.energy = 0
-        if (addedCondition.fullness < 0)
-            addedCondition.fullness = 0
-        if (addedCondition.health < 0)
-            addedCondition.health = 0
+        if (energy < 0)
+            energy = 0
+        if (fullness < 0)
+            fullness = 0
+        if (health < 0)
+            health = 0
+    }
 
-        return addedCondition
+    override fun add(condition: Condition) = clone().apply { addAssign(condition) }
+
+    override fun invAssign() {
+        energy = -energy
+        fullness = -fullness
+        health = -health
     }
 
     override fun inv() = DefaultCondition(-energy, -fullness, -health)
 
-    override fun truncate(maxCondition: Condition) =
-            DefaultCondition(
-                    min(maxCondition.energy, energy),
-                    min(maxCondition.fullness, fullness),
-                    min(maxCondition.health, health)
-            )
+    override fun truncateAssign(maxCondition: Condition) {
+        energy = min(maxCondition.energy, energy)
+        fullness = min(maxCondition.fullness, fullness)
+        health = min(maxCondition.health, health)
+    }
 
-    override fun multiply(x: Double) =
-            DefaultCondition(
-                    round(x * energy).toInt(),
-                    round(x * fullness).toInt(),
-                    round(x * health).toInt()
-            )
+    override fun truncate(maxCondition: Condition) = clone().apply { truncateAssign(maxCondition) }
+
+    override fun multiplyAssign(x: Double) {
+        energy = round(x * energy).toInt()
+        fullness = round(x * fullness).toInt()
+        health = round(x * health).toInt()
+    }
+
+    override fun multiply(x: Double) = clone().apply { multiplyAssign(x) }
+
+    override fun clone() = DefaultCondition(energy, fullness, health)
 }

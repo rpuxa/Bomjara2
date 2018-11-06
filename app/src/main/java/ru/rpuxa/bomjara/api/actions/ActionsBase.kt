@@ -23,7 +23,7 @@ interface ActionsBase {
 
     fun getPenalty(player: Player): Int
 
-    fun getActionsByLevel(level: Int, menu: Int): Collection<Action>
+    fun getActionsByLevel(level: Int, menu: Int): List<Action>
 
     fun load(filesDir: File, assetsInputStream: InputStream)
 

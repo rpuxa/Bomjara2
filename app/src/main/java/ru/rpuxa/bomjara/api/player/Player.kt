@@ -37,6 +37,8 @@ interface Player {
 
     var doingAction: Boolean
 
+    val stringAge: String
+
 
     fun addCondition(condition: Condition)
 

@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.main_menu.*
 import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.impl.Data.saveLoader
+import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.fragments.TipFragment
-import ru.rpuxa.bomjara.save.SaveLoader
-import ru.rpuxa.bomjara.settings.saveSettings
+import ru.rpuxa.bomjara.impl.player.PlayerFromSave
 import ru.rpuxa.bomjara.impl.startActivity
 import ru.rpuxa.bomjara.impl.startActivityFromRight
 import ru.rpuxa.bomjara.impl.views.RateDialog
@@ -43,7 +45,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        val save = SaveLoader.findSaveById(ru.rpuxa.bomjara.settings.settings.lastSave)
+        val save = saveLoader.findSaveById(settings.lastSave)
         if (save == null) {
             continue_game.text = "Новая игра"
             continue_game.setOnClickListener {
@@ -55,7 +57,7 @@ class MenuActivity : AppCompatActivity() {
         } else {
             continue_game.text = "Продолжить игру"
             continue_game.setOnClickListener {
-                Data.player = Player.fromSave(save)
+                player = PlayerFromSave(save)
                 startActivity<ContentActivity>()
             }
         }
@@ -63,7 +65,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        saveSettings(filesDir)
+        settings.saveToFile(filesDir)
         super.onPause()
     }
 }

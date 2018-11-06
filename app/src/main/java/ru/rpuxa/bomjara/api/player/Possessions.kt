@@ -13,5 +13,5 @@ interface Possessions {
 
     var location: Int
 
-    fun enoughFor(standard: DefaultPossessions): MonoPossession?
+    fun enoughFor(standard: Possessions): MonoPossession?
 }

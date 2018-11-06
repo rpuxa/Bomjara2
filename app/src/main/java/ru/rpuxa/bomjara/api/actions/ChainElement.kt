@@ -1,6 +1,6 @@
 package ru.rpuxa.bomjara.api.actions
 
-import ru.rpuxa.bomjara.api.player.Money
+import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.api.player.Possessions
 
 interface ChainElement {
@@ -10,5 +10,5 @@ interface ChainElement {
 
     val course: CourseId
 
-    val cost: Money
+    val cost: MonoCurrency
 }

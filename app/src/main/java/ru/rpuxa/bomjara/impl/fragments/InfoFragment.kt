@@ -6,9 +6,11 @@ import android.view.View
 import kotlinx.android.synthetic.main.info.*
 import kotlinx.android.synthetic.main.vk_group.view.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.browser
-import ru.rpuxa.bomjara.settings.settings
+import ru.rpuxa.bomjara.impl.divider
 
 class InfoFragment : CacheFragment() {
 
@@ -16,15 +18,14 @@ class InfoFragment : CacheFragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val player = Data.player
         with(view) {
             save_name.text = player.name
             age.text = player.stringAge
 
-            location.text = Actions.locations[player.possessions.location].name
-            friend.text = Actions.friends[player.possessions.friend].name
-            home.text = Actions.homes[player.possessions.home].name
-            transport.text = Actions.transports[player.possessions.transport].name
+            location.text = actionsBase.locations[player.possessions.location].name
+            friend.text = actionsBase.friends[player.possessions.friend].name
+            home.text = actionsBase.homes[player.possessions.home].name
+            transport.text = actionsBase.transports[player.possessions.transport].name
 
             rubles.text = player.money.rubles.divider()
             euros.text = player.money.euros.divider()

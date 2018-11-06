@@ -3,7 +3,8 @@ package ru.rpuxa.bomjara.impl.fragments
 import android.view.View
 import kotlinx.android.synthetic.main.transport.view.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
 
 class TransportChain : ChainFragment() {
     override val layout = R.layout.transport
@@ -13,16 +14,16 @@ class TransportChain : ChainFragment() {
                 "Транспорт",
                 R.drawable.colored_transport,
                 "Пересесть",
-                Actions.transports,
-                Data.player.possessions::transport
+                actionsBase.transports,
+                player.possessions::transport
         )
 
         view.home_chain.install(
                 "Дом",
                 R.drawable.colored_home,
                 "Переехать",
-                Actions.homes,
-                Data.player.possessions::home
+                actionsBase.homes,
+                player.possessions::home
         )
     }
 }

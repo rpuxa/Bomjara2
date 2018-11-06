@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara.impl.server
 
 import ru.rpuxa.bomjara.api.server.Server
+import ru.rpuxa.bomjara.api.server.ServerToken
 import ru.rpuxa.bomjserver.ServerCommand
 import java.io.IOException
 import java.io.ObjectInputStream
@@ -29,7 +30,7 @@ class SocketServer : Server {
                     oos.flush()
                     val ans = ois.readObject() as ServerCommand
                     try {
-                        cmd.callback(ans)
+                        cmd.token.command(ans)
                     } catch (e: Throwable) {
                         throw e
                     }
@@ -50,7 +51,7 @@ class SocketServer : Server {
             }
             socket.close()
         } catch (e: IOException) {
-            commands.forEach { it.callback(null) }
+            commands.forEach { it.token.error() }
             commands.clear()
             e.printStackTrace()
         } finally {
@@ -59,13 +60,16 @@ class SocketServer : Server {
     }
 
 
-    override fun send(id: Int, data: Any?, callback: (Any?) -> Unit) {
-        commands.addLast(Cmd(ServerCommand(id, data), callback))
+    override fun send(id: Int, data: Any?): ServerToken {
+        val token = ServerToken()
+        commands.addLast(Cmd(ServerCommand(id, data), token))
         if (!running.get())
             Thread(::connect).start()
+
+        return token
     }
 
-    private data class Cmd(val serverCommand: ServerCommand, val callback: (Any?) -> Unit)
+    private data class Cmd(val serverCommand: ServerCommand, val token: ServerToken)
 
 
     companion object {

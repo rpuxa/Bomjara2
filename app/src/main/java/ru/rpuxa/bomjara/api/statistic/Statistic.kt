@@ -3,11 +3,11 @@ package ru.rpuxa.bomjara.api.statistic
 import ru.rpuxa.bomjara.api.actions.ActionId
 import ru.rpuxa.bomjara.api.actions.VipId
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.cache.Saveable
+import ru.rpuxa.bomjara.impl.cache.Savable
 
-interface Statistic : Saveable {
+interface Statistic : Savable {
 
-    val versionCode: Int
+    var versionCode: Int
 
     fun countAction(id: ActionId)
 

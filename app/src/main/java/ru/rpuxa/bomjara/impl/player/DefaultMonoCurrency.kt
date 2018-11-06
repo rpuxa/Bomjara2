@@ -39,7 +39,16 @@ class DefaultMonoCurrency : DefaultMoney, MonoCurrency {
         return if (c > 0) "+$c" else "$c"
     }
 
-    override fun clone() = DefaultMonoCurrency(currencies, currency)
+    override fun clone() = DefaultMonoCurrency(currencies.clone(), currency)
 }
 
- infix fun Int.of(currency: Currencies) = DefaultMonoCurrency(toLong(), currency)
+infix fun Int.of(currencyId: Int) = this of Currencies.getById(currencyId)
+
+infix fun Int.of(currency: Currencies) = DefaultMonoCurrency(toLong(), currency)
+
+infix fun Long.of(currency: Currencies) = DefaultMonoCurrency(this, currency)
+
+inline val Int.rub get() = this of Currencies.RUBLES
+inline val Int.euro get() = this of Currencies.EUROS
+inline val Int.bitcoin get() = this of Currencies.BITCOINS
+inline val Int.bottle get() = this of Currencies.BOTTLES

@@ -3,9 +3,12 @@ package ru.rpuxa.bomjara.impl.fragments
 import android.view.View
 import kotlinx.android.synthetic.main.chain.view.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions
+import ru.rpuxa.bomjara.api.actions.ChainElement
+import ru.rpuxa.bomjara.api.player.PossessionsList
+import ru.rpuxa.bomjara.impl.Data
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.changeVisibility
-import ru.rpuxa.bomjara.impl.player.DefaultPossessions
 import ru.rpuxa.bomjara.impl.getCurrencyIcon
 import ru.rpuxa.bomjara.impl.toast
 import kotlin.reflect.KMutableProperty0
@@ -22,8 +25,8 @@ abstract class ChainFragment : CacheFragment() {
             return
         }
         val element = elements[ref.get() + 1]
-        val possessions = element.possessions
-        val money = -element.moneyRemove
+        val possessions = element.neededPossessions
+        val money = element.cost.inv()
         val course = element.course
         name.text = name0
         icon.setImageResource(icon0)
@@ -34,26 +37,27 @@ abstract class ChainFragment : CacheFragment() {
         cost.text = money.toString()
         currency.setImageBitmap(context.getCurrencyIcon(money))
         change.setOnClickListener {
-            if (Data.player.doingAction)
+            if (player.doingAction)
                 return@setOnClickListener
 
-            val enoughFor = Data.player.possessions.enoughFor(possessions)
-            run {
-                when (enoughFor.first) {
-                    DefaultPossessions.LOCATION -> toast("Требуется локация - ${Actions.locations[enoughFor.second].name}")
-                    DefaultPossessions.TRANSPORT -> toast("Требуется транспорт - ${Actions.transports[enoughFor.second].name}")
-                    DefaultPossessions.FRIEND -> toast("Требуется кореш - ${Actions.friends[enoughFor.second].name}")
-                    DefaultPossessions.HOUSE -> toast("Требуется дом - ${Actions.homes[enoughFor.second].name}")
-                    else -> return@run
+            val enoughFor = player.possessions.enoughFor(possessions)
+            if (enoughFor != null) {
+                val msg = "Требуется " + when (enoughFor.possession) {
+                    PossessionsList.LOCATION -> toast("локация - ${actionsBase.locations[enoughFor.value].name}")
+                    PossessionsList.TRANSPORT -> toast("транспорт - ${actionsBase.transports[enoughFor.value].name}")
+                    PossessionsList.FRIEND -> toast("кореш - ${actionsBase.friends[enoughFor.value].name}")
+                    PossessionsList.HOME -> toast("дом - ${actionsBase.homes[enoughFor.value].name}")
                 }
+
+                toast(msg)
                 return@setOnClickListener
             }
 
-            if (course != -1 && Data.player.courses[course]!! < Actions.courses[course].length) {
-                toast("Требуется пройти курс - ${Actions.courses[course].name}")
+            if (course != -1 && player.courses[course] < actionsBase.courses[course].length) {
+                toast("Требуется пройти курс - ${actionsBase.courses[course].name}")
                 return@setOnClickListener
             }
-            if (!Data.player.add(money)) {
+            if (!player.addMoney(money)) {
                 toast(getString(R.string.money_needed))
                 return@setOnClickListener
             }

@@ -1,6 +1,5 @@
 package ru.rpuxa.bomjara.impl.player
 
-import ru.rpuxa.bomjara.impl.NONE
 import ru.rpuxa.bomjara.api.player.*
 import ru.rpuxa.bomjara.impl.gauss
 
@@ -31,25 +30,27 @@ open class DefaultPlayer(
         }
 
     private fun update(listener: Player.Listener) {
-        listener.onMoneyChanged(this,false, NONE, 0L)
-        listener.onConditionChanged()
-        listener.onMaxConditionChanged()
+        listener.onMoneyChanged(this, false, Currencies.NONE.id, 0L)
+        listener.onConditionChanged(this)
+        listener.onMaxConditionChanged(this)
         when {
-            deadByZeroHealth -> listener.onDead(this,false)
+            deadByZeroHealth -> listener.onDead(this, false)
             deadByHungry -> listener.onDead(this, true)
-            caughtByPolice -> listener.onCaughtByPolice()
+            caughtByPolice -> listener.onCaughtByPolice(this)
         }
     }
 
     override fun addCondition(condition: Condition) {
-        this.condition.add(condition.multiply(gauss))
-        this.condition.truncate(maxCondition)
+        this.condition.addAssign(condition.multiply(gauss))
+        this.condition.truncateAssign(maxCondition)
         listener?.onConditionChanged(this)
         if (condition.health == 0)
-            listener?.onDead(this,false)
+            listener?.onDead(this, false)
         else if (condition.fullness == 0)
-            listener?.onDead(this,true)
+            listener?.onDead(this, true)
     }
+
+    override val stringAge get() = "${25 + age / 365} лет ${age % 365} дней"
 
     override fun addMoney(money: MonoCurrency): Boolean {
         if (!this.money.addAssign(money))

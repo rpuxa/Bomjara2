@@ -10,9 +10,11 @@ import kotlinx.android.synthetic.main.course.view.*
 import kotlinx.android.synthetic.main.courses.*
 import kotlinx.android.synthetic.main.courses.view.*
 import kotlinx.android.synthetic.main.processed_course.view.*
-import ru.rpuxa.bomjara.*
-import ru.rpuxa.bomjara.impl.actions.Actions
+import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.actions.DefaultCourse
+import ru.rpuxa.bomjara.impl.divider
 import ru.rpuxa.bomjara.impl.getCurrencyIcon
 import ru.rpuxa.bomjara.impl.player.DefaultCondition
 import ru.rpuxa.bomjara.impl.save
@@ -21,8 +23,8 @@ import ru.rpuxa.bomjara.impl.toast
 class CoursesFragment : CacheFragment() {
 
     override val layout = R.layout.courses
-    val currentAdapter = CurrentCoursesAdapter(Actions.courses)
-    val completeAdapter = CompletedCoursesAdapter(Actions.courses)
+    val currentAdapter = CurrentCoursesAdapter(actionsBase.courses)
+    val completeAdapter = CompletedCoursesAdapter(actionsBase.courses)
 
     override fun onChange(view: View) {
 
@@ -32,7 +34,7 @@ class CoursesFragment : CacheFragment() {
         }
         view.available_curses.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = AvailableCoursesAdapter(Actions.courses)
+            adapter = AvailableCoursesAdapter(actionsBase.courses)
         }
         view.current_courses.apply {
             layoutManager = LinearLayoutManager(context)
@@ -47,7 +49,7 @@ class CoursesFragment : CacheFragment() {
     }
 
     inner class AvailableCoursesAdapter(list: Array<DefaultCourse>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
-        private val courses = list.filter { Data.player.courses[it.id] == 0 } as MutableList<DefaultCourse>
+        private val courses = list.filter { player.courses[it.id] == 0 } as MutableList<DefaultCourse>
 
         inner class AvailableCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
             val name = view.name!!
@@ -69,12 +71,12 @@ class CoursesFragment : CacheFragment() {
 
             holder.apply {
                 name.text = course.name
-                cost.text = course.money.toString()
-                currency.setImageBitmap(context.getCurrencyIcon(course.money))
+                cost.text = course.cost.toString()
+                currency.setImageBitmap(context.getCurrencyIcon(course.cost))
                 learn.setOnClickListener {
-                    if (Data.player.add(course.money)) {
+                    if (player.addMoney(course.cost)) {
                         val id = courses[position].id
-                        Data.player.courses[id] = Data.player.courses[id]!! + 1
+                        player.courses[id]++
                         val adapterPosition = holder.adapterPosition
                         currentAdapter.courses.add(0, courses.removeAt(adapterPosition))
                         notifyItemRemoved(adapterPosition)
@@ -88,7 +90,7 @@ class CoursesFragment : CacheFragment() {
     }
 
     inner class CurrentCoursesAdapter(list: Array<DefaultCourse>) : RecyclerView.Adapter<CurrentCoursesAdapter.CurrentCoursesHolder>() {
-        val courses = list.filter { Data.player.courses[it.id] in 1..(it.length - 1) } as MutableList<DefaultCourse>
+        val courses = list.filter { player.courses[it.id] in 1..(it.length - 1) } as MutableList<DefaultCourse>
 
 
         inner class CurrentCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -112,12 +114,12 @@ class CoursesFragment : CacheFragment() {
 
         override fun onBindViewHolder(holder: CurrentCoursesHolder, position: Int) {
             val course = courses[position]
-            fun cost() = course.skipCost * (1 - Data.player.courses[course.id]!!.toDouble() / course.length)
+            fun cost() = course.skipCost.multiply(1 - player.courses[course.id].toDouble() / course.length)
             fun updateCost() {
                 holder.skipCost.text = cost().count.divider()
             }
             holder.name.text = course.name
-            val p = Data.player.courses[course.id]!!
+            val p = player.courses[course.id]
             holder.process.text = p.toString()
             holder.max.text = course.length.toString()
 
@@ -126,15 +128,15 @@ class CoursesFragment : CacheFragment() {
 
             holder.button.setOnClickListener {
                 val id = course.id
-                Data.player.courses[id] = Data.player.courses[id]!! + 1
+                player.courses[id]++
                 update(course, holder)
-                Data.player += DefaultCondition(-5, -5, -5)
+                player.addCondition(DefaultCondition(-5, -5, -5))
                 updateCost()
             }
 
             holder.skip.setOnClickListener {
-                if (Data.player.add(cost())) {
-                    Data.player.courses[course.id] = course.length
+                if (player.addMoney(cost())) {
+                    player.courses[course.id] = course.length
                     update(course, holder)
                 } else {
                     toast(R.string.money_needed)
@@ -142,11 +144,11 @@ class CoursesFragment : CacheFragment() {
             }
             updateCost()
 
-            holder.skipCurrency.setImageBitmap(context.getCurrencyIcon(course.money))
+            holder.skipCurrency.setImageBitmap(context.getCurrencyIcon(course.cost))
         }
 
         private fun update(course: DefaultCourse, holder: CurrentCoursesHolder) {
-            if (Data.player.courses[course.id] == course.length) {
+            if (player.courses[course.id] == course.length) {
                 completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
                 notifyItemRemoved(holder.adapterPosition)
                 completeAdapter.notifyItemInserted(0)
@@ -162,8 +164,7 @@ class CoursesFragment : CacheFragment() {
 
     inner class CompletedCoursesAdapter(list: Array<DefaultCourse>) : RecyclerView.Adapter<CompletedCoursesAdapter.CompletedCoursesHolder>() {
 
-        val courses = list.filter { Data.player.courses[it.id]!! >= it.length } as MutableList<DefaultCourse>
-        //todo Caused by: kotlin.KotlinNullPointerException
+        val courses = list.filter { player.courses[it.id] >= it.length } as MutableList<DefaultCourse>
 
         inner class CompletedCoursesHolder(val view: TextView) : RecyclerView.ViewHolder(view)
 

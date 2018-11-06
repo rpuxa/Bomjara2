@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara.impl.save
 
+import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.actions.Actions
 import ru.rpuxa.bomjara.impl.cache.SuperSerializable
 
@@ -24,7 +25,7 @@ class Save21() : SuperSerializable {
     var energy = 100
     var fullness = 100
     var health = 100
-    var courses = IntArray(Actions.courses.size)
+    var courses = IntArray(actionsBase.courses.size)
     var deadByHungry = false
     var deadByZeroHealth = false
     var caughtByPolice = false

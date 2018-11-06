@@ -10,7 +10,8 @@ import kotlinx.android.synthetic.main.rate_dialog.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.browser
 import ru.rpuxa.bomjara.impl.changeVisibility
-import ru.rpuxa.bomjara.settings.settings
+import ru.rpuxa.bomjara.impl.Data.settings
+import ru.rpuxa.bomjara.impl.Data.statistic
 import ru.rpuxa.bomjara.impl.statistic.DefaultStatistic
 import ru.rpuxa.bomjara.impl.toast
 
@@ -45,7 +46,7 @@ class RateDialog : DialogFragment() {
             rate.setOnClickListener {
                 val review = rating_text.text.toString()
                 if (review.isNotBlank())
-                    DefaultStatistic.sendReview(rating_bar.rating, review)
+                    statistic.sendReview(rating_bar.rating, review)
                 dismiss()
                 activity.toast("Спасибо!")
                 settings.wasRated = true

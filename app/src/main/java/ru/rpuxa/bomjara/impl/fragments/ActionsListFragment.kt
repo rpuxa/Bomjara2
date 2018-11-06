@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.actions_list.*
 import kotlinx.android.synthetic.main.actions_list.view.*
-import ru.rpuxa.bomjara.*
-import ru.rpuxa.bomjara.impl.actions.Action
-import ru.rpuxa.bomjara.impl.actions.Actions
-import ru.rpuxa.bomjara.impl.getCurrencyIcon
-import ru.rpuxa.bomjara.impl.getMenuIcon
-import ru.rpuxa.bomjara.impl.save
-import ru.rpuxa.bomjara.impl.toast
+import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.api.actions.Action
+import ru.rpuxa.bomjara.api.actions.ActionsMenus
+import ru.rpuxa.bomjara.impl.*
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
 
 class ActionsListFragment : CacheFragment() {
 
@@ -37,13 +36,13 @@ class ActionsListFragment : CacheFragment() {
 
     override fun onChange(view: View) {
         val menu = arguments[MENU] as Int
-        val actions = Actions[menu]
+        val actions = actionsBase.getActionsByLevel(if (menu == ActionsMenus.JOBS.id) player.possessions.friend else player.possessions.location, menu)
         actions_list.setHasFixedSize(true)
         actions_list.layoutManager = LinearLayoutManager(context)
         actions_list.adapter = ActionsAdapter(actions)
         actions_list.adapter.notifyDataSetChanged()
         icon.setImageBitmap(context.getMenuIcon(menu))
-        title.text = Actions.getMenuName(menu)
+        title.text = ActionsMenus.getById(menu).menuName
         TipFragment.setTip(view.tip_action, menu)
     }
 
@@ -80,19 +79,19 @@ class ActionsListFragment : CacheFragment() {
         }
 
         private fun ActionsViewHolder.action(action: Action, context: Context) {
-            if (!Data.player.doingAction) {
+            if (!player.doingAction) {
 
-                when (action.canPerform(Data.player)) {
+                when (action.canPerform(player)) {
                     Action.NOTHING_NEEDED -> {
-                        Data.player.doingAction = true
+                        player.doingAction = true
                         bar.visibility = View.VISIBLE
                         illegal.visibility = View.INVISIBLE
                         bar.start(500) {
-                            Data.player.doingAction = false
+                            player.doingAction = false
                             if (action.illegal)
                                 illegal.visibility = View.VISIBLE
                             bar.visibility = View.INVISIBLE
-                            action.perform(Data.player)
+                            action.perform(player)
                             context.save()
                         }
                     }

@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.impl.cache
 
 import java.io.File
 
-interface Saveable {
+interface Savable {
 
     fun saveToFile(filesDir: File)
 

@@ -14,8 +14,6 @@ class NewPlayer(id: Long, name: String, old: Boolean) : DefaultPlayer(
         IntArray(Data.actionsBase.courses.size),
         0,
         100,
-        0,
-        false,
         false,
         false,
         false

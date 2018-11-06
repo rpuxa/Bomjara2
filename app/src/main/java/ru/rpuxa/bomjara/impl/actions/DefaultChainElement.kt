@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.impl.actions
 
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.player.Money
+import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.impl.player.DefaultPossessions
 
 class DefaultChainElement(
@@ -11,7 +12,7 @@ class DefaultChainElement(
         friend: Int,
         location: Int,
         override val course: Int,
-        override val cost: Money
+        override val cost: MonoCurrency
 ) : ChainElement {
     override val neededPossessions = DefaultPossessions(transport, home, friend, location)
 }

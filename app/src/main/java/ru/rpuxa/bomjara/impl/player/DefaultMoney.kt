@@ -5,7 +5,7 @@ import ru.rpuxa.bomjara.api.player.Money
 
 open class DefaultMoney : Money {
 
-    override val currencies: LongArray
+    final override val currencies: LongArray
 
     constructor() {
         currencies = LongArray(Currencies.values().size)
@@ -54,7 +54,7 @@ open class DefaultMoney : Money {
     }
 
     override fun addAssign(money: Money): Boolean {
-        if (canAdd(money))
+        if (!canAdd(money))
             return false
         for (i in currencies.indices)
             currencies[i] += money.currencies[i]

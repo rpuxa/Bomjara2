@@ -3,7 +3,8 @@ package ru.rpuxa.bomjara.impl.fragments
 import android.view.View
 import kotlinx.android.synthetic.main.location.view.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
 
 class LocationFragment : ChainFragment() {
     override val layout = R.layout.location
@@ -13,16 +14,16 @@ class LocationFragment : ChainFragment() {
                 "Местоположение",
                 R.drawable.colored_location,
                 "Перейти",
-                Actions.locations,
-                Data.player.possessions::location
+                actionsBase.locations,
+                player.possessions::location
         )
 
         view.friend_chain.install(
                 "Кореш",
                 R.drawable.colored_friend,
                 "Подружиться",
-                Actions.friends,
-                Data.player.possessions::friend
+                actionsBase.friends,
+                player.possessions::friend
         )
     }
 }

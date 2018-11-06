@@ -6,9 +6,9 @@ import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.actions.Vip
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.server.Server
-import ru.rpuxa.bomjara.impl.Data
-import ru.rpuxa.bomjara.impl.currency
+import ru.rpuxa.bomjara.impl.Data.server
 import ru.rpuxa.bomjara.impl.player.DefaultCondition
+import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjserver.CachedAction
 import ru.rpuxa.bomjserver.CachedChainElement
 import ru.rpuxa.bomjserver.CachedCourse
@@ -58,23 +58,23 @@ class Actions : ActionsBase {
         return map {
             DefaultChainElement(
                     it.name, it.transport.toInt(), it.home.toInt(), it.friend.toInt(), it.location.toInt(),
-                    it.course.toInt(), (-it.cost).toLong().currency(it.currency.toInt())
+                    it.course.toInt(), it.cost of it.currency.toInt()
             )
         }.toTypedArray()
     }
 
     private fun Array<CachedAction>.toActions(): Array<Action> {
-        return map { a ->
+        return map {
             DefaultAction(
-                    a.id.toInt(), a.level.toInt(), a.menu.toInt(), a.name, (-a.cost).toLong().currency(a.currency.toInt()),
-                    DefaultCondition(a.energy.toInt(), a.food.toInt(), a.health.toInt()), a.isIllegal
+                    it.id.toInt(), it.level.toInt(), it.menu.toInt(), it.name, -it.cost of it.currency.toInt(),
+                    DefaultCondition(it.energy.toInt(), it.food.toInt(), it.health.toInt()), it.isIllegal
             )
         }.toTypedArray()
     }
 
     private fun Array<CachedCourse>.toCourses(): Array<DefaultCourse> {
         return map {
-            DefaultCourse(it.id.toInt(), it.name, (-it.cost).toLong().currency(it.currency.toInt()), it.length.toInt())
+            DefaultCourse(it.id.toInt(), it.name, -it.cost of it.currency.toInt(), it.length.toInt())
         }.toTypedArray()
     }
 
@@ -159,17 +159,24 @@ class Actions : ActionsBase {
     @Suppress("UNCHECKED_CAST")
     private fun loadFromServer() {
         thread {
-            Data.server.send(Server.GET_CACHED_ACTIONS, Server.HASH) { hash ->
-                if (hash != null && hash is Int && hash != this.hash) {
-                    cachedHash = hash
-                    Data.server.send(Server.GET_CACHED_ACTIONS, Server.ACTIONS) { cachedActions = it as? Array<CachedAction>? }
-                    Data.server.send(Server.GET_CACHED_ACTIONS, Server.LOCATIONS) { cachedLocations = it as? Array<CachedChainElement>? }
-                    Data.server.send(Server.GET_CACHED_ACTIONS, Server.FRIENDS) { cachedFriends = it as? Array<CachedChainElement>? }
-                    Data.server.send(Server.GET_CACHED_ACTIONS, Server.TRANSPORTS) { cachedTransports = it as? Array<CachedChainElement>? }
-                    Data.server.send(Server.GET_CACHED_ACTIONS, Server.HOMES) { cachedHomes = it as? Array<CachedChainElement>? }
-                    Data.server.send(Server.GET_CACHED_ACTIONS, Server.COURSES) { cachedCourses = it as? Array<CachedCourse>? }
-                }
-            }
+            server.send(Server.GET_CACHED_ACTIONS, Server.HASH)
+                    .onCommand { hash ->
+                        if (hash as Int != this.hash) {
+                            cachedHash = hash
+                            server.send(Server.GET_CACHED_ACTIONS, Server.ACTIONS)
+                                    .onCommand{ cachedActions = it as? Array<CachedAction>? }
+                            server.send(Server.GET_CACHED_ACTIONS, Server.LOCATIONS)
+                                    .onCommand{ cachedLocations = it as? Array<CachedChainElement>? }
+                            server.send(Server.GET_CACHED_ACTIONS, Server.FRIENDS)
+                                    .onCommand{ cachedFriends = it as? Array<CachedChainElement>? }
+                            server.send(Server.GET_CACHED_ACTIONS, Server.TRANSPORTS)
+                                    .onCommand{ cachedTransports = it as? Array<CachedChainElement>? }
+                            server.send(Server.GET_CACHED_ACTIONS, Server.HOMES)
+                                    .onCommand{ cachedHomes = it as? Array<CachedChainElement>? }
+                            server.send(Server.GET_CACHED_ACTIONS, Server.COURSES)
+                                    .onCommand{ cachedCourses = it as? Array<CachedCourse>? }
+                        }
+                    }
         }
     }
 

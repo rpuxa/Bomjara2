@@ -9,11 +9,7 @@ interface MonoCurrency : Money {
 
     fun multiplyAssign(x: Double)
 
-    fun multiply(x: Double): MonoCurrency {
-        val money = clone()
-        money.multiplyAssign(x)
-        return money
-    }
+    fun multiply(x: Double) = clone().apply { multiplyAssign(x) }
 
     fun multiply(i: Int) = multiply(i.toDouble())
 

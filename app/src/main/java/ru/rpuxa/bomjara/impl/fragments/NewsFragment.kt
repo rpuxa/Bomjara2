@@ -11,9 +11,10 @@ import android.view.ViewGroup
 import android.widget.ViewSwitcher
 import kotlinx.android.synthetic.main.news_fragment.view.*
 import kotlinx.android.synthetic.main.news_item.view.*
-import ru.rpuxa.bomjara.impl.MONTHS
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.server.Server
+import ru.rpuxa.bomjara.api.server.Server
+import ru.rpuxa.bomjara.impl.Data.server
+import ru.rpuxa.bomjara.impl.MONTHS
 import ru.rpuxa.bomjara.impl.toast
 import ru.rpuxa.bomjserver.News
 import kotlin.math.min
@@ -42,15 +43,15 @@ class NewsFragment : Fragment() {
         private val news = ArrayList<CNews>()
 
         init {
-            Server.send(Server.NEWS_COUNT) {
-                activity?.runOnUiThread {
-                    if (it == null) {
-                        toast("Сервер недоступен")
-                    } else {
-                        newsCount = it.data as Int
+            server.send(Server.NEWS_COUNT)
+                    .onCommand {
+                        newsCount = it as Int
                     }
-                }
-            }
+                    .onError {
+                        activity?.runOnUiThread {
+                            toast("Сервер недоступен")
+                        }
+                    }
         }
 
         inner class Holder(val view: ViewSwitcher) : RecyclerView.ViewHolder(view) {
@@ -97,20 +98,22 @@ class NewsFragment : Fragment() {
             notifyItemChanged(news.size - 1)
         }
 
-        private fun loadNews(position: Int) = Thread {
-            Server.send(Server.GET_NEWS, position) {
-                activity?.runOnUiThread {
-                    if (it == null) {
-                        toast("Сервер недоступен")
-                        return@runOnUiThread
+        private fun loadNews(position: Int) {
+            server.send(Server.GET_NEWS, position)
+                    .onCommand {
+                        val n = it as News
+                        val date = n.date
+                        news.add(CNews(n.text, (date shr 21) and 0b1111111, (date shr 14) and 0b1111111, date and 0b1111111_1111111))
+                        activity?.runOnUiThread {
+                            notifyItemChanged(position)
+                        }
                     }
-                    val n = it.data as News
-                    val date = n.date
-                    news.add(CNews(n.text, (date shr 21) and 0b1111111, (date shr 14) and 0b1111111, date and 0b11111111111111))
-                    notifyItemChanged(position)
-                }
-            }
-        }.start()
+                    .onError {
+                        activity?.runOnUiThread {
+                            toast("Сервер недоступен")
+                        }
+                    }
+        }
     }
 
     private class CNews(val text: String, val day: Int, val month: Int, val year: Int)

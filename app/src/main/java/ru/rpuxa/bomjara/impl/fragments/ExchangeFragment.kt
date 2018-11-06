@@ -5,9 +5,13 @@ import android.text.TextWatcher
 import android.view.View
 import kotlinx.android.synthetic.main.exchange.*
 import kotlinx.android.synthetic.main.open_exchange.*
-import ru.rpuxa.bomjara.*
-import ru.rpuxa.bomjara.game.CurrencyExchange
-import ru.rpuxa.bomjara.impl.*
+import ru.rpuxa.bomjara.R
+import ru.rpuxa.bomjara.api.player.Currencies
+import ru.rpuxa.bomjara.impl.Data.exchange
+import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.impl.divider
+import ru.rpuxa.bomjara.impl.player.of
+import ru.rpuxa.bomjara.impl.toast
 import java.lang.Math.ceil
 
 class ExchangeFragment : CacheFragment() {
@@ -15,7 +19,7 @@ class ExchangeFragment : CacheFragment() {
     override val layout = R.layout.exchange
 
     private val bottles
-        get() = Data.player.money.bottles
+        get() = player.money.bottles
 
     override fun onChange(view: View) {
 
@@ -79,15 +83,15 @@ class ExchangeFragment : CacheFragment() {
 
 
     private fun View.setPercent(divide: Int) {
-        val count = Data.player.money.countFromCurrency(from) / divide
+        val count = player.money.currencies[from.id] / divide
         from_count.setText(count.toString())
         update(from, to)
     }
 
-    private fun View.update(fromCurrency: Int, toCurrency: Int) {
-        all.text = Data.player.money.countFromCurrency(from).toString()
+    private fun View.update(fromCurrency: Currencies, toCurrency: Currencies) {
+        all.text = player.money.currencies[from.id].toString()
         val from = from_count.text.toString().toLongOrNull() ?: 0L
-        val to = CurrencyExchange.convert(from, fromCurrency, toCurrency)
+        val to = exchange.convertWithCommission(from, fromCurrency, toCurrency)
         to_count.text = to.divider()
     }
 
@@ -96,13 +100,13 @@ class ExchangeFragment : CacheFragment() {
         val to = to
 
         val count = from_count.text.toString().toLongOrNull() ?: 0L
-        val convertedCount = CurrencyExchange.convert(count, from, to)
+        val convertedCount = exchange.convertWithCommission(count, from, to)
         when {
             from == to -> toast("Выберите разные валюты")
             count <= 0L || convertedCount == 0L -> toast("Введите положительную сумму")
-            !Data.player.add(-count.currency(from)) -> toast(getString(R.string.money_needed))
+            !player.addMoney(-count of from) -> toast(getString(R.string.money_needed))
             else -> {
-                Data.player.add(convertedCount.currency(to))
+                player.addMoney(convertedCount of to)
                 toast("Перевод выполнен")
                 update(from, to)
             }
@@ -111,17 +115,17 @@ class ExchangeFragment : CacheFragment() {
 
     private val View.from
         get() = when {
-            from_rubles.isChecked -> RUB
-            from_euros.isChecked -> EURO
-            from_bitcoins.isChecked -> BITCOIN
+            from_rubles.isChecked -> Currencies.RUBLES
+            from_euros.isChecked -> Currencies.EUROS
+            from_bitcoins.isChecked -> Currencies.BITCOINS
             else -> throw IllegalStateException()
         }
 
     private val View.to
         get() = when {
-            to_rubles.isChecked -> RUB
-            to_euros.isChecked -> EURO
-            to_bitcoins.isChecked -> BITCOIN
+            to_rubles.isChecked -> Currencies.RUBLES
+            to_euros.isChecked -> Currencies.EUROS
+            to_bitcoins.isChecked -> Currencies.BITCOINS
             else -> throw IllegalStateException()
         }
 
@@ -131,6 +135,6 @@ class ExchangeFragment : CacheFragment() {
         if (count == 0L)
             toast("У вас нет бутылок!")
         else
-            toast("Вы получили за бутылки ${CurrencyExchange.handOverBottles(count)} рублей")
+            toast("Вы получили за бутылки ${exchange.convert(count, Currencies.BOTTLES, Currencies.EUROS)} рублей")
     }
 }

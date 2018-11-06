@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.settings.saveSettings
-import ru.rpuxa.bomjara.settings.settings
+import ru.rpuxa.bomjara.impl.Data.settings
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -26,13 +25,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        saveSettings(filesDir)
+        settings.saveToFile(filesDir)
         super.onPause()
-    }
-
-    override fun onDestroy() {
-        saveSettings(filesDir)
-        super.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {

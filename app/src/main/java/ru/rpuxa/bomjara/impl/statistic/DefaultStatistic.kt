@@ -6,6 +6,7 @@ import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.server.Server
 import ru.rpuxa.bomjara.api.statistic.Statistic
 import ru.rpuxa.bomjara.impl.Data
+import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.cache.ToSerialize
 import ru.rpuxa.bomjara.impl.readObject
@@ -35,7 +36,7 @@ class DefaultStatistic : Statistic {
     }
 
     override fun sendStatistic() {
-        Data.player.apply {
+        player.apply {
             currentStatistic.apply {
                 val statistic = HashMap<Int, Any>().apply {
                     put(ID, saveId)
@@ -55,8 +56,9 @@ class DefaultStatistic : Statistic {
         }
     }
 
-    override fun sendReview(rating: Float, review: String) =
+    override fun sendReview(rating: Float, review: String) {
         Data.server.send(Server.REVIEW, Review(rating, review))
+    }
 
     override fun saveToFile(filesDir: File) {
         filesDir.writeObject(statistics.map { it.serialize() }, FILE)
@@ -65,7 +67,7 @@ class DefaultStatistic : Statistic {
     override fun loadFromFile(filesDir: File) {
         val readObject = filesDir.readObject<List<ToSerialize>>(FILE)
         statistics = readObject?.map {
-            CachedStatistic(SuperDeserializator.deserialize(it) as CachedStatistic, version = versionCode)
+            CachedStatistic(SuperDeserializator.deserialize(it) as? CachedStatistic, version = versionCode)
         } as MutableList<CachedStatistic>? ?: return
     }
 

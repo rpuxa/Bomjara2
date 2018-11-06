@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.api.actions
 
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.Money
+import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.api.player.Player
 
 typealias ActionId = Int
@@ -16,7 +17,7 @@ interface Action {
 
     val name: String
 
-    val addMoney: Money
+    val addMoney: MonoCurrency
 
     val addCondition: Condition
 

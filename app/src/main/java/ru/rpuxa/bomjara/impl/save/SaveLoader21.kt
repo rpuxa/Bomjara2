@@ -3,13 +3,13 @@ package ru.rpuxa.bomjara.impl.save
 import Game.Serialization.SerializablePlayer
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.saves.SaveLoader
+import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.cache.SuperSerializable
 import ru.rpuxa.bomjara.impl.random
 import ru.rpuxa.bomjara.impl.readObject
 import ru.rpuxa.bomjara.save.Save
 import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
-import ru.rpuxa.bomjara.settings.settings
 import ru.rpuxa.bomjara.impl.writeObject
 import java.io.File
 

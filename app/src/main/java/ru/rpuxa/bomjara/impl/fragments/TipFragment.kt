@@ -8,11 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.tip.view.*
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions.ENERGY
-import ru.rpuxa.bomjara.impl.actions.Actions.FOOD
-import ru.rpuxa.bomjara.impl.actions.Actions.HEALTH
-import ru.rpuxa.bomjara.impl.actions.Actions.JOBS
-import ru.rpuxa.bomjara.settings.settings
+import ru.rpuxa.bomjara.api.actions.ActionsMenus
+import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.R.id as i
 
 class TipFragment : Fragment() {
@@ -39,10 +36,10 @@ class TipFragment : Fragment() {
             allTips.add(view)
 
             view.text_tip.text = when (id) {
-                ENERGY -> "Бодрость сильно влияет на ваш заработок, чем выше бодрость тем лучше"
-                FOOD -> "Поддерживайте уровень еды, чтобы не умереть с голоду!"
-                HEALTH -> "Здоровье превыше всего! Не дайте ему опуститься ниже нуля, иначе смерти не миновать!"
-                JOBS -> "Работа - основной заработок в игре. Её эффективность сильно зависит от уровня бодрости. " +
+                ActionsMenus.ENERGY.id -> "Бодрость сильно влияет на ваш заработок, чем выше бодрость тем лучше"
+                ActionsMenus.FOOD.id -> "Поддерживайте уровень еды, чтобы не умереть с голоду!"
+                ActionsMenus.HEALTH.id -> "Здоровье превыше всего! Не дайте ему опуститься ниже нуля, иначе смерти не миновать!"
+                ActionsMenus.JOBS.id -> "Работа - основной заработок в игре. Её эффективность сильно зависит от уровня бодрости. " +
                         "Так же как и все действия делится на легальную и нет. " +
                         "Если работа нелегальна, то есть высокий шанс, что вас поймают. Будьте осторожны!"
                 i.tip_location -> "Продвигайтесь по локациям, чтобы открывать новые возможности. " +

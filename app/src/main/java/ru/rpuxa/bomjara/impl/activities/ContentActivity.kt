@@ -16,13 +16,16 @@ import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.content.*
 import kotlinx.android.synthetic.main.status_bars.*
 import kotlinx.android.synthetic.main.status_bars.view.*
-import ru.rpuxa.bomjara.*
+import ru.rpuxa.bomjara.BuildConfig
+import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
+import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.actions.Actions
-import ru.rpuxa.bomjara.game.CurrencyExchange
 import ru.rpuxa.bomjara.impl.*
-import ru.rpuxa.bomjara.impl.statistic.DefaultStatistic
+import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.impl.Data.statistic
+import ru.rpuxa.bomjara.impl.player.of
+import ru.rpuxa.bomjara.impl.player.rub
 import ru.rpuxa.bomjara.impl.views.RateDialog
 
 
@@ -33,8 +36,8 @@ class ContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content)
-        Data.statistic.loadPlayer(Data.player)
-        Data.player.listener = PlayerListener()
+        statistic.loadPlayer(player)
+        player.listener = PlayerListener()
 
         pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
@@ -83,9 +86,9 @@ class ContentActivity : AppCompatActivity() {
 
 
 
-        if (Data.player.old) {
-            Data.player.old = false
-            val gift = Data.actionsBase.getPenalty(Data.player)
+        if (player.old) {
+            player.old = false
+            val gift = Data.actionsBase.getPenalty(player)
             AlertDialog.Builder(this)
                     .setTitle("Спасибо за установку обновления")
                     .setCancelable(false)
@@ -93,10 +96,10 @@ class ContentActivity : AppCompatActivity() {
                             "при помощи подсказок. Так же держите от нас подарок - $gift рублей")
                     .setPositiveButton("Спасибо", null)
                     .show()
-            Data.player.add(Money(rubles = gift.toLong()))
+            player.addMoney(gift of Currencies.RUBLES)
         }
 
-        DefaultStatistic.sendStatistics()
+        Data.statistic.sendStatistic()
         save()
     }
 
@@ -107,7 +110,7 @@ class ContentActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         save()
-        Data.player.listener = null
+        player.listener = null
         super.onDestroy()
     }
 
@@ -121,13 +124,11 @@ class ContentActivity : AppCompatActivity() {
                 .show()
     }
 
-    inner class PlayerListener : Player.Listener {
+    private inner class PlayerListener : Player.Listener {
 
-        override val activity get() = this@ContentActivity
+        private var anim = ValueAnimator.ofFloat()!!
 
-        var anim = ValueAnimator.ofFloat()!!
-
-        override fun onMoneyChanged(positive: Boolean, currency: Int, addCount: Long) {
+        override fun onMoneyChanged(player: Player, positive: Boolean, currency: Int, addCount: Long) {
             fun set(textView: TextView, count: Long, currency0: Int) {
                 textView.text = count.divider()
                 if (currency != currency0 || addCount == 0L)
@@ -150,33 +151,32 @@ class ContentActivity : AppCompatActivity() {
                 anim.start()
             }
 
-            Data.player.money.apply {
-                set(status_bars.rubles, rubles, RUB)
-                set(status_bars.euros, euros, EURO)
-                set(status_bars.bitcoins, bitcoins, BITCOIN)
+            player.money.apply {
+                set(status_bars.rubles, rubles, Currencies.RUBLES.id)
+                set(status_bars.euros, euros, Currencies.EUROS.id)
+                set(status_bars.bitcoins, bitcoins, Currencies.BITCOINS.id)
             }
         }
 
 
-        override fun onConditionChanged() {
-            Data.player.condition.apply {
+        override fun onConditionChanged(player: Player) {
+            player.condition.apply {
                 energy_bar.animatedProgress = energy
                 fullness_bar.animatedProgress = fullness
                 health_bar.animatedProgress = health
             }
         }
 
-        override fun onMaxConditionChanged() {
-            Data.player.maxCondition.apply {
+        override fun onMaxConditionChanged(player: Player) {
+            player.maxCondition.apply {
                 fullness_bar.max = fullness
                 energy_bar.max = energy
                 health_bar.max = health
             }
         }
 
-        override fun onDead(hunger: Boolean) {
-            super.onDead(hunger)
-            val player = Data.player
+        override fun onDead(player: Player, hunger: Boolean) {
+            super.onDead(player, hunger)
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Бомж умер от " + if (hunger) "голода" else "болезни")
                     .setMessage(
@@ -199,7 +199,7 @@ class ContentActivity : AppCompatActivity() {
                     player.deadByHungry = false
                     player.condition.fullness = player.maxCondition.fullness
                     player.condition.health = player.maxCondition.health
-                    onConditionChanged()
+                    onConditionChanged(player)
                     dialog.dismiss()
                 }
                 if (!res) {
@@ -209,14 +209,13 @@ class ContentActivity : AppCompatActivity() {
 
         }
 
-        override fun onCaughtByPolice() {
-            super.onCaughtByPolice()
-            val player = Data.player
+        override fun onCaughtByPolice(player: Player) {
+            super.onCaughtByPolice(player)
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Вас поймали менты!")
                     .setMessage(
                             "Вы можете посмотреть рекламу, чтобы вас отпустили" +
-                                    " или заплатить штраф в размере ${Actions.penalty} рублей"
+                                    " или заплатить штраф в размере ${Data.actionsBase.getPenalty(player)} рублей"
                     )
                     .setCancelable(false)
                     .setIcon(R.drawable.prison)
@@ -230,7 +229,7 @@ class ContentActivity : AppCompatActivity() {
                     player.caughtByPolice = false
                     player.condition.fullness = player.maxCondition.fullness
                     player.condition.health = player.maxCondition.health
-                    onConditionChanged()
+                    onConditionChanged(player)
                     dialog.dismiss()
                 }
                 if (!res) {
@@ -239,21 +238,21 @@ class ContentActivity : AppCompatActivity() {
             }
 
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener penalty@{
-                if (Data.player.add((-Actions.penalty).rub)) {
+                if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
                     dialog.dismiss()
                     return@penalty
                 }
-                Data.player.add(Money(rubles = CurrencyExchange.convert(Data.player.money.euros, EURO, RUB)))
-                Data.player.money.euros = 0
-                if (Data.player.add((-Actions.penalty).rub)) {
+                player.addMoney(Data.exchange.convertWithCommission(player.money.euros, Currencies.EUROS, Currencies.RUBLES) of Currencies.RUBLES)
+                player.money.euros = 0
+                if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
                     toast("Для выплаты штрафа все ваши евро были переведены в рубли", false)
                     dialog.dismiss()
                     return@penalty
                 }
 
-                Data.player.add(Money(rubles = CurrencyExchange.convert(Data.player.money.bitcoins, BITCOIN, RUB)))
-                Data.player.money.bitcoins = 0
-                if (Data.player.add((-Actions.penalty).rub)) {
+                player.addMoney(Data.exchange.convertWithCommission(player.money.euros, Currencies.BITCOINS, Currencies.RUBLES) of Currencies.RUBLES)
+                player.money.bitcoins = 0
+                if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
                     toast("Для выплаты штрафа все ваши евро и биткоины были переведены в рубли", false)
                     dialog.dismiss()
                     return@penalty

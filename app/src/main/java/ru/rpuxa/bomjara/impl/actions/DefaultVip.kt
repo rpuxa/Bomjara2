@@ -4,6 +4,7 @@ import ru.rpuxa.bomjara.api.actions.Vip
 import ru.rpuxa.bomjara.api.actions.VipId
 import ru.rpuxa.bomjara.api.player.Currencies.DIAMONDS
 import ru.rpuxa.bomjara.api.player.Player
+import ru.rpuxa.bomjara.impl.Data.statistic
 import ru.rpuxa.bomjara.impl.player.of
 
 class DefaultVip(
@@ -19,7 +20,7 @@ class DefaultVip(
         if (!player.addMoney(cost of DIAMONDS))
             return false
         onBuy(player)
-        Statistic.countVip(id); toData
+        statistic.countVip(id)
         return true
     }
 }

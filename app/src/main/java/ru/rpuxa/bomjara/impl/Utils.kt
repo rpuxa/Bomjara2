@@ -10,45 +10,26 @@ import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.actions.Actions
-import ru.rpuxa.bomjara.impl.actions.Actions.ENERGY
-import ru.rpuxa.bomjara.impl.actions.Actions.FOOD
-import ru.rpuxa.bomjara.impl.actions.Actions.HEALTH
-import ru.rpuxa.bomjara.save.SaveLoader
-import ru.rpuxa.bomjara.settings.saveSettings
-import ru.rpuxa.bomjara.impl.statistic.DefaultStatistic
+import ru.rpuxa.bomjara.api.actions.ActionsMenus
+import ru.rpuxa.bomjara.api.player.Currencies
+import ru.rpuxa.bomjara.api.player.MonoCurrency
+import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.impl.Data.saveLoader
+import ru.rpuxa.bomjara.impl.Data.settings
+import ru.rpuxa.bomjara.impl.Data.statistic
 import java.io.*
 import java.util.*
 import kotlin.math.abs
 
 
-inline val Int.rub get() = Money(rubles = toLong())
-inline val Int.euro get() = Money(euros = toLong())
-inline val Int.bitcoin get() = Money(bitcoins = toLong())
-inline val Int.bottle get() = Money(bottles = toLong())
-
-fun Long.currency(id: Int) = when (id) {
-    RUB -> Money(rubles = this)
-    EURO -> Money(euros = this)
-    BITCOIN -> Money(bitcoins = this)
-    BOTTLES -> Money(bottles = this)
-    else -> throw IllegalStateException()
-}
-
-const val NONE = -1488
-const val RUB = 0
-const val EURO = 1
-const val BITCOIN = 2
-const val BOTTLES = 3
-const val DIAMONDS = 4
-
-fun Context.getCurrencyIcon(money: Money) =
+fun Context.getCurrencyIcon(money: MonoCurrency) =
         BitmapFactory.decodeResource(
                 resources,
                 when (money.currency) {
-                    RUB -> R.drawable.ruble
-                    EURO -> R.drawable.euro
-                    BITCOIN -> R.drawable.bitcoin
+                    Currencies.RUBLES -> R.drawable.ruble
+                    Currencies.EUROS -> R.drawable.euro
+                    Currencies.BITCOINS -> R.drawable.bitcoin
                     else -> R.drawable.bottle
                 }
         )!!
@@ -57,9 +38,9 @@ fun Context.getMenuIcon(menu: Int) =
         BitmapFactory.decodeResource(
                 resources,
                 when (menu) {
-                    ENERGY -> R.drawable.colored_energy
-                    FOOD -> R.drawable.colored_food
-                    HEALTH -> R.drawable.colored_health
+                    ActionsMenus.ENERGY.id -> R.drawable.colored_energy
+                    ActionsMenus.FOOD.id -> R.drawable.colored_food
+                    ActionsMenus.HEALTH.id -> R.drawable.colored_health
                     else -> R.drawable.colored_job
                 }
         )!!
@@ -108,11 +89,11 @@ fun changeVisibility(visibility: Int, vararg views: View) {
 
 fun Context.save() {
     val file = filesDir
-    SaveLoader.savePlayer(Data.player)
-    SaveLoader.save(file)
-    saveSettings(file)
-    DefaultStatistic.save(file)
-    Actions.save(file)
+    saveLoader.savePlayer(player)
+    saveLoader.saveToFile(file)
+    settings.saveToFile(file)
+    statistic.saveToFile(file)
+    actionsBase.save(file)
 }
 
 inline fun <reified T : Activity> Activity.startActivity() =
