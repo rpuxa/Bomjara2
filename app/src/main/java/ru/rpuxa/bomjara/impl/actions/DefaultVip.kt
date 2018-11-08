@@ -17,7 +17,7 @@ class DefaultVip(
 
 
     override fun buy(player: Player): Boolean {
-        if (!player.addMoney(cost of DIAMONDS))
+        if (!player.addMoney((cost of DIAMONDS).inv()))
             return false
         onBuy(player)
         statistic.countVip(id)

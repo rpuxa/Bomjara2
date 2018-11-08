@@ -40,9 +40,9 @@ open class DefaultPlayer(
         }
     }
 
-    override fun addCondition(condition: Condition) {
-        this.condition.addAssign(condition.multiply(gauss))
-        this.condition.truncateAssign(maxCondition)
+    override fun addCondition(add: Condition) {
+        condition.addAssign(add.multiply(gauss))
+        condition.truncateAssign(maxCondition)
         listener?.onConditionChanged(this)
         if (condition.health == 0)
             listener?.onDead(this, false)
@@ -52,10 +52,10 @@ open class DefaultPlayer(
 
     override val stringAge get() = "${25 + age / 365} лет ${age % 365} дней"
 
-    override fun addMoney(money: MonoCurrency): Boolean {
-        if (!this.money.addAssign(money))
+    override fun addMoney(add: MonoCurrency): Boolean {
+        if (!money.addAssign(add))
             return false
-        listener?.onMoneyChanged(this, money.positive, money.currency.id, money.count)
+        listener?.onMoneyChanged(this, add.positive, add.currency.id, add.count)
         return true
     }
 

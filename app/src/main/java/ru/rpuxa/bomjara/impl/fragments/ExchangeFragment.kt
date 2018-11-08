@@ -132,9 +132,10 @@ class ExchangeFragment : CacheFragment() {
 
     private fun handOver(percent: Double) {
         val count = ceil(bottles * percent).toLong()
+        val converted = exchange.convert(count, Currencies.BOTTLES, Currencies.RUBLES)
         if (count == 0L)
             toast("У вас нет бутылок!")
         else
-            toast("Вы получили за бутылки ${exchange.convert(count, Currencies.BOTTLES, Currencies.EUROS)} рублей")
+            toast("Вы получили за бутылки $converted рублей")
     }
 }

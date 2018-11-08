@@ -40,9 +40,9 @@ interface Player {
     val stringAge: String
 
 
-    fun addCondition(condition: Condition)
+    fun addCondition(add: Condition)
 
-    fun addMoney(money: MonoCurrency): Boolean
+    fun addMoney(add: MonoCurrency): Boolean
 
     fun addSalary(money: MonoCurrency)
 

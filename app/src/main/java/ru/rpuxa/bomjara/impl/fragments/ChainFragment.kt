@@ -5,7 +5,6 @@ import kotlinx.android.synthetic.main.chain.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.player.PossessionsList
-import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.changeVisibility
@@ -20,6 +19,9 @@ abstract class ChainFragment : CacheFragment() {
                                changeText: String,
                                elements: Array<ChainElement>,
                                ref: KMutableProperty0<Int>) {
+        name.text = name0
+        icon.setImageResource(icon0)
+        current.text = elements[ref.get()].name
         if (ref.get() + 1 >= elements.size) {
             changeVisibility(View.GONE, next, change, change_label, cost, currency)
             return
@@ -28,9 +30,6 @@ abstract class ChainFragment : CacheFragment() {
         val possessions = element.neededPossessions
         val money = element.cost.inv()
         val course = element.course
-        name.text = name0
-        icon.setImageResource(icon0)
-        current.text = elements[ref.get()].name
         changeVisibility(View.VISIBLE, next, change, change_label, cost, currency)
         next.text = element.name
         change.text = changeText
@@ -43,10 +42,10 @@ abstract class ChainFragment : CacheFragment() {
             val enoughFor = player.possessions.enoughFor(possessions)
             if (enoughFor != null) {
                 val msg = "Требуется " + when (enoughFor.possession) {
-                    PossessionsList.LOCATION -> toast("локация - ${actionsBase.locations[enoughFor.value].name}")
-                    PossessionsList.TRANSPORT -> toast("транспорт - ${actionsBase.transports[enoughFor.value].name}")
-                    PossessionsList.FRIEND -> toast("кореш - ${actionsBase.friends[enoughFor.value].name}")
-                    PossessionsList.HOME -> toast("дом - ${actionsBase.homes[enoughFor.value].name}")
+                    PossessionsList.LOCATION -> "локация - ${actionsBase.locations[enoughFor.value].name}"
+                    PossessionsList.TRANSPORT -> "транспорт - ${actionsBase.transports[enoughFor.value].name}"
+                    PossessionsList.FRIEND -> "кореш - ${actionsBase.friends[enoughFor.value].name}"
+                    PossessionsList.HOME -> "дом - ${actionsBase.homes[enoughFor.value].name}"
                 }
 
                 toast(msg)

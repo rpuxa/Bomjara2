@@ -50,7 +50,7 @@ open class DefaultMoney : Money {
 
     override fun canAdd(money: Money): Boolean {
         var i = 0
-        return currencies.all { money.currencies[i++] + it > 0 }
+        return currencies.all { money.currencies[i++] + it >= 0 }
     }
 
     override fun addAssign(money: Money): Boolean {

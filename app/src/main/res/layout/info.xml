@@ -499,21 +499,6 @@
 
         </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/textView31"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="@string/description_ver2_0"
-            android:textSize="10sp" />
-
-        <ImageView
-            android:id="@+id/vk"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="8dp"
-            app:srcCompat="@drawable/vk" />
-
     </LinearLayout>
 
 </ScrollView>

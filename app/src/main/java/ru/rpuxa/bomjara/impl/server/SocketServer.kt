@@ -30,7 +30,7 @@ class SocketServer : Server {
                     oos.flush()
                     val ans = ois.readObject() as ServerCommand
                     try {
-                        cmd.token.command(ans)
+                        cmd.token.command(ans.data)
                     } catch (e: Throwable) {
                         throw e
                     }
@@ -73,6 +73,6 @@ class SocketServer : Server {
 
 
     companion object {
-        private const val IP_SERVER = "10.222.235.149"
+        private const val IP_SERVER = "89.223.31.120"
     }
 }

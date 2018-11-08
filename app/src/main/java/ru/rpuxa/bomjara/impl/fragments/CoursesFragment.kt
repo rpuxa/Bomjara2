@@ -48,7 +48,7 @@ class CoursesFragment : CacheFragment() {
             current_courses_card_view.visibility = View.GONE
     }
 
-    inner class AvailableCoursesAdapter(list: Array<DefaultCourse>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
+    inner class AvailableCoursesAdapter(val list: Array<DefaultCourse>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
         private val courses = list.filter { player.courses[it.id] == 0 } as MutableList<DefaultCourse>
 
         inner class AvailableCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -67,7 +67,7 @@ class CoursesFragment : CacheFragment() {
                 courses.size
 
         override fun onBindViewHolder(holder: AvailableCoursesHolder, position: Int) {
-            val course = courses[position]
+            val course = courses[holder.adapterPosition]
 
             holder.apply {
                 name.text = course.name
@@ -75,11 +75,10 @@ class CoursesFragment : CacheFragment() {
                 currency.setImageBitmap(context.getCurrencyIcon(course.cost))
                 learn.setOnClickListener {
                     if (player.addMoney(course.cost)) {
-                        val id = courses[position].id
+                        val id = courses[holder.adapterPosition].id
                         player.courses[id]++
-                        val adapterPosition = holder.adapterPosition
-                        currentAdapter.courses.add(0, courses.removeAt(adapterPosition))
-                        notifyItemRemoved(adapterPosition)
+                        currentAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
+                        notifyItemRemoved(holder.adapterPosition)
                         currentAdapter.notifyItemInserted(0)
                         current_courses_card_view.visibility = View.VISIBLE
                     } else

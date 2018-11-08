@@ -80,7 +80,7 @@ class ContentActivity : AppCompatActivity() {
 
         //DEBUUUG
         if (BuildConfig.DEBUG) {
-
+            player.money.euros = 2000000
         }
 
 
