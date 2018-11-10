@@ -17,8 +17,8 @@ class ContentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
             ActionsListFragment.create(ActionsMenus.FOOD.id),
             ActionsListFragment.create(ActionsMenus.HEALTH.id),
             ActionsListFragment.create(ActionsMenus.JOBS.id),
-            VipFragment(),
-            MediaFragment()
+            VipFragment()
+           // MediaFragment()
     )
 
     override fun getItem(position: Int) = fragments[position]

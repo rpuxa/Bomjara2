@@ -39,9 +39,8 @@ class InfoFragment : CacheFragment() {
             max_fullness.text = player.maxCondition.fullness.toString()
             max_health.text = player.maxCondition.health.toString()
 
-            vk_card_view.visibility = if (settings.showVkGroupInvite) View.VISIBLE else View.GONE
-            vk_card_view.setOnClickListener {
-                context.browser(R.string.vk_group_link)
+            vk.setOnClickListener {
+                context.browser(R.string.vk_link)
             }
         }
     }

@@ -18,10 +18,6 @@ class SettingsActivity : AppCompatActivity() {
         show_tips.setOnCheckedChangeListener { _, isChecked ->
             settings.showTips = isChecked
         }
-        show_vk_invite.isChecked = settings.showVkGroupInvite
-        show_vk_invite.setOnCheckedChangeListener { _, isChecked ->
-            settings.showVkGroupInvite = isChecked
-        }
     }
 
     override fun onPause() {

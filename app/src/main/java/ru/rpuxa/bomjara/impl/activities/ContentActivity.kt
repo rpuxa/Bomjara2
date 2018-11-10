@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.impl.activities
 
 import android.animation.ValueAnimator
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.TextView
 import com.google.android.gms.ads.AdListener
@@ -51,8 +53,8 @@ class ContentActivity : AppCompatActivity() {
                         food,
                         health,
                         job,
-                        vip,
-                        bomj_media
+                        vip
+                        //    bomj_media
                 )
                 .setColoredIcons(
                         colored_info,
@@ -64,8 +66,8 @@ class ContentActivity : AppCompatActivity() {
                         colored_food,
                         colored_health,
                         colored_job,
-                        colored_vip,
-                        colored_bomj_media
+                        colored_vip
+//                        colored_bomj_media
                 )
                 .setViewPager(pager)
 
@@ -80,7 +82,7 @@ class ContentActivity : AppCompatActivity() {
 
         //DEBUUUG
         if (BuildConfig.DEBUG) {
-            player.money.euros = 2000000
+
         }
 
 

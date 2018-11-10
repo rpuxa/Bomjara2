@@ -8,8 +8,6 @@ interface Settings {
 
     var lastSave: Long
 
-    var showVkGroupInvite: Boolean
-
     var wasRated: Boolean
 
     fun saveToFile(filesDir: File)

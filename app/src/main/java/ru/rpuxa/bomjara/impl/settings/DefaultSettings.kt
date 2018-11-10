@@ -8,7 +8,6 @@ import java.io.File
 class DefaultSettings : Settings, SuperSerializable {
     override var showTips = true
     override var lastSave = -148822891823
-    override var showVkGroupInvite = true
     override var wasRated = false
 
     override fun saveToFile(filesDir: File) {
