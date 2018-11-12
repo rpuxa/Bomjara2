@@ -8,10 +8,10 @@ import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.cache.SuperSerializable
 import ru.rpuxa.bomjara.impl.random
 import ru.rpuxa.bomjara.impl.readObject
-import ru.rpuxa.bomjara.save.Save
-import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
 import ru.rpuxa.bomjara.impl.writeObject
+import ru.rpuxa.bomjara.save.Save
 import java.io.File
+import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
 
 class SaveLoader21 : SaveLoader {
     private class Saves21 : SuperSerializable {

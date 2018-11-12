@@ -1,10 +1,12 @@
 package ru.rpuxa.bomjara.impl.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.main_menu.*
+import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.Data.saveLoader
@@ -17,6 +19,7 @@ import ru.rpuxa.bomjara.impl.views.RateDialog
 
 class MenuActivity : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this, getString(R.string.ad_id))
@@ -39,6 +42,8 @@ class MenuActivity : AppCompatActivity() {
         menu_settings.setOnClickListener {
             startActivityFromRight<SettingsActivity>()
         }
+
+        menu_version.text = "version ${BuildConfig.VERSION_NAME}"
     }
 
     override fun onBackPressed() {

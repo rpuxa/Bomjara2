@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.impl.player
 
 import ru.rpuxa.bomjara.api.player.*
 import ru.rpuxa.bomjara.impl.gauss
+import kotlin.math.min
 
 open class DefaultPlayer(
         final override val id: Long,
@@ -60,7 +61,14 @@ open class DefaultPlayer(
     }
 
     override fun addSalary(money: MonoCurrency) {
-        addMoney(money.multiply(.5 + condition.energy.toDouble() / maxCondition.energy * gauss * efficiency / 100))
+        addMoney(money
+                .multiply(min(
+                        .5 + condition.energy.toDouble() / maxCondition.energy,
+                        1.7
+                ))
+                .multiply(gauss)
+                .multiply(efficiency.toDouble() / 100)
+        )
     }
 
     override fun addDiamond() {

@@ -26,11 +26,11 @@ class Actions : ActionsBase {
     override lateinit var courses: Array<DefaultCourse>
 
     override val vips = arrayOf<Vip>(
-            DefaultVip(0, "+10 к макс. запасу сытости", 9) {
+            DefaultVip(0, "+10 к макс. запасу сытости", 8) {
                 it.maxCondition.fullness += 10
                 it.listener?.onMaxConditionChanged(it)
             },
-            DefaultVip(1, "+10 к макс. запасу здоровья", 9) {
+            DefaultVip(1, "+10 к макс. запасу здоровья", 8) {
                 it.maxCondition.health += 10
                 it.listener?.onMaxConditionChanged(it)
 
@@ -39,7 +39,7 @@ class Actions : ActionsBase {
                 it.maxCondition.energy += 10
                 it.listener?.onMaxConditionChanged(it)
             },
-            DefaultVip(3, "+10% к эффективности работы", 15) {
+            DefaultVip(3, "+10% к эффективности работы", 17) {
                 it.efficiency += 10
             }
     )
