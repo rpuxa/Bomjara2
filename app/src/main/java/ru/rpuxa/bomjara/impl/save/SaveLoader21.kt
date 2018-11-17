@@ -1,19 +1,15 @@
 package ru.rpuxa.bomjara.impl.save
 
-import Game.Serialization.SerializablePlayer
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.saves.SaveLoader
-import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.cache.SuperSerializable
-import ru.rpuxa.bomjara.impl.random
-import ru.rpuxa.bomjara.impl.readObject
-import ru.rpuxa.bomjara.impl.writeObject
+import ru.rpuxa.bomjara.utils.writeObject
 import ru.rpuxa.bomjara.save.Save
 import java.io.File
 import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
 
-class SaveLoader21 : SaveLoader {
+object SaveLoader21 : SaveLoader {
     private class Saves21 : SuperSerializable {
         var list = ArrayList<Save21>()
     }
@@ -39,7 +35,6 @@ class SaveLoader21 : SaveLoader {
             if (saves != null)
                 saves21 = saves
         }
-        loadOld(filesDir)
     }
 
     override fun savePlayer(player: Player) {
@@ -54,54 +49,8 @@ class SaveLoader21 : SaveLoader {
         saves21.list.remove(save)
     }
 
-    private fun loadOld(file: File) {
-        try {
-            val oldSave = File(file, "player")
-            val player: SerializablePlayer = file.readObject(null) ?: return
-            val converted = convertOld(player)
-            saves21.list.add(converted)
-            oldSave.delete()
-            settings.lastSave = converted.id
-        } catch (e: ClassCastException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun convertOld(player: SerializablePlayer): Save21 {
-        val fields = player.fields
-        val maxIndicators = fields[15] as DoubleArray
-
-        return Save21(
-                random.nextLong(),
-                true,
-                "Старое сохранение",
-                fields[0] as Int,
-                fields[2] as Long,
-                fields[16] as Long,
-                fields[7] as Long,
-                fields[1] as Long,
-                fields[19] as Long,
-                fields[14] as Int,
-                fields[9] as Int,
-                fields[11] as Int,
-                fields[18] as Int,
-                Math.round((fields[5] as Double) * 100).toInt(),
-                maxIndicators[2].toInt(),
-                maxIndicators[0].toInt(),
-                maxIndicators[1].toInt(),
-                100,
-                100,
-                100,
-                fields[13] as IntArray,
-                false,
-                false,
-                false
-        )
-    }
-
     private fun Player.toSave21() = Save21(
             id,
-            old,
             name,
             age,
             money.bottles,
@@ -128,15 +77,17 @@ class SaveLoader21 : SaveLoader {
 
     private fun Save.toSave21(): Save21 {
         return Save21(
-                id, old, name, age, bottles, rubles, euros,
-                bitcoins, diamonds, location, friend, home, transport, efficiency,
+                id, name, age, bottles, rubles, euros,
+                bitcoins, diamonds,
+                if (location >= 3) location + 1 else location,
+                friend,
+                if (home >= 3) home + 1 else home,
+                transport, efficiency,
                 maxEnergy, maxFullness, maxHealth, energy, fullness, health, courses,
                 deadByHungry, deadByZeroHealth, caughtByPolice
         )
     }
 
-    companion object {
-        private const val SAVES21_FILE_NAME = "saves2.1"
-        private const val SAVES_FILE_NAME = "saves2.0"
-    }
+    private const val SAVES21_FILE_NAME = "saves2.1"
+    private const val SAVES_FILE_NAME = "saves2.0"
 }

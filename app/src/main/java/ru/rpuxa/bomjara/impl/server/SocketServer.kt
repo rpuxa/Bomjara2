@@ -11,7 +11,7 @@ import java.net.Socket
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
-class SocketServer : Server {
+object SocketServer : Server {
 
     private val commands = ArrayDeque<Cmd>()
     private val running = AtomicBoolean(false)
@@ -72,7 +72,5 @@ class SocketServer : Server {
     private data class Cmd(val serverCommand: ServerCommand, val token: ServerToken)
 
 
-    companion object {
-        private const val IP_SERVER = "89.223.31.120"
-    }
+    private const val IP_SERVER = "89.223.31.120"
 }

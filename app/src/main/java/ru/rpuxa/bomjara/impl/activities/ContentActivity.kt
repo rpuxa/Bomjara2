@@ -2,7 +2,6 @@ package ru.rpuxa.bomjara.impl.activities
 
 import android.animation.ValueAnimator
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.TextView
 import com.google.android.gms.ads.AdListener
@@ -29,6 +27,8 @@ import ru.rpuxa.bomjara.impl.Data.statistic
 import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjara.impl.player.rub
 import ru.rpuxa.bomjara.impl.views.RateDialog
+import ru.rpuxa.bomjara.utils.divider
+import ru.rpuxa.bomjara.utils.save
 
 
 class ContentActivity : AppCompatActivity() {
@@ -85,21 +85,6 @@ class ContentActivity : AppCompatActivity() {
 
         }
 
-
-
-
-        if (player.old) {
-            player.old = false
-            val gift = Data.actionsBase.getPenalty(player)
-            AlertDialog.Builder(this)
-                    .setTitle("Спасибо за установку обновления")
-                    .setCancelable(false)
-                    .setMessage("Мы полностью переработали дизайн и механику игры. С нововедениями можете ознакомиться " +
-                            "при помощи подсказок. Так же держите от нас подарок - $gift рублей")
-                    .setPositiveButton("Спасибо", null)
-                    .show()
-            player.addMoney(gift of Currencies.RUBLES)
-        }
 
         Data.statistic.sendStatistic()
         save()
@@ -205,7 +190,7 @@ class ContentActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
                 if (!res) {
-                    toast("Загрузка... Пожалуйста подождите")
+                    toast(R.string.ad_loading)
                 }
             }
 
@@ -235,7 +220,7 @@ class ContentActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
                 if (!res) {
-                    toast("Загрузка... Пожалуйста подождите")
+                    toast(R.string.ad_loading)
                 }
             }
 

@@ -9,12 +9,12 @@ import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.cache.ToSerialize
-import ru.rpuxa.bomjara.impl.readObject
-import ru.rpuxa.bomjara.impl.writeObject
+import ru.rpuxa.bomjara.utils.readObject
+import ru.rpuxa.bomjara.utils.writeObject
 import ru.rpuxa.bomjserver.Review
 import java.io.File
 
-class DefaultStatistic : Statistic {
+object DefaultStatistic : Statistic {
     override var versionCode = -1
 
     override fun countAction(id: ActionId) {
@@ -75,19 +75,17 @@ class DefaultStatistic : Statistic {
 
     private var statistics: MutableList<CachedStatistic> = ArrayList()
 
-    companion object {
-        private const val FILE = "statistic2.0"
+    private const val FILE = "statistic2.0"
 
-        const val ID = 0
-        const val ACTIONS = 1
-        const val AGE = 2
-        const val LOCATION = 3
-        const val FRIEND = 4
-        const val TRANSPORT = 5
-        const val HOME = 6
-        const val COURSES = 7
-        const val VIPS = 8
-        const val VERSION_CODE = 9
-    }
+    private const val ID = 0
+    private const val ACTIONS = 1
+    private const val AGE = 2
+    private const val LOCATION = 3
+    private const val FRIEND = 4
+    private const val TRANSPORT = 5
+    private const val HOME = 6
+    private const val COURSES = 7
+    private const val VIPS = 8
+    private const val VERSION_CODE = 9
 
 }

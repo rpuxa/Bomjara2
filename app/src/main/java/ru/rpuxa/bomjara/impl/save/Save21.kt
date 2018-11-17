@@ -6,7 +6,6 @@ import ru.rpuxa.bomjara.impl.cache.SuperSerializable
 
 class Save21() : SuperSerializable {
     var id = 0L
-    var old = false
     var name = "name"
     var age = 0
     var bottles = 0L
@@ -30,14 +29,13 @@ class Save21() : SuperSerializable {
     var deadByZeroHealth = false
     var caughtByPolice = false
 
-    constructor(id: Long, old: Boolean, name: String, age: Int, bottles: Long,
+    constructor(id: Long, name: String, age: Int, bottles: Long,
                 rubles: Long, euros: Long, bitcoins: Long, diamonds: Long, location: Int,
                 friend: Int, home: Int, transport: Int, efficiency: Int, maxEnergy: Int,
                 maxFullness: Int, maxHealth: Int, energy: Int, fullness: Int, health: Int,
                 courses: IntArray, deadByHungry: Boolean, deadByZeroHealth: Boolean,
                 caughtByPolice: Boolean) : this() {
         this.id = id
-        this.old = old
         this.name = name
         this.age = age
         this.bottles = bottles

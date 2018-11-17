@@ -17,7 +17,7 @@ import kotlin.concurrent.thread
 import kotlin.properties.Delegates
 
 
-class Actions : ActionsBase {
+object Actions : ActionsBase {
     override lateinit var actions: Array<Action>
     override lateinit var locations: Array<ChainElement>
     override lateinit var friends: Array<ChainElement>
@@ -164,23 +164,21 @@ class Actions : ActionsBase {
                         if (hash as Int != this.hash) {
                             cachedHash = hash
                             server.send(Server.GET_CACHED_ACTIONS, Server.ACTIONS)
-                                    .onCommand{ cachedActions = it as? Array<CachedAction>? }
+                                    .onCommand { cachedActions = it as? Array<CachedAction>? }
                             server.send(Server.GET_CACHED_ACTIONS, Server.LOCATIONS)
-                                    .onCommand{ cachedLocations = it as? Array<CachedChainElement>? }
+                                    .onCommand { cachedLocations = it as? Array<CachedChainElement>? }
                             server.send(Server.GET_CACHED_ACTIONS, Server.FRIENDS)
-                                    .onCommand{ cachedFriends = it as? Array<CachedChainElement>? }
+                                    .onCommand { cachedFriends = it as? Array<CachedChainElement>? }
                             server.send(Server.GET_CACHED_ACTIONS, Server.TRANSPORTS)
-                                    .onCommand{ cachedTransports = it as? Array<CachedChainElement>? }
+                                    .onCommand { cachedTransports = it as? Array<CachedChainElement>? }
                             server.send(Server.GET_CACHED_ACTIONS, Server.HOMES)
-                                    .onCommand{ cachedHomes = it as? Array<CachedChainElement>? }
+                                    .onCommand { cachedHomes = it as? Array<CachedChainElement>? }
                             server.send(Server.GET_CACHED_ACTIONS, Server.COURSES)
-                                    .onCommand{ cachedCourses = it as? Array<CachedCourse>? }
+                                    .onCommand { cachedCourses = it as? Array<CachedCourse>? }
                         }
                     }
         }
     }
 
-    companion object {
-        private const val SERVER_ACTIONS_FILE = "server_actions.bomj"
-    }
+    private const val SERVER_ACTIONS_FILE = "server_actions.bomj"
 }

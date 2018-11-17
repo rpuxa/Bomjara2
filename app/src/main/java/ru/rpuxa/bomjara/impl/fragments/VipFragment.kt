@@ -53,7 +53,7 @@ class VipFragment : Fragment() {
                 view.updateMoney()
             }
             if (!res) {
-                toast("Загрузка.. Пожалуйста подождите")
+                toast(R.string.ad_loading)
             }
         }
     }

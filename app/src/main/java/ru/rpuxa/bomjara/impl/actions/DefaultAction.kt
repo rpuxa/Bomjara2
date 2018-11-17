@@ -8,10 +8,9 @@ import ru.rpuxa.bomjara.api.actions.ActionId
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.random
+import ru.rpuxa.bomjara.utils.random
 import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.Data.statistic
-import ru.rpuxa.bomjara.impl.statistic.DefaultStatistic
 import ru.rpuxa.bomjara.impl.views.RateDialog
 
 class DefaultAction(

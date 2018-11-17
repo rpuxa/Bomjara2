@@ -15,11 +15,11 @@ import ru.rpuxa.bomjara.impl.statistic.DefaultStatistic
 import kotlin.properties.Delegates
 
 object Data {
-    val server: Server = SocketServer()
-    val actionsBase: ActionsBase = Actions()
-    val saveLoader: SaveLoader = SaveLoader21()
-    val exchange: CurrencyExchange = DefaultCurrencyExchange()
-    val statistic: Statistic = DefaultStatistic()
-    var player by Delegates.notNull<Player>()
-    var settings by Delegates.notNull<Settings>()
+    val server: Server = SocketServer
+    val actionsBase: ActionsBase = Actions
+    val saveLoader: SaveLoader = SaveLoader21
+    val exchange: CurrencyExchange = DefaultCurrencyExchange
+    val statistic: Statistic = DefaultStatistic
+    lateinit var player: Player
+    lateinit var settings: Settings
 }

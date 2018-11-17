@@ -20,6 +20,7 @@ import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.player.NewPlayer
 import ru.rpuxa.bomjara.impl.player.PlayerFromSave
 import ru.rpuxa.bomjara.impl.save.Save21
+import ru.rpuxa.bomjara.utils.random
 
 
 class SavesActivity : AppCompatActivity() {
@@ -43,7 +44,7 @@ class SavesActivity : AppCompatActivity() {
 
         new_save.setOnClickListener {
             pickNameDialog(randName) { name ->
-                startGame(NewPlayer(random.nextLong(), name, false))
+                startGame(NewPlayer(random.nextLong(), name))
             }
         }
         if (new != null && new is Boolean && new) {

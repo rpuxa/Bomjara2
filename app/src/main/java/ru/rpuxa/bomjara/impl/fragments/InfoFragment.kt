@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.info.*
-import kotlinx.android.synthetic.main.vk_group.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.browser
-import ru.rpuxa.bomjara.impl.divider
+import ru.rpuxa.bomjara.utils.divider
 
 class InfoFragment : CacheFragment() {
 

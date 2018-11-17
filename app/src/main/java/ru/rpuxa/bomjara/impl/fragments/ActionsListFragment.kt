@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.actions_list.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Action
 import ru.rpuxa.bomjara.api.actions.ActionsMenus
-import ru.rpuxa.bomjara.impl.*
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
+import ru.rpuxa.bomjara.utils.save
 
 class ActionsListFragment : CacheFragment() {
 

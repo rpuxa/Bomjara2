@@ -29,6 +29,7 @@
     <string name="vk_group_link">https://vk.com/simulator_bomja</string>
     <string name="description_ver2_0">Версия 2.0 находится в стадии доработки, так что если вы обнаружили какой-то баг, буду очень благодарен, если вы скинете его мне в вк. Спасибо!</string>
     <string name="group_invite">Переходите в нашу группу в вк. Как только наберется определенное количество человек, проведем конкурс на 1000 реальных рублей</string>
+    <string name="ad_loading">Загрузка... Если она занимает много времени, перезапустите игру</string>
 
     <string-array name="homeless_names">
         <item>Геннадий</item>

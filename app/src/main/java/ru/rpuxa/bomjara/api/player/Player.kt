@@ -9,8 +9,6 @@ interface Player {
 
     var name: String
 
-    var old: Boolean
-
     var listener: Listener?
 
     val condition: Condition

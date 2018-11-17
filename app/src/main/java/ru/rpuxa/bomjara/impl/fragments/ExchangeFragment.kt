@@ -9,7 +9,7 @@ import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.impl.Data.exchange
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.divider
+import ru.rpuxa.bomjara.utils.divider
 import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjara.impl.toast
 import java.lang.Math.ceil
@@ -22,8 +22,9 @@ class ExchangeFragment : CacheFragment() {
         get() = player.money.bottles
 
     override fun onChange(view: View) {
-
         with(view) {
+            setBottles()
+
             bottles_all.setOnClickListener {
                 handOver(1.0)
             }
@@ -79,6 +80,10 @@ class ExchangeFragment : CacheFragment() {
 
             update(from, to)
         }
+    }
+
+    private fun setBottles() {
+        exchange_bottles_count.text = player.money.bottles.toString()
     }
 
 
@@ -137,5 +142,6 @@ class ExchangeFragment : CacheFragment() {
             toast("У вас нет бутылок!")
         else
             toast("Вы получили за бутылки $converted рублей")
+        setBottles()
     }
 }

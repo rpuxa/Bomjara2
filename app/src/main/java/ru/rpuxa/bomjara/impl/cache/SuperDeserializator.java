@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import ru.rpuxa.bomjara.impl.UtilsKt;
+import ru.rpuxa.bomjara.utils.OtherUtilsKt;
 
 public class SuperDeserializator {
 
     public static Object deserialize(File files, String fileName) {
-        ToSerialize serialize = UtilsKt.readObject(files, fileName);
+        ToSerialize serialize = OtherUtilsKt.readObject(files, fileName);
         if (serialize == null)
             return null;
         return deserialize(serialize);

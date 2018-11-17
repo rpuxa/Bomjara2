@@ -14,10 +14,10 @@ import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.actions.DefaultCourse
-import ru.rpuxa.bomjara.impl.divider
+import ru.rpuxa.bomjara.utils.divider
 import ru.rpuxa.bomjara.impl.getCurrencyIcon
 import ru.rpuxa.bomjara.impl.player.DefaultCondition
-import ru.rpuxa.bomjara.impl.save
+import ru.rpuxa.bomjara.utils.save
 import ru.rpuxa.bomjara.impl.toast
 
 class CoursesFragment : CacheFragment() {
