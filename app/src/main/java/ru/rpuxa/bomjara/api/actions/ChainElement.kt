@@ -1,14 +1,21 @@
 package ru.rpuxa.bomjara.api.actions
 
+import ru.rpuxa.bomjara.api.actions.auxiliary.CanBuy
+import ru.rpuxa.bomjara.api.actions.auxiliary.Nameable
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.api.player.Possessions
 
-interface ChainElement {
-    val name: String
+interface ChainElement : CanBuy, Nameable {
 
+    /**
+     * Possessions that needed to buy this element
+     */
     val neededPossessions: Possessions
 
-    val course: CourseId
+    /**
+     * Needed course id
+     */
+    val courseId: Int
 
-    val cost: MonoCurrency
+    override val cost: MonoCurrency
 }

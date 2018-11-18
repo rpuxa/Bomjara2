@@ -16,12 +16,16 @@ import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.content.*
 import kotlinx.android.synthetic.main.status_bars.*
 import kotlinx.android.synthetic.main.status_bars.view.*
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.*
+import ru.rpuxa.bomjara.impl.ContentAdapter
+import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.Data.statistic
 import ru.rpuxa.bomjara.impl.player.of
@@ -54,7 +58,6 @@ class ContentActivity : AppCompatActivity() {
                         health,
                         job,
                         vip
-                        //    bomj_media
                 )
                 .setColoredIcons(
                         colored_info,
@@ -67,7 +70,6 @@ class ContentActivity : AppCompatActivity() {
                         colored_health,
                         colored_job,
                         colored_vip
-//                        colored_bomj_media
                 )
                 .setViewPager(pager)
 
@@ -164,12 +166,12 @@ class ContentActivity : AppCompatActivity() {
 
         override fun onDead(player: Player, hunger: Boolean) {
             super.onDead(player, hunger)
+            startActivity<MenuActivity>()
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Бомж умер от " + if (hunger) "голода" else "болезни")
                     .setMessage(
                             (if (hunger) "Уровень сытости опустился ниже нуля!" else "Уровень здоровья опустился ниже нуля!") +
-                                    " Вы можете воскресить его, посмотрев рекламу, " +
-                                    "или начать заново, потеряв прогресс"
+                                    " Вы можете воскресить его, посмотрев рекламу, или начать заново, потеряв прогресс"
                     )
                     .setIcon(R.drawable.dead)
                     .setCancelable(false)
@@ -181,7 +183,7 @@ class ContentActivity : AppCompatActivity() {
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val res = ad.show {
-                    toast("Мы вас с того света достали! Пожалуйста, не забывайте о своем здоровье", false)
+                    longToast("Мы вас с того света достали! Пожалуйста, не забывайте о своем здоровье")
                     player.deadByZeroHealth = false
                     player.deadByHungry = false
                     player.condition.fullness = player.maxCondition.fullness
@@ -212,7 +214,7 @@ class ContentActivity : AppCompatActivity() {
 
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val res = ad.show {
-                    toast("Так уж и быть мы вас отпустим. Впредь будьте аккуратнее", false)
+                    longToast("Так уж и быть мы вас отпустим. Впредь будьте аккуратнее")
                     player.caughtByPolice = false
                     player.condition.fullness = player.maxCondition.fullness
                     player.condition.health = player.maxCondition.health
@@ -232,7 +234,7 @@ class ContentActivity : AppCompatActivity() {
                 player.addMoney(Data.exchange.convertWithCommission(player.money.euros, Currencies.EUROS, Currencies.RUBLES) of Currencies.RUBLES)
                 player.money.euros = 0
                 if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
-                    toast("Для выплаты штрафа все ваши евро были переведены в рубли", false)
+                    longToast("Для выплаты штрафа все ваши евро были переведены в рубли")
                     dialog.dismiss()
                     return@penalty
                 }
@@ -240,7 +242,7 @@ class ContentActivity : AppCompatActivity() {
                 player.addMoney(Data.exchange.convertWithCommission(player.money.euros, Currencies.BITCOINS, Currencies.RUBLES) of Currencies.RUBLES)
                 player.money.bitcoins = 0
                 if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
-                    toast("Для выплаты штрафа все ваши евро и биткоины были переведены в рубли", false)
+                    longToast("Для выплаты штрафа все ваши евро и биткоины были переведены в рубли")
                     dialog.dismiss()
                     return@penalty
                 }

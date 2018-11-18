@@ -4,6 +4,7 @@ import ru.rpuxa.bomjara.api.actions.Action
 import ru.rpuxa.bomjara.api.actions.ActionsBase
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.actions.Vip
+import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.server.Server
 import ru.rpuxa.bomjara.impl.Data.server
@@ -18,35 +19,57 @@ import kotlin.properties.Delegates
 
 
 object Actions : ActionsBase {
+
     override lateinit var actions: Array<Action>
+        private set
     override lateinit var locations: Array<ChainElement>
+        private set
     override lateinit var friends: Array<ChainElement>
+        private set
     override lateinit var transports: Array<ChainElement>
+        private set
     override lateinit var homes: Array<ChainElement>
+        private set
     override lateinit var courses: Array<DefaultCourse>
+        private set
 
-    override val vips = arrayOf<Vip>(
-            DefaultVip(0, "+10 к макс. запасу сытости", 8) {
-                it.maxCondition.fullness += 10
-                it.listener?.onMaxConditionChanged(it)
-            },
-            DefaultVip(1, "+10 к макс. запасу здоровья", 8) {
-                it.maxCondition.health += 10
-                it.listener?.onMaxConditionChanged(it)
+    override val vips = vips {
+        add(0, "+10 к макс. запасу сытости", 8) {
+            it.maxCondition.fullness += 10
+            it.listener?.onMaxConditionChanged(it)
+        }
+        add(1, "+10 к макс. запасу здоровья", 8) {
+            it.maxCondition.health += 10
+            it.listener?.onMaxConditionChanged(it)
 
-            },
-            DefaultVip(2, "+10 к макс. запасу бодрости", 9) {
-                it.maxCondition.energy += 10
-                it.listener?.onMaxConditionChanged(it)
-            },
-            DefaultVip(3, "+10% к эффективности работы", 17) {
-                it.efficiency += 10
-            }
-    )
+        }
+        add(2, "+10 к макс. запасу бодрости", 9) {
+            it.maxCondition.energy += 10
+            it.listener?.onMaxConditionChanged(it)
+        }
+        add(3, "+10% к эффективности работы", 17) {
+            it.efficiency += 10
+        }
+    }
 
     override fun getPenalty(player: Player) = penalties[player.possessions.location]
 
     override fun getActionsByLevel(level: Int, menu: Int) = actions.filter { it.level == level && it.menu == menu }
+
+    private inline fun vips(block: CreateVip.() -> Unit): Array<Vip> {
+        val create = CreateVip()
+        create.block()
+        return create.list.toTypedArray()
+    }
+
+    private class CreateVip {
+
+        val list = ArrayList<Vip>()
+
+        fun add(id: Int, name: String, cost: Int, onBuy: (Player) -> Unit) {
+            list.add(DefaultVip(id, name, cost of Currencies.DIAMONDS, onBuy))
+        }
+    }
 
     private var hash by Delegates.notNull<Int>()
 

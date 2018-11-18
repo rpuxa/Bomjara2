@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.info.*
+import org.jetbrains.anko.browse
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.browser
+import ru.rpuxa.bomjara.utils.ageToString
 import ru.rpuxa.bomjara.utils.divider
 
 class InfoFragment : CacheFragment() {
@@ -19,7 +20,7 @@ class InfoFragment : CacheFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(view) {
             save_name.text = player.name
-            age.text = player.stringAge
+            age.text = ageToString(player.age)
 
             location.text = actionsBase.locations[player.possessions.location].name
             friend.text = actionsBase.friends[player.possessions.friend].name
@@ -38,7 +39,7 @@ class InfoFragment : CacheFragment() {
             max_health.text = player.maxCondition.health.toString()
 
             vk.setOnClickListener {
-                context.browser(R.string.vk_link)
+                context.browse(getString(R.string.vk_link))
             }
         }
     }

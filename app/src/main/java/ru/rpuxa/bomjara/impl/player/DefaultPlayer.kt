@@ -49,8 +49,6 @@ open class DefaultPlayer(
             listener?.onDead(this, true)
     }
 
-    override val stringAge get() = "${25 + age / 365} лет ${age % 365} дней"
-
     override fun addMoney(add: MonoCurrency): Boolean {
         if (!money.addAssign(add))
             return false

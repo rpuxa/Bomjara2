@@ -1,7 +1,5 @@
 package ru.rpuxa.bomjara.api.statistic
 
-import ru.rpuxa.bomjara.api.actions.ActionId
-import ru.rpuxa.bomjara.api.actions.VipId
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.impl.cache.Savable
 
@@ -9,9 +7,9 @@ interface Statistic : Savable {
 
     var versionCode: Int
 
-    fun countAction(id: ActionId)
+    fun countAction(id: Int)
 
-    fun countVip(id: VipId)
+    fun countVip(id: Int)
 
     fun loadPlayer(player: Player)
 

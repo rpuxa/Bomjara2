@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_prehistory.*
+import org.jetbrains.anko.startActivity
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.Data.settings
-import ru.rpuxa.bomjara.impl.startActivity
 
 class PrehistoryActivity : AppCompatActivity() {
 

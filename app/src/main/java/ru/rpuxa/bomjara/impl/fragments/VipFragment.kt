@@ -10,18 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.vip_item.view.*
 import kotlinx.android.synthetic.main.vip_opened.view.*
+import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Vip
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.actions.Actions
-import ru.rpuxa.bomjara.impl.actions.DefaultVip
 import ru.rpuxa.bomjara.impl.activities.App
-import ru.rpuxa.bomjara.impl.toast
 
 class VipFragment : Fragment() {
 
-    private val ad get() = (activity.application as App).videoAd
+    private val ad get() = (activity!!.application as App).videoAd
 
     private val closed get() = player.possessions.location < 2
 
@@ -81,7 +79,7 @@ class VipFragment : Fragment() {
             holder.name.text = vip.name
             holder.cost.text = "-" + vip.cost.toString()
             holder.name.setOnClickListener {
-                toast(if (vip.buy(player)) "Куплено!" else context.getString(R.string.money_needed))
+                toast(if (vip.buy(player)) "Куплено!" else getString(R.string.money_needed))
                 openedView?.updateMoney()
             }
         }

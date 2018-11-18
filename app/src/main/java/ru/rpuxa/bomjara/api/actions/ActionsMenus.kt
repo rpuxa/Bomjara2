@@ -4,6 +4,9 @@ import android.support.annotation.IdRes
 import ru.rpuxa.bomjara.R.drawable.*
 import ru.rpuxa.bomjara.api.HasIcon
 
+/**
+ * All menus with actions existing in game
+ */
 enum class ActionsMenus(val id: Int, val menuName: String, @IdRes override val iconId: Int) : HasIcon {
     ENERGY(0, "Бодрость", colored_energy),
     FOOD(1, "Еда", colored_food),

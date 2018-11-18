@@ -5,13 +5,13 @@ import android.text.TextWatcher
 import android.view.View
 import kotlinx.android.synthetic.main.exchange.*
 import kotlinx.android.synthetic.main.open_exchange.*
+import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.impl.Data.exchange
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.utils.divider
 import ru.rpuxa.bomjara.impl.player.of
-import ru.rpuxa.bomjara.impl.toast
+import ru.rpuxa.bomjara.utils.divider
 import java.lang.Math.ceil
 
 class ExchangeFragment : CacheFragment() {
@@ -106,16 +106,18 @@ class ExchangeFragment : CacheFragment() {
 
         val count = from_count.text.toString().toLongOrNull() ?: 0L
         val convertedCount = exchange.convertWithCommission(count, from, to)
-        when {
-            from == to -> toast("Выберите разные валюты")
-            count <= 0L || convertedCount == 0L -> toast("Введите положительную сумму")
-            !player.addMoney(-count of from) -> toast(getString(R.string.money_needed))
+        val msg = when {
+            from == to -> "Выберите разные валюты"
+            count <= 0L || convertedCount == 0L -> "Введите положительную сумму"
+            !player.addMoney(-count of from) -> getString(R.string.money_needed)
             else -> {
                 player.addMoney(convertedCount of to)
-                toast("Перевод выполнен")
                 update(from, to)
+                "Перевод выполнен"
             }
         }
+
+        toast(msg)
     }
 
     private val View.from

@@ -12,14 +12,17 @@ import android.view.ViewGroup
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_save.*
 import kotlinx.android.synthetic.main.save_card_view.view.*
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.*
+import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.saveLoader
 import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.player.NewPlayer
 import ru.rpuxa.bomjara.impl.player.PlayerFromSave
 import ru.rpuxa.bomjara.impl.save.Save21
+import ru.rpuxa.bomjara.utils.ageToString
 import ru.rpuxa.bomjara.utils.random
 
 
@@ -116,7 +119,7 @@ class SavesActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: SaveViewHolder, position: Int) {
             val save = list[position]
             holder.saveName.text = save.name
-            holder.age.text = getStringAge(save.age)
+            holder.age.text = ageToString(save.age)
             holder.money.text = save.rubles.toString()
 
             val popup = PopupMenu(holder.view.context, holder.view)

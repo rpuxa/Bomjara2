@@ -1,3 +1,4 @@
+/*
 package ru.rpuxa.bomjara.impl.fragments
 
 import android.os.Bundle
@@ -13,8 +14,6 @@ import kotlinx.android.synthetic.main.news_item.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.server.Server
 import ru.rpuxa.bomjara.impl.Data.server
-import ru.rpuxa.bomjara.impl.MONTHS
-import ru.rpuxa.bomjara.impl.toast
 import ru.rpuxa.bomjserver.News
 import kotlin.math.min
 
@@ -100,4 +99,4 @@ class NewsFragment : Fragment() {
     }
 
     private class NewsItem(val text: String, val day: Int, val month: Int, val year: Int)
-}
+}*/

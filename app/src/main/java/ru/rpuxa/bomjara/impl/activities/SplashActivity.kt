@@ -2,15 +2,14 @@ package ru.rpuxa.bomjara.impl.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import org.jetbrains.anko.startActivity
 import ru.rpuxa.bomjara.api.settings.Settings
 import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.saveLoader
 import ru.rpuxa.bomjara.impl.Data.statistic
-import ru.rpuxa.bomjara.impl.browser
 import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.settings.DefaultSettings
 import ru.rpuxa.bomjara.impl.settings.DefaultSettings.Companion.SETTINGS_FILE_NAME
-import ru.rpuxa.bomjara.impl.startActivity
 
 class SplashActivity : AppCompatActivity() {
 

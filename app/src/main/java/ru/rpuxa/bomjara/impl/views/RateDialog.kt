@@ -7,13 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.rate_dialog.view.*
+import org.jetbrains.anko.browse
+import org.jetbrains.anko.toast
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.browser
-import ru.rpuxa.bomjara.impl.changeVisibility
 import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.Data.statistic
-import ru.rpuxa.bomjara.impl.statistic.DefaultStatistic
-import ru.rpuxa.bomjara.impl.toast
+import ru.rpuxa.bomjara.utils.changeVisibility
 
 class RateDialog : DialogFragment() {
 
@@ -26,7 +25,7 @@ class RateDialog : DialogFragment() {
 
             rating_bar.setOnRatingBarChangeListener { _, rating, _ ->
                 if (rating > 3) {
-                    context.browser(R.string.google_play_link)
+                    browse(getString(R.string.google_play_link))
                     settings.wasRated = true
                     dismiss()
                     return@setOnRatingBarChangeListener
@@ -48,7 +47,7 @@ class RateDialog : DialogFragment() {
                 if (review.isNotBlank())
                     statistic.sendReview(rating_bar.rating, review)
                 dismiss()
-                activity.toast("Спасибо!")
+                toast("Спасибо!")
                 settings.wasRated = true
             }
         }

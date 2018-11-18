@@ -2,14 +2,13 @@ package ru.rpuxa.bomjara.impl.fragments
 
 import android.view.View
 import kotlinx.android.synthetic.main.chain.view.*
+import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.player.PossessionsList
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.changeVisibility
-import ru.rpuxa.bomjara.impl.getCurrencyIcon
-import ru.rpuxa.bomjara.impl.toast
+import ru.rpuxa.bomjara.utils.changeVisibility
 import kotlin.reflect.KMutableProperty0
 
 abstract class ChainFragment : CacheFragment() {
@@ -29,12 +28,12 @@ abstract class ChainFragment : CacheFragment() {
         val element = elements[ref.get() + 1]
         val possessions = element.neededPossessions
         val money = element.cost.inv()
-        val course = element.course
+        val course = element.courseId
         changeVisibility(View.VISIBLE, next, change, change_label, cost, currency)
         next.text = element.name
         change.text = changeText
         cost.text = money.toString()
-        currency.setImageBitmap(context.getCurrencyIcon(money))
+        currency.setImageBitmap(money.currency.getIcon(context))
         change.setOnClickListener {
             if (player.doingAction)
                 return@setOnClickListener

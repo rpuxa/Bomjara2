@@ -10,7 +10,6 @@ object PlayerFromSave {
                 player = DefaultPlayer(
                         id,
                         name,
-                        old,
                         DefaultCondition(energy, fullness, health),
                         DefaultCondition(maxEnergy, maxFullness, maxHealth),
                         DefaultMoney().apply {

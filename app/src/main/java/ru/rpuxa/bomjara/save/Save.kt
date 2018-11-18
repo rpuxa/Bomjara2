@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.save
 
 import java.io.Serializable
 
-@Deprecated("Old save class")
+@Deprecated("Old save class. Used before v2.0.5 - 2.0.4. Use instead [Save21]")
 class Save(
         val id: Long,
         val old: Boolean,

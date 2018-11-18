@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.main_menu.*
+import org.jetbrains.anko.startActivity
 import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.player
@@ -13,9 +14,8 @@ import ru.rpuxa.bomjara.impl.Data.saveLoader
 import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.fragments.TipFragment
 import ru.rpuxa.bomjara.impl.player.PlayerFromSave
-import ru.rpuxa.bomjara.impl.startActivity
-import ru.rpuxa.bomjara.impl.startActivityFromRight
 import ru.rpuxa.bomjara.impl.views.RateDialog
+import ru.rpuxa.bomjara.utils.startActivityFromRight
 
 class MenuActivity : AppCompatActivity() {
 

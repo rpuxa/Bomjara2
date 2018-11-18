@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.actions_list.*
 import kotlinx.android.synthetic.main.actions_list.view.*
+import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Action
 import ru.rpuxa.bomjara.api.actions.ActionsMenus
@@ -23,25 +24,24 @@ class ActionsListFragment : CacheFragment() {
         updateActions()
     }
 
+    val menu by lazy { arguments!![MENU] as Int }
+
     override val layout = R.layout.actions_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val menu = arguments[MENU] as Int
         if (updateActions[menu]) {
             onChange(view)
             updateActions[menu] = false
         }
     }
 
-
     override fun onChange(view: View) {
-        val menu = arguments[MENU] as Int
         val actions = actionsBase.getActionsByLevel(if (menu == ActionsMenus.JOBS.id) player.possessions.friend else player.possessions.location, menu)
         actions_list.setHasFixedSize(true)
         actions_list.layoutManager = LinearLayoutManager(context)
         actions_list.adapter = ActionsAdapter(actions)
         actions_list.adapter.notifyDataSetChanged()
-        icon.setImageBitmap(context.getMenuIcon(menu))
+        icon.setImageBitmap(ActionsMenus.getById(menu).getIcon(context))
         title.text = ActionsMenus.getById(menu).menuName
         TipFragment.setTip(view.tip_action, menu)
     }
@@ -69,11 +69,10 @@ class ActionsListFragment : CacheFragment() {
                 val action = list[position]
                 button.text = action.name
                 cost.text = action.addMoney.toString()
-                currency.setImageBitmap(holder.currency.context.getCurrencyIcon(action.addMoney))
+                currency.setImageBitmap(action.addMoney.currency.getIcon(context))
                 illegal.visibility = if (action.illegal) View.VISIBLE else View.INVISIBLE
-                val context = button.context
                 button.setOnClickListener {
-                    action(action, context)
+                    action(action, context!!)
                 }
             }
         }
@@ -95,8 +94,8 @@ class ActionsListFragment : CacheFragment() {
                             context.save()
                         }
                     }
-                    Action.MONEY_NEEDED -> toast(context.getString(R.string.money_needed))
-                    Action.ENERGY_NEEDED -> toast(context.getString(R.string.cant_work))
+                    Action.MONEY_NEEDED -> toast(getString(R.string.money_needed))
+                    Action.ENERGY_NEEDED -> toast(getString(R.string.cant_work))
                 }
             }
         }

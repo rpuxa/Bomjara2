@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara.utils
 
 import android.content.Context
+import android.support.v4.app.Fragment
 import ru.rpuxa.bomjara.impl.Data
 import kotlin.math.abs
 
@@ -22,3 +23,10 @@ fun Context.save() {
     Data.statistic.saveToFile(file)
     Data.actionsBase.save(file)
 }
+
+fun Fragment.save() {
+    context!!.save()
+}
+
+fun ageToString(age: Int) =
+        "${25 + age / 365} лет ${age % 365} дней"

@@ -1,7 +1,5 @@
 package ru.rpuxa.bomjara.impl.statistic
 
-import ru.rpuxa.bomjara.api.actions.ActionId
-import ru.rpuxa.bomjara.api.actions.VipId
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.server.Server
 import ru.rpuxa.bomjara.api.statistic.Statistic
@@ -17,12 +15,12 @@ import java.io.File
 object DefaultStatistic : Statistic {
     override var versionCode = -1
 
-    override fun countAction(id: ActionId) {
+    override fun countAction(id: Int) {
         currentStatistic.actionsUsingCount[id]++
     }
 
 
-    override fun countVip(id: VipId) {
+    override fun countVip(id: Int) {
         currentStatistic.boughtVips[id]++
     }
 

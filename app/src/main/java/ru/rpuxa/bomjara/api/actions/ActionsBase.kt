@@ -5,6 +5,10 @@ import ru.rpuxa.bomjara.impl.actions.DefaultCourse
 import java.io.File
 import java.io.InputStream
 
+/**
+ * Actions base which exists all actions, locations,
+ * friends, transports, homes, courses and vip goods available in game.
+ */
 interface ActionsBase {
 
     val actions: Array<Action>
@@ -21,11 +25,24 @@ interface ActionsBase {
 
     val vips: Array<Vip>
 
+
+    /**
+     * Get penalty (in rubles) for location of the player
+     */
     fun getPenalty(player: Player): Int
 
+    /**
+     * Get action list for current [level] and [menu]
+     */
     fun getActionsByLevel(level: Int, menu: Int): List<Action>
 
+    /**
+     * Load data from file (if it exists) or assets
+     */
     fun load(filesDir: File, assetsInputStream: InputStream)
 
+    /**
+     * Save data to file
+     */
     fun save(filesDir: File)
 }

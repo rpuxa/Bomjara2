@@ -10,15 +10,14 @@ import kotlinx.android.synthetic.main.course.view.*
 import kotlinx.android.synthetic.main.courses.*
 import kotlinx.android.synthetic.main.courses.view.*
 import kotlinx.android.synthetic.main.processed_course.view.*
+import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.Data.actionsBase
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.actions.DefaultCourse
-import ru.rpuxa.bomjara.utils.divider
-import ru.rpuxa.bomjara.impl.getCurrencyIcon
 import ru.rpuxa.bomjara.impl.player.DefaultCondition
+import ru.rpuxa.bomjara.utils.divider
 import ru.rpuxa.bomjara.utils.save
-import ru.rpuxa.bomjara.impl.toast
 
 class CoursesFragment : CacheFragment() {
 
@@ -72,7 +71,7 @@ class CoursesFragment : CacheFragment() {
             holder.apply {
                 name.text = course.name
                 cost.text = course.cost.toString()
-                currency.setImageBitmap(context.getCurrencyIcon(course.cost))
+                currency.setImageBitmap(course.cost.currency.getIcon(context))
                 learn.setOnClickListener {
                     if (player.addMoney(course.cost)) {
                         val id = courses[holder.adapterPosition].id
@@ -143,7 +142,7 @@ class CoursesFragment : CacheFragment() {
             }
             updateCost()
 
-            holder.skipCurrency.setImageBitmap(context.getCurrencyIcon(course.cost))
+            holder.skipCurrency.setImageBitmap(course.cost.currency.getIcon(context))
         }
 
         private fun update(course: DefaultCourse, holder: CurrentCoursesHolder) {
@@ -178,7 +177,7 @@ class CoursesFragment : CacheFragment() {
     }
 
     override fun onPause() {
-        context.save()
+        save()
         super.onPause()
     }
 }

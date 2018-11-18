@@ -95,7 +95,7 @@ class ScrollButtonsView(context: Context, attrs: AttributeSet) : View(context, a
 
     fun setViewPager(viewPager: ViewPager) {
         controlViewPager = viewPager
-        if (viewPager.adapter.count != icons.size)
+        if (viewPager.adapter!!.count != icons.size)
             throw IllegalStateException("sizes not same!!")
         invalidate()
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
