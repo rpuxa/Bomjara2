@@ -14,8 +14,8 @@ import ru.rpuxa.bomjserver.CachedAction
 import ru.rpuxa.bomjserver.CachedChainElement
 import ru.rpuxa.bomjserver.CachedCourse
 import java.io.*
+import java.util.*
 import kotlin.concurrent.thread
-import kotlin.properties.Delegates
 
 
 object Actions : ActionsBase {
@@ -71,8 +71,6 @@ object Actions : ActionsBase {
         }
     }
 
-    private var hash by Delegates.notNull<Int>()
-
     private val penalties = arrayOf(
             500, 3_000, 6_000, 25_000, 50_000, 150_000, 350_000
     )
@@ -111,7 +109,6 @@ object Actions : ActionsBase {
                 val transports = it.readObject() as Array<CachedChainElement>
                 val homes = it.readObject() as Array<CachedChainElement>
                 val courses = it.readObject() as Array<CachedCourse>
-                val hash = it.readObject() as Int
 
                 this.actions = actions.toActions()
                 this.locations = locations.toElements()
@@ -119,7 +116,6 @@ object Actions : ActionsBase {
                 this.transports = transports.toElements()
                 this.homes = homes.toElements()
                 this.courses = courses.toCourses()
-                this.hash = hash
             }
             true
         } catch (e: Exception) {
@@ -155,7 +151,6 @@ object Actions : ActionsBase {
             val cachedTransports = cachedTransports!!
             val cachedHomes = cachedHomes!!
             val cachedCourses = cachedCourses!!
-            val cachedHash = cachedHash!!
 
             ObjectOutputStream(FileOutputStream(File(filesDir, SERVER_ACTIONS_FILE))).use {
                 it.writeObject(cachedActions)
@@ -164,7 +159,6 @@ object Actions : ActionsBase {
                 it.writeObject(cachedTransports)
                 it.writeObject(cachedHomes)
                 it.writeObject(cachedCourses)
-                it.writeObject(cachedHash)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -177,7 +171,11 @@ object Actions : ActionsBase {
     private var cachedTransports = null as Array<CachedChainElement>?
     private var cachedHomes = null as Array<CachedChainElement>?
     private var cachedCourses = null as Array<CachedCourse>?
-    private var cachedHash = null as Int?
+    private val hash
+        get() = Objects.hash(
+                cachedActions, cachedLocations, cachedFriends,
+                cachedTransports, cachedHomes, cachedCourses
+        )
 
     @Suppress("UNCHECKED_CAST")
     private fun loadFromServer() {
@@ -185,7 +183,6 @@ object Actions : ActionsBase {
             server.send(Server.GET_CACHED_ACTIONS, Server.HASH)
                     .onCommand { hash ->
                         if (hash as Int != this.hash) {
-                            cachedHash = hash
                             server.send(Server.GET_CACHED_ACTIONS, Server.ACTIONS)
                                     .onCommand { cachedActions = it as? Array<CachedAction>? }
                             server.send(Server.GET_CACHED_ACTIONS, Server.LOCATIONS)
