@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara.impl.cache;
+package ru.rpuxa.bomjara.cache;
 
 import java.io.File;
 import java.io.Serializable;
@@ -11,8 +11,9 @@ public class SuperDeserializator {
 
     public static Object deserialize(File files, String fileName) {
         ToSerialize serialize = OtherUtilsKt.readObject(files, fileName);
-        if (serialize == null)
+        if (serialize == null) {
             return null;
+        }
         return deserialize(serialize);
     }
 

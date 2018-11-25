@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara.impl.cache
+package ru.rpuxa.bomjara.cache
 
 import java.io.File
 

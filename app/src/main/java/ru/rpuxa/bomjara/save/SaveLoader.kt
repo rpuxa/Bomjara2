@@ -1,6 +1,6 @@
 package ru.rpuxa.bomjara.save
 
-import ru.rpuxa.bomjara.impl.cache.SuperSerializable
+import ru.rpuxa.bomjara.cache.SuperSerializable
 
 @Deprecated("")
 object SaveLoader {

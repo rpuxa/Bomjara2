@@ -1,7 +1,7 @@
 package ru.rpuxa.bomjara.api.statistic
 
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.cache.Savable
+import ru.rpuxa.bomjara.cache.Savable
 
 interface Statistic : Savable {
 

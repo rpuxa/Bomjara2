@@ -126,11 +126,10 @@
                     android:id="@+id/exchange_bottles_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="1488"
                     android:textSize="12sp"
-                    android:textStyle="italic"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView44"
                     app:layout_constraintEnd_toStartOf="@+id/textView31"
                     app:layout_constraintStart_toEndOf="@+id/textView44" />

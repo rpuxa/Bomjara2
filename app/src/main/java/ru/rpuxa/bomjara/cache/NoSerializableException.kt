@@ -1,3 +1,3 @@
-package ru.rpuxa.bomjara.impl.cache
+package ru.rpuxa.bomjara.cache
 
 class NoSerializableException(reason: String) : RuntimeException(reason)

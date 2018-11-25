@@ -1,8 +1,7 @@
 package ru.rpuxa.bomjara.impl.save
 
 import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.actions.Actions
-import ru.rpuxa.bomjara.impl.cache.SuperSerializable
+import ru.rpuxa.bomjara.cache.SuperSerializable
 
 class Save21() : SuperSerializable {
     var id = 0L

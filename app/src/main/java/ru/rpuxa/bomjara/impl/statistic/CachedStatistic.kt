@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.impl.statistic
 
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.impl.Data
-import ru.rpuxa.bomjara.impl.cache.SuperSerializable
+import ru.rpuxa.bomjara.cache.SuperSerializable
 
 class CachedStatistic(save: CachedStatistic? = null, player: Player? = null, val version: Int) : SuperSerializable {
 

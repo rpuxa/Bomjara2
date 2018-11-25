@@ -1,7 +1,7 @@
 package ru.rpuxa.bomjara.impl.settings
 
 import ru.rpuxa.bomjara.api.settings.Settings
-import ru.rpuxa.bomjara.impl.cache.SuperSerializable
+import ru.rpuxa.bomjara.cache.SuperSerializable
 import ru.rpuxa.bomjara.utils.writeObject
 import java.io.File
 

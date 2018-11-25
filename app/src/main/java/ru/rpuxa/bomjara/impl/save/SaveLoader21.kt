@@ -2,10 +2,11 @@ package ru.rpuxa.bomjara.impl.save
 
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.saves.SaveLoader
-import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
-import ru.rpuxa.bomjara.impl.cache.SuperSerializable
-import ru.rpuxa.bomjara.utils.writeObject
+import ru.rpuxa.bomjara.cache.SuperDeserializator
+import ru.rpuxa.bomjara.cache.SuperSerializable
+import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.save.Save
+import ru.rpuxa.bomjara.utils.writeObject
 import java.io.File
 import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
 
@@ -24,12 +25,15 @@ object SaveLoader21 : SaveLoader {
     }
 
     override fun loadFromFile(filesDir: File) {
-        val deserialize = SuperDeserializator.deserialize(filesDir, SAVES_FILE_NAME)
+        val deserialize = SuperDeserializator.deserialize(filesDir, OLD_SAVES_FILE_NAME)
         val list = (deserialize as? OldSaveLoader.Saves)?.list?.map { it.toSave21() }?.toList()
         if (list != null) {
             saves21.list.clear()
             saves21.list.addAll(list)
-            File(filesDir, SAVES_FILE_NAME).delete()
+            File(filesDir, OLD_SAVES_FILE_NAME).delete()
+            if (saves.isNotEmpty())
+                settings.lastSave = saves.last().id
+
         } else {
             val saves = SuperDeserializator.deserialize(filesDir, SAVES21_FILE_NAME) as? Saves21
             if (saves != null)
@@ -89,5 +93,5 @@ object SaveLoader21 : SaveLoader {
     }
 
     private const val SAVES21_FILE_NAME = "saves2.1"
-    private const val SAVES_FILE_NAME = "saves2.0"
+    private const val OLD_SAVES_FILE_NAME = "saves2.0"
 }

@@ -9,10 +9,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.widget.TextView
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.content.*
 import kotlinx.android.synthetic.main.status_bars.*
 import kotlinx.android.synthetic.main.status_bars.view.*
@@ -28,6 +25,7 @@ import ru.rpuxa.bomjara.impl.ContentAdapter
 import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.Data.statistic
+import ru.rpuxa.bomjara.impl.player.DefaultMonoCurrency
 import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjara.impl.player.rub
 import ru.rpuxa.bomjara.impl.views.RateDialog
@@ -74,17 +72,13 @@ class ContentActivity : AppCompatActivity() {
                 .setViewPager(pager)
 
 
-        bottom_banner.loadAd(AdRequest.Builder().build())
-        bottom_banner.adListener = object : AdListener() {
-            override fun onAdClicked() {
-                bottom_banner.visibility = View.GONE
-            }
-        }
+//        bottom_banner.loadAd(AdRequest.Builder().build())
 
 
         //DEBUUUG
         if (BuildConfig.DEBUG) {
-
+            //todo убрать
+            player.money.addAssign(DefaultMonoCurrency(1000000900, Currencies.RUBLES))
         }
 
 

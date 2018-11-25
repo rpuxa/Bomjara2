@@ -5,8 +5,8 @@ import ru.rpuxa.bomjara.api.server.Server
 import ru.rpuxa.bomjara.api.statistic.Statistic
 import ru.rpuxa.bomjara.impl.Data
 import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.cache.SuperDeserializator
-import ru.rpuxa.bomjara.impl.cache.ToSerialize
+import ru.rpuxa.bomjara.cache.SuperDeserializator
+import ru.rpuxa.bomjara.cache.ToSerialize
 import ru.rpuxa.bomjara.utils.readObject
 import ru.rpuxa.bomjara.utils.writeObject
 import ru.rpuxa.bomjserver.Review

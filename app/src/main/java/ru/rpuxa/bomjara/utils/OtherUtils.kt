@@ -1,14 +1,8 @@
 package ru.rpuxa.bomjara.utils
 
-import android.content.Context
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.Data.saveLoader
-import ru.rpuxa.bomjara.impl.Data.settings
-import ru.rpuxa.bomjara.impl.Data.statistic
+import android.util.Log
 import java.io.*
 import java.util.*
-import kotlin.math.abs
 
 
 
@@ -34,10 +28,14 @@ fun File.writeObject(obj: Any, fileName: String) {
 @Suppress("UNCHECKED_CAST")
 fun <T> File.readObject(fileName: String?): T? {
     return try {
-        ObjectInputStream(FileInputStream(if (fileName == null) this else File(this, fileName))).use {
+        val obj = ObjectInputStream(FileInputStream(if (fileName == null) this else File(this, fileName))).use {
             it.readObject() as? T
         }
+        Log.e("suka", "all loaded => $fileName    $obj")
+
+        obj
     } catch (e: Exception) {
+        Log.e("suka", "$fileName  ${e.toString()}")
         e.printStackTrace()
         null
     }
