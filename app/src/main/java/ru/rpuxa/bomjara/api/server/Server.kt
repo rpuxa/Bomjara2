@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.api.server
 
 interface Server {
 
-    fun send(id: Int, data: Any? = null): ServerToken
+    fun send(id: Int, data: Any? = null): ServerPromise
 
     companion object {
 

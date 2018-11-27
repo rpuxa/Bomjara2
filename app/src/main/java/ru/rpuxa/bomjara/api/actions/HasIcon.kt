@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara.api
+package ru.rpuxa.bomjara.api.actions
 
 import android.content.Context
 import android.graphics.Bitmap

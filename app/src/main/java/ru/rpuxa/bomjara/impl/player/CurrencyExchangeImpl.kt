@@ -4,7 +4,7 @@ import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.CurrencyExchange
 import java.math.BigDecimal
 
-object DefaultCurrencyExchange : CurrencyExchange {
+object CurrencyExchangeImpl : CurrencyExchange {
     override val commission = .06
 
     override fun convert(count: Long, from: Currencies, to: Currencies) =

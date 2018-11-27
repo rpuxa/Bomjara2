@@ -3,7 +3,7 @@ package ru.rpuxa.bomjara.impl.actions
 import ru.rpuxa.bomjara.api.actions.Course
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 
-class DefaultCourse(
+class CourseImpl(
         override val id: Int,
         override val name: String,
         override val cost: MonoCurrency,

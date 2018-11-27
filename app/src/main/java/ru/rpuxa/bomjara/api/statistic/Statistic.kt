@@ -5,8 +5,6 @@ import ru.rpuxa.bomjara.cache.Savable
 
 interface Statistic : Savable {
 
-    var versionCode: Int
-
     fun countAction(id: Int)
 
     fun countVip(id: Int)

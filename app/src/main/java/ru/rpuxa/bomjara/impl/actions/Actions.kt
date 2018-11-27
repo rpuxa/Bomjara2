@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara.impl.actions
 
+import ru.rpuxa.bomjara.CurrentData.server
 import ru.rpuxa.bomjara.api.actions.Action
 import ru.rpuxa.bomjara.api.actions.ActionsBase
 import ru.rpuxa.bomjara.api.actions.ChainElement
@@ -7,8 +8,7 @@ import ru.rpuxa.bomjara.api.actions.Vip
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.server.Server
-import ru.rpuxa.bomjara.impl.Data.server
-import ru.rpuxa.bomjara.impl.player.DefaultCondition
+import ru.rpuxa.bomjara.impl.player.ConditionImpl
 import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjserver.CachedAction
 import ru.rpuxa.bomjserver.CachedChainElement
@@ -30,7 +30,7 @@ object Actions : ActionsBase {
         private set
     override lateinit var homes: Array<ChainElement>
         private set
-    override lateinit var courses: Array<DefaultCourse>
+    override lateinit var courses: Array<CourseImpl>
         private set
 
     override val vips = vips {
@@ -67,7 +67,7 @@ object Actions : ActionsBase {
         val list = ArrayList<Vip>()
 
         fun add(id: Int, name: String, cost: Int, onBuy: (Player) -> Unit) {
-            list.add(DefaultVip(id, name, cost of Currencies.DIAMONDS, onBuy))
+            list.add(VipImpl(id, name, cost of Currencies.DIAMONDS, onBuy))
         }
     }
 
@@ -77,7 +77,7 @@ object Actions : ActionsBase {
 
     private fun Array<CachedChainElement>.toElements(): Array<ChainElement> {
         return map {
-            DefaultChainElement(
+            ChainElementImpl(
                     it.name, it.transport.toInt(), it.home.toInt(), it.friend.toInt(), it.location.toInt(),
                     it.course.toInt(), it.cost of it.currency.toInt()
             )
@@ -86,16 +86,16 @@ object Actions : ActionsBase {
 
     private fun Array<CachedAction>.toActions(): Array<Action> {
         return map {
-            DefaultAction(
+            ActionImpl(
                     it.id.toInt(), it.level.toInt(), it.menu.toInt(), it.name, -it.cost of it.currency.toInt(),
-                    DefaultCondition(it.energy.toInt(), it.food.toInt(), it.health.toInt()), it.isIllegal
+                    ConditionImpl(it.energy.toInt(), it.food.toInt(), it.health.toInt()), it.isIllegal
             )
         }.toTypedArray()
     }
 
-    private fun Array<CachedCourse>.toCourses(): Array<DefaultCourse> {
+    private fun Array<CachedCourse>.toCourses(): Array<CourseImpl> {
         return map {
-            DefaultCourse(it.id.toInt(), it.name, -it.cost of it.currency.toInt(), it.length.toInt())
+            CourseImpl(it.id.toInt(), it.name, -it.cost of it.currency.toInt(), it.length.toInt())
         }.toTypedArray()
     }
 

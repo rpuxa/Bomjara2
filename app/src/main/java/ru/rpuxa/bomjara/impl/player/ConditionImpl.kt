@@ -4,7 +4,7 @@ import ru.rpuxa.bomjara.api.player.Condition
 import kotlin.math.min
 import kotlin.math.round
 
-class DefaultCondition(
+class ConditionImpl(
         override var energy: Int = 0,
         override var fullness: Int = 0,
         override var health: Int = 0
@@ -31,7 +31,7 @@ class DefaultCondition(
         health = -health
     }
 
-    override fun inv() = DefaultCondition(-energy, -fullness, -health)
+    override fun inv() = ConditionImpl(-energy, -fullness, -health)
 
     override fun truncateAssign(maxCondition: Condition) {
         energy = min(maxCondition.energy, energy)
@@ -49,5 +49,5 @@ class DefaultCondition(
 
     override fun multiply(x: Double) = clone().apply { multiplyAssign(x) }
 
-    override fun clone() = DefaultCondition(energy, fullness, health)
+    override fun clone() = ConditionImpl(energy, fullness, health)
 }

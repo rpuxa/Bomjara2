@@ -2,7 +2,6 @@ package ru.rpuxa.bomjara.api.actions
 
 import android.support.annotation.IdRes
 import ru.rpuxa.bomjara.R.drawable.*
-import ru.rpuxa.bomjara.api.HasIcon
 
 /**
  * All menus with actions existing in game

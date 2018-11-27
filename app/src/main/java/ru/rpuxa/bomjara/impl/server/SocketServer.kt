@@ -1,7 +1,8 @@
 package ru.rpuxa.bomjara.impl.server
 
+import ru.rpuxa.bomjara.api.server.MutableServerPromise
 import ru.rpuxa.bomjara.api.server.Server
-import ru.rpuxa.bomjara.api.server.ServerToken
+import ru.rpuxa.bomjara.api.server.ServerPromise
 import ru.rpuxa.bomjserver.ServerCommand
 import java.io.IOException
 import java.io.ObjectInputStream
@@ -30,7 +31,7 @@ object SocketServer : Server {
                     oos.flush()
                     val ans = ois.readObject() as ServerCommand
                     try {
-                        cmd.token.command(ans.data)
+                        cmd.promise.invokeCommand(ans.data)
                     } catch (e: Throwable) {
                         throw e
                     }
@@ -51,7 +52,7 @@ object SocketServer : Server {
             }
             socket.close()
         } catch (e: IOException) {
-            commands.forEach { it.token.error() }
+            commands.forEach { it.promise.invokeError() }
             commands.clear()
             e.printStackTrace()
         } finally {
@@ -60,16 +61,16 @@ object SocketServer : Server {
     }
 
 
-    override fun send(id: Int, data: Any?): ServerToken {
-        val token = ServerToken()
-        commands.addLast(Cmd(ServerCommand(id, data), token))
+    override fun send(id: Int, data: Any?): ServerPromise {
+        val promise = ServerPromiseImpl()
+        commands.addLast(Cmd(ServerCommand(id, data), promise))
         if (!running.get())
             Thread(::connect).start()
 
-        return token
+        return promise
     }
 
-    private data class Cmd(val serverCommand: ServerCommand, val token: ServerToken)
+    private data class Cmd(val serverCommand: ServerCommand, val promise: MutableServerPromise)
 
 
     private const val IP_SERVER = "localhost" //"89.223.31.120"

@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.rate_dialog.view.*
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.toast
+import ru.rpuxa.bomjara.CurrentData.settings
+import ru.rpuxa.bomjara.CurrentData.statistic
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.Data.settings
-import ru.rpuxa.bomjara.impl.Data.statistic
 import ru.rpuxa.bomjara.utils.changeVisibility
 
 class RateDialog : DialogFragment() {

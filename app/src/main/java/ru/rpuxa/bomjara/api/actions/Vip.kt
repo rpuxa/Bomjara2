@@ -3,6 +3,7 @@ package ru.rpuxa.bomjara.api.actions
 import ru.rpuxa.bomjara.api.actions.auxiliary.CanBuy
 import ru.rpuxa.bomjara.api.actions.auxiliary.HasId
 import ru.rpuxa.bomjara.api.actions.auxiliary.Nameable
+import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.api.player.Player
 
 /**
@@ -20,4 +21,6 @@ interface Vip : HasId, Nameable, CanBuy {
      * @returns true if purchase was successful, else false
      */
     fun buy(player: Player): Boolean
+
+    override val cost: MonoCurrency
 }

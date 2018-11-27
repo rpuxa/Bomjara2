@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.info.*
 import org.jetbrains.anko.browse
+import ru.rpuxa.bomjara.CurrentData.actionsBase
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.utils.ageToString
 import ru.rpuxa.bomjara.utils.divider
 

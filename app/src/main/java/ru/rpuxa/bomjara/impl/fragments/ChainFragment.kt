@@ -3,11 +3,11 @@ package ru.rpuxa.bomjara.impl.fragments
 import android.view.View
 import kotlinx.android.synthetic.main.chain.view.*
 import org.jetbrains.anko.support.v4.toast
+import ru.rpuxa.bomjara.CurrentData.actionsBase
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.player.PossessionsList
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.utils.changeVisibility
 import kotlin.reflect.KMutableProperty0
 

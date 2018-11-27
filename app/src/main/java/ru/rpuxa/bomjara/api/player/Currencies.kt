@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.api.player
 
 import android.support.annotation.DrawableRes
 import ru.rpuxa.bomjara.R.drawable.*
-import ru.rpuxa.bomjara.api.HasIcon
+import ru.rpuxa.bomjara.api.actions.HasIcon
 
 enum class Currencies(val id: Int, val cost: Double, @DrawableRes override val iconId: Int) : HasIcon {
     NONE(-1488, Double.NaN, 0),
@@ -17,3 +17,8 @@ enum class Currencies(val id: Int, val cost: Double, @DrawableRes override val i
         fun getById(id: Int) = values().find { it.id == id }!!
     }
 }
+
+inline val rubles get() = Currencies.RUBLES
+inline val euros get() = Currencies.EUROS
+inline val bitcoins get() = Currencies.BITCOINS
+inline val bottles get() = Currencies.BOTTLES

@@ -8,12 +8,12 @@ import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.main_menu.*
 import org.jetbrains.anko.startActivity
 import ru.rpuxa.bomjara.BuildConfig
+import ru.rpuxa.bomjara.CurrentData.saveLoader
+import ru.rpuxa.bomjara.CurrentData.settings
+import ru.rpuxa.bomjara.CurrentMutableData
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.Data.saveLoader
-import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.impl.fragments.TipFragment
-import ru.rpuxa.bomjara.impl.player.PlayerFromSave
+import ru.rpuxa.bomjara.impl.player.PlayerFactory
 import ru.rpuxa.bomjara.impl.views.RateDialog
 import ru.rpuxa.bomjara.utils.startActivityFromRight
 
@@ -62,7 +62,7 @@ class MenuActivity : AppCompatActivity() {
         } else {
             continue_game.text = "Продолжить игру"
             continue_game.setOnClickListener {
-                player = PlayerFromSave(save)
+                CurrentMutableData.player = PlayerFactory.fromSave(save)
                 startActivity<ContentActivity>()
             }
         }

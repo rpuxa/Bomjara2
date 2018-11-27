@@ -14,13 +14,12 @@ import kotlinx.android.synthetic.main.activity_save.*
 import kotlinx.android.synthetic.main.save_card_view.view.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import ru.rpuxa.bomjara.CurrentData.saveLoader
+import ru.rpuxa.bomjara.CurrentData.settings
+import ru.rpuxa.bomjara.CurrentMutableData
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.Data
-import ru.rpuxa.bomjara.impl.Data.saveLoader
-import ru.rpuxa.bomjara.impl.Data.settings
-import ru.rpuxa.bomjara.impl.player.NewPlayer
-import ru.rpuxa.bomjara.impl.player.PlayerFromSave
+import ru.rpuxa.bomjara.impl.player.PlayerFactory
 import ru.rpuxa.bomjara.impl.save.Save21
 import ru.rpuxa.bomjara.utils.ageToString
 import ru.rpuxa.bomjara.utils.random
@@ -28,14 +27,12 @@ import ru.rpuxa.bomjara.utils.random
 
 class SavesActivity : AppCompatActivity() {
 
-    private lateinit var names: Array<String>
+    private val names by lazy { resources.getStringArray(R.array.homeless_names) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val new = intent?.extras?.get("new")
-        names = resources.getStringArray(R.array.homeless_names)
-
         setContentView(R.layout.activity_save)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -47,7 +44,7 @@ class SavesActivity : AppCompatActivity() {
 
         new_save.setOnClickListener {
             pickNameDialog(randName) { name ->
-                startGame(NewPlayer(random.nextLong(), name))
+                startGame(PlayerFactory.newPlayer(random.nextLong(), name))
             }
         }
         if (new != null && new is Boolean && new) {
@@ -81,13 +78,9 @@ class SavesActivity : AppCompatActivity() {
     }
 
     private fun startGame(player: Player) {
-        Data.player = player
-        if (player.age == 0)
-            startActivity<PrehistoryActivity>()
-        else {
-            startActivity<ContentActivity>()
-            settings.lastSave = player.id
-        }
+        CurrentMutableData.player = player
+        startActivity<ContentActivity>()
+        settings.lastSave = player.id
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -131,7 +124,7 @@ class SavesActivity : AppCompatActivity() {
             }
 
             holder.view.setOnClickListener {
-                startGame(PlayerFromSave(save))
+                startGame(PlayerFactory.fromSave(save))
             }
 
             popup.setOnMenuItemClickListener {

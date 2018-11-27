@@ -11,11 +11,11 @@ import kotlinx.android.synthetic.main.courses.*
 import kotlinx.android.synthetic.main.courses.view.*
 import kotlinx.android.synthetic.main.processed_course.view.*
 import org.jetbrains.anko.support.v4.toast
+import ru.rpuxa.bomjara.CurrentData.actionsBase
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.actions.DefaultCourse
-import ru.rpuxa.bomjara.impl.player.DefaultCondition
+import ru.rpuxa.bomjara.impl.actions.CourseImpl
+import ru.rpuxa.bomjara.impl.player.ConditionImpl
 import ru.rpuxa.bomjara.utils.divider
 import ru.rpuxa.bomjara.utils.save
 
@@ -47,8 +47,8 @@ class CoursesFragment : CacheFragment() {
             current_courses_card_view.visibility = View.GONE
     }
 
-    inner class AvailableCoursesAdapter(val list: Array<DefaultCourse>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
-        private val courses = list.filter { player.courses[it.id] == 0 } as MutableList<DefaultCourse>
+    inner class AvailableCoursesAdapter(val list: Array<CourseImpl>) : RecyclerView.Adapter<AvailableCoursesAdapter.AvailableCoursesHolder>() {
+        private val courses = list.filter { player.courses[it.id] == 0 } as MutableList<CourseImpl>
 
         inner class AvailableCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
             val name = view.name!!
@@ -87,8 +87,8 @@ class CoursesFragment : CacheFragment() {
         }
     }
 
-    inner class CurrentCoursesAdapter(list: Array<DefaultCourse>) : RecyclerView.Adapter<CurrentCoursesAdapter.CurrentCoursesHolder>() {
-        val courses = list.filter { player.courses[it.id] in 1..(it.length - 1) } as MutableList<DefaultCourse>
+    inner class CurrentCoursesAdapter(list: Array<CourseImpl>) : RecyclerView.Adapter<CurrentCoursesAdapter.CurrentCoursesHolder>() {
+        val courses = list.filter { player.courses[it.id] in 1..(it.length - 1) } as MutableList<CourseImpl>
 
 
         inner class CurrentCoursesHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -128,7 +128,7 @@ class CoursesFragment : CacheFragment() {
                 val id = course.id
                 player.courses[id]++
                 update(course, holder)
-                player.addCondition(DefaultCondition(-5, -5, -5))
+                player.addCondition(ConditionImpl(-5, -5, -5))
                 updateCost()
             }
 
@@ -145,7 +145,7 @@ class CoursesFragment : CacheFragment() {
             holder.skipCurrency.setImageBitmap(course.cost.currency.getIcon(context))
         }
 
-        private fun update(course: DefaultCourse, holder: CurrentCoursesHolder) {
+        private fun update(course: CourseImpl, holder: CurrentCoursesHolder) {
             if (player.courses[course.id] == course.length) {
                 completeAdapter.courses.add(0, courses.removeAt(holder.adapterPosition))
                 notifyItemRemoved(holder.adapterPosition)
@@ -160,9 +160,9 @@ class CoursesFragment : CacheFragment() {
         }
     }
 
-    inner class CompletedCoursesAdapter(list: Array<DefaultCourse>) : RecyclerView.Adapter<CompletedCoursesAdapter.CompletedCoursesHolder>() {
+    inner class CompletedCoursesAdapter(list: Array<CourseImpl>) : RecyclerView.Adapter<CompletedCoursesAdapter.CompletedCoursesHolder>() {
 
-        val courses = list.filter { player.courses[it.id] >= it.length } as MutableList<DefaultCourse>
+        val courses = list.filter { player.courses[it.id] >= it.length } as MutableList<CourseImpl>
 
         inner class CompletedCoursesHolder(val view: TextView) : RecyclerView.ViewHolder(view)
 

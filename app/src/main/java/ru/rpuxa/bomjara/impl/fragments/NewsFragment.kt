@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.news_fragment.view.*
 import kotlinx.android.synthetic.main.news_item.view.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.server.Server
-import ru.rpuxa.bomjara.impl.Data.server
+import ru.rpuxa.bomjara.CurrentData.server
 import ru.rpuxa.bomjserver.News
 import kotlin.math.min
 

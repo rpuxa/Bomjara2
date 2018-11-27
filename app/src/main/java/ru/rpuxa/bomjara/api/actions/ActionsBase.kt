@@ -1,7 +1,7 @@
 package ru.rpuxa.bomjara.api.actions
 
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.actions.DefaultCourse
+import ru.rpuxa.bomjara.impl.actions.CourseImpl
 import java.io.File
 import java.io.InputStream
 
@@ -21,7 +21,7 @@ interface ActionsBase {
 
     val homes: Array<ChainElement>
 
-    val courses: Array<DefaultCourse>
+    val courses: Array<CourseImpl>
 
     val vips: Array<Vip>
 

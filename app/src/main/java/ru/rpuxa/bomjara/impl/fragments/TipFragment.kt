@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.tip.view.*
+import ru.rpuxa.bomjara.CurrentData.settings
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.ActionsMenus
-import ru.rpuxa.bomjara.impl.Data.settings
 import ru.rpuxa.bomjara.R.id as i
 
 class TipFragment : Fragment() {

@@ -6,10 +6,10 @@ import android.view.View
 import kotlinx.android.synthetic.main.exchange.*
 import kotlinx.android.synthetic.main.open_exchange.*
 import org.jetbrains.anko.support.v4.toast
+import ru.rpuxa.bomjara.CurrentData.exchange
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Currencies
-import ru.rpuxa.bomjara.impl.Data.exchange
-import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjara.utils.divider
 import java.lang.Math.ceil
@@ -140,6 +140,8 @@ class ExchangeFragment : CacheFragment() {
     private fun handOver(percent: Double) {
         val count = ceil(bottles * percent).toLong()
         val converted = exchange.convert(count, Currencies.BOTTLES, Currencies.RUBLES)
+        player.addMoney(-count of Currencies.BOTTLES)
+        player.addMoney(converted of Currencies.RUBLES)
         if (count == 0L)
             toast("У вас нет бутылок!")
         else

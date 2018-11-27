@@ -2,9 +2,9 @@ package ru.rpuxa.bomjara.impl.fragments
 
 import android.view.View
 import kotlinx.android.synthetic.main.location.view.*
+import ru.rpuxa.bomjara.CurrentData.actionsBase
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
 
 class LocationFragment : ChainFragment() {
     override val layout = R.layout.location

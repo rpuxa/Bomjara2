@@ -3,7 +3,7 @@ package ru.rpuxa.bomjara.impl.player
 import ru.rpuxa.bomjara.api.player.MonoPossession
 import ru.rpuxa.bomjara.api.player.PossessionsList
 
-class DefaultMonoPossession : DefaultPossessions, MonoPossession {
+class MonoPossessionImpl : PossessionsImpl, MonoPossession {
     override var value
         get() = when (possession) {
         PossessionsList.LOCATION -> location

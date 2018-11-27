@@ -17,15 +17,14 @@ import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import ru.rpuxa.bomjara.BuildConfig
+import ru.rpuxa.bomjara.CurrentData
+import ru.rpuxa.bomjara.CurrentData.player
+import ru.rpuxa.bomjara.CurrentData.statistic
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.impl.ContentAdapter
-import ru.rpuxa.bomjara.impl.Data
-import ru.rpuxa.bomjara.impl.Data.player
-import ru.rpuxa.bomjara.impl.Data.statistic
-import ru.rpuxa.bomjara.impl.player.DefaultMonoCurrency
 import ru.rpuxa.bomjara.impl.player.of
 import ru.rpuxa.bomjara.impl.player.rub
 import ru.rpuxa.bomjara.impl.views.RateDialog
@@ -75,14 +74,18 @@ class ContentActivity : AppCompatActivity() {
 //        bottom_banner.loadAd(AdRequest.Builder().build())
 
 
-        //DEBUUUG
+        //DEBUG
         if (BuildConfig.DEBUG) {
-            //todo убрать
-            player.money.addAssign(DefaultMonoCurrency(1000000900, Currencies.RUBLES))
+            player.money.rubles = 999999999
+            player.money.euros = 999999999
+            player.money.bitcoins = 999999999
+            player.money.bottles = 999999999
+            player.possessions.home = 7
+            player.possessions.transport = 7
         }
 
 
-        Data.statistic.sendStatistic()
+        CurrentData.statistic.sendStatistic()
         save()
     }
 
@@ -119,7 +122,7 @@ class ContentActivity : AppCompatActivity() {
                 val startColor = if (positive) Color.GREEN else Color.RED
                 val toColor = Color.WHITE
                 anim.cancel()
-                val anim = ValueAnimator.ofFloat(1f, 0f)
+                anim = ValueAnimator.ofFloat(1f, 0f)
                 anim.duration = 1000
                 anim.addUpdateListener {
                     val v = it.animatedValue as Float
@@ -160,7 +163,6 @@ class ContentActivity : AppCompatActivity() {
 
         override fun onDead(player: Player, hunger: Boolean) {
             super.onDead(player, hunger)
-            startActivity<MenuActivity>()
             val dialog = AlertDialog.Builder(this@ContentActivity)
                     .setTitle("Бомж умер от " + if (hunger) "голода" else "болезни")
                     .setMessage(
@@ -198,7 +200,7 @@ class ContentActivity : AppCompatActivity() {
                     .setTitle("Вас поймали менты!")
                     .setMessage(
                             "Вы можете посмотреть рекламу, чтобы вас отпустили" +
-                                    " или заплатить штраф в размере ${Data.actionsBase.getPenalty(player)} рублей"
+                                    " или заплатить штраф в размере ${CurrentData.actionsBase.getPenalty(player)} рублей"
                     )
                     .setCancelable(false)
                     .setIcon(R.drawable.prison)
@@ -221,21 +223,21 @@ class ContentActivity : AppCompatActivity() {
             }
 
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener penalty@{
-                if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
+                if (player.addMoney((-CurrentData.actionsBase.getPenalty(player)).rub)) {
                     dialog.dismiss()
                     return@penalty
                 }
-                player.addMoney(Data.exchange.convertWithCommission(player.money.euros, Currencies.EUROS, Currencies.RUBLES) of Currencies.RUBLES)
+                player.addMoney(CurrentData.exchange.convertWithCommission(player.money.euros, Currencies.EUROS, Currencies.RUBLES) of Currencies.RUBLES)
                 player.money.euros = 0
-                if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
+                if (player.addMoney((-CurrentData.actionsBase.getPenalty(player)).rub)) {
                     longToast("Для выплаты штрафа все ваши евро были переведены в рубли")
                     dialog.dismiss()
                     return@penalty
                 }
 
-                player.addMoney(Data.exchange.convertWithCommission(player.money.euros, Currencies.BITCOINS, Currencies.RUBLES) of Currencies.RUBLES)
+                player.addMoney(CurrentData.exchange.convertWithCommission(player.money.euros, Currencies.BITCOINS, Currencies.RUBLES) of Currencies.RUBLES)
                 player.money.bitcoins = 0
-                if (player.addMoney((-Data.actionsBase.getPenalty(player)).rub)) {
+                if (player.addMoney((-CurrentData.actionsBase.getPenalty(player)).rub)) {
                     longToast("Для выплаты штрафа все ваши евро и биткоины были переведены в рубли")
                     dialog.dismiss()
                     return@penalty

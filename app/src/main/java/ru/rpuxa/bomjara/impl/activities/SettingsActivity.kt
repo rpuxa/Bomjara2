@@ -3,8 +3,8 @@ package ru.rpuxa.bomjara.impl.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_settings.*
+import ru.rpuxa.bomjara.CurrentData.settings
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.impl.Data.settings
 
 class SettingsActivity : AppCompatActivity() {
 

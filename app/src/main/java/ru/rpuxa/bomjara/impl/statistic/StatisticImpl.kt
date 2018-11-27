@@ -1,10 +1,10 @@
 package ru.rpuxa.bomjara.impl.statistic
 
+import ru.rpuxa.bomjara.CurrentData
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.server.Server
 import ru.rpuxa.bomjara.api.statistic.Statistic
-import ru.rpuxa.bomjara.impl.Data
-import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.cache.SuperDeserializator
 import ru.rpuxa.bomjara.cache.ToSerialize
 import ru.rpuxa.bomjara.utils.readObject
@@ -12,8 +12,7 @@ import ru.rpuxa.bomjara.utils.writeObject
 import ru.rpuxa.bomjserver.Review
 import java.io.File
 
-object DefaultStatistic : Statistic {
-    override var versionCode = -1
+object StatisticImpl : Statistic {
 
     override fun countAction(id: Int) {
         currentStatistic.actionsUsingCount[id]++
@@ -27,7 +26,7 @@ object DefaultStatistic : Statistic {
     override fun loadPlayer(player: Player) {
         var find = statistics.find { it.saveId == player.id }
         if (find == null) {
-            find = CachedStatistic(player = player, version = versionCode)
+            find = CachedStatistic(player = player)
             statistics.add(find)
         }
         currentStatistic = find
@@ -49,13 +48,13 @@ object DefaultStatistic : Statistic {
                     put(VERSION_CODE, version)
                 }
 
-                Data.server.send(Server.STATISTIC, statistic)
+                CurrentData.server.send(Server.STATISTIC, statistic)
             }
         }
     }
 
     override fun sendReview(rating: Float, review: String) {
-        Data.server.send(Server.REVIEW, Review(rating, review))
+        CurrentData.server.send(Server.REVIEW, Review(rating, review))
     }
 
     override fun saveToFile(filesDir: File) {
@@ -65,7 +64,7 @@ object DefaultStatistic : Statistic {
     override fun loadFromFile(filesDir: File) {
         val readObject = filesDir.readObject<List<ToSerialize>>(FILE)
         statistics = readObject?.map {
-            CachedStatistic(SuperDeserializator.deserialize(it) as? CachedStatistic, version = versionCode)
+            CachedStatistic(SuperDeserializator.deserialize(it) as? CachedStatistic)
         } as MutableList<CachedStatistic>? ?: return
     }
 

@@ -1,6 +1,6 @@
 package ru.rpuxa.bomjara.impl.save
 
-import ru.rpuxa.bomjara.impl.Data.actionsBase
+import ru.rpuxa.bomjara.CurrentData.actionsBase
 import ru.rpuxa.bomjara.cache.SuperSerializable
 
 class Save21() : SuperSerializable {

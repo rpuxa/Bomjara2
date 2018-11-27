@@ -3,7 +3,7 @@ package ru.rpuxa.bomjara.impl.player
 import ru.rpuxa.bomjara.api.player.*
 import ru.rpuxa.bomjara.utils.gauss
 
-open class DefaultPlayer(
+open class PlayerImpl(
         final override val id: Long,
         final override var name: String,
         final override val condition: Condition,

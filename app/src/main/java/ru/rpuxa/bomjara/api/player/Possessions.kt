@@ -1,7 +1,5 @@
 package ru.rpuxa.bomjara.api.player
 
-import ru.rpuxa.bomjara.impl.player.DefaultPossessions
-
 
 interface Possessions {
 

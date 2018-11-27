@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.vip_item.view.*
 import kotlinx.android.synthetic.main.vip_opened.view.*
 import org.jetbrains.anko.support.v4.toast
+import ru.rpuxa.bomjara.CurrentData.actionsBase
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Vip
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.impl.activities.App
 
 class VipFragment : Fragment() {
@@ -77,7 +77,7 @@ class VipFragment : Fragment() {
         override fun onBindViewHolder(holder: VipHolder, position: Int) {
             val vip = list[position]
             holder.name.text = vip.name
-            holder.cost.text = "-" + vip.cost.toString()
+            holder.cost.text = vip.cost.inv().toString()
             holder.name.setOnClickListener {
                 toast(if (vip.buy(player)) "Куплено!" else getString(R.string.money_needed))
                 openedView?.updateMoney()

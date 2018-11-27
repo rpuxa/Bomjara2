@@ -5,7 +5,7 @@ import ru.rpuxa.bomjara.cache.SuperSerializable
 import ru.rpuxa.bomjara.utils.writeObject
 import java.io.File
 
-class DefaultSettings : Settings, SuperSerializable {
+class SettingsImpl : Settings, SuperSerializable {
     override var showTips = true
     override var lastSave = -148822891823
     override var wasRated = false

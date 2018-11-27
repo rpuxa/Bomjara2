@@ -3,7 +3,7 @@ package ru.rpuxa.bomjara.impl.player
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Money
 
-open class DefaultMoney : Money {
+open class MoneyImpl : Money {
 
     final override val currencies: LongArray
 
@@ -61,5 +61,5 @@ open class DefaultMoney : Money {
         return true
     }
 
-    override fun clone() = DefaultMoney(currencies.clone())
+    override fun clone() = MoneyImpl(currencies.clone())
 }

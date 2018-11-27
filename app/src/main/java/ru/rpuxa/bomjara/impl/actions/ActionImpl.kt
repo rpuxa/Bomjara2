@@ -1,5 +1,7 @@
 package ru.rpuxa.bomjara.impl.actions
 
+import ru.rpuxa.bomjara.CurrentData.settings
+import ru.rpuxa.bomjara.CurrentData.statistic
 import ru.rpuxa.bomjara.api.actions.Action
 import ru.rpuxa.bomjara.api.actions.Action.Companion.ENERGY_NEEDED
 import ru.rpuxa.bomjara.api.actions.Action.Companion.MONEY_NEEDED
@@ -7,12 +9,10 @@ import ru.rpuxa.bomjara.api.actions.Action.Companion.NOTHING_NEEDED
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.Data.settings
-import ru.rpuxa.bomjara.impl.Data.statistic
 import ru.rpuxa.bomjara.impl.views.RateDialog
 import ru.rpuxa.bomjara.utils.random
 
-class DefaultAction(
+class ActionImpl(
         override val id: Int,
         override val level: Int,
         override val menu: Int,

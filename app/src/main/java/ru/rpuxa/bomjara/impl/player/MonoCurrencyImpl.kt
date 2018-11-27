@@ -4,7 +4,7 @@ import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 import java.lang.Math.ceil
 
-class DefaultMonoCurrency : DefaultMoney, MonoCurrency {
+class MonoCurrencyImpl : MoneyImpl, MonoCurrency {
 
     override var count: Long
         set(value) {
@@ -39,14 +39,14 @@ class DefaultMonoCurrency : DefaultMoney, MonoCurrency {
         return if (c > 0) "+$c" else "$c"
     }
 
-    override fun clone() = DefaultMonoCurrency(currencies.clone(), currency)
+    override fun clone() = MonoCurrencyImpl(currencies.clone(), currency)
 }
 
 infix fun Int.of(currencyId: Int) = this of Currencies.getById(currencyId)
 
-infix fun Int.of(currency: Currencies) = DefaultMonoCurrency(toLong(), currency)
+infix fun Int.of(currency: Currencies) = MonoCurrencyImpl(toLong(), currency)
 
-infix fun Long.of(currency: Currencies) = DefaultMonoCurrency(this, currency)
+infix fun Long.of(currency: Currencies) = MonoCurrencyImpl(this, currency)
 
 inline val Int.rub get() = this of Currencies.RUBLES
 inline val Int.euro get() = this of Currencies.EUROS

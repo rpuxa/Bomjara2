@@ -11,11 +11,11 @@ import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.actions_list.*
 import kotlinx.android.synthetic.main.actions_list.view.*
 import org.jetbrains.anko.support.v4.toast
+import ru.rpuxa.bomjara.CurrentData.actionsBase
+import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Action
 import ru.rpuxa.bomjara.api.actions.ActionsMenus
-import ru.rpuxa.bomjara.impl.Data.actionsBase
-import ru.rpuxa.bomjara.impl.Data.player
 import ru.rpuxa.bomjara.utils.save
 
 class ActionsListFragment : CacheFragment() {
