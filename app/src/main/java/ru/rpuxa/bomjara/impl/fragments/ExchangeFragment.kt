@@ -21,10 +21,12 @@ class ExchangeFragment : CacheFragment() {
     private val bottles
         get() = player.money.bottles
 
+    override fun onPreChange() {
+        setBottles()
+    }
+
     override fun onChange(view: View) {
         with(view) {
-            setBottles()
-
             bottles_all.setOnClickListener {
                 handOver(1.0)
             }
@@ -76,7 +78,6 @@ class ExchangeFragment : CacheFragment() {
             to_group.setOnCheckedChangeListener { _, _ ->
                 update(from, to)
             }
-
 
             update(from, to)
         }

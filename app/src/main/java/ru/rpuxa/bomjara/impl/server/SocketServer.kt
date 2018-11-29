@@ -14,6 +14,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 object SocketServer : Server {
 
+    private const val IP_SERVER = "89.223.31.120"
+
     private val commands = ArrayDeque<Cmd>()
     private val running = AtomicBoolean(false)
 
@@ -71,7 +73,4 @@ object SocketServer : Server {
     }
 
     private data class Cmd(val serverCommand: ServerCommand, val promise: MutableServerPromise)
-
-
-    private const val IP_SERVER = "localhost" //"89.223.31.120"
 }

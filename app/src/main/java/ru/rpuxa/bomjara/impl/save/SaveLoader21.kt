@@ -11,7 +11,7 @@ import java.io.File
 import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
 
 object SaveLoader21 : SaveLoader {
-    private class Saves21 : SuperSerializable {
+    class Saves21 : SuperSerializable {
         var list = ArrayList<Save21>()
     }
 

@@ -1,6 +1,7 @@
 package ru.rpuxa.bomjara.api.player
 
 import android.support.annotation.CallSuper
+import android.widget.Toast
 
 typealias CompletedCourses = IntArray
 
@@ -69,5 +70,6 @@ interface Player {
         fun onConditionChanged(player: Player)
 
         fun showRateDialog()
+        fun message(msg: String): Toast
     }
 }

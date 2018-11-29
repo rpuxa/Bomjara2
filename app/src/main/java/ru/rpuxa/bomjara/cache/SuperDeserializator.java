@@ -1,5 +1,7 @@
 package ru.rpuxa.bomjara.cache;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -55,6 +57,7 @@ public class SuperDeserializator {
             return obj;
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("DeserializatorError", "", e);
             return null;
         }
     }

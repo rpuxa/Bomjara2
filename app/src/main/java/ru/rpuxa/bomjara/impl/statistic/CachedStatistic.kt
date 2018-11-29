@@ -13,16 +13,24 @@ class CachedStatistic() : SuperSerializable {
     var boughtVips = ArrayList<Int>()
 
     constructor(save: CachedStatistic? = null, player: Player? = null) : this() {
-        actionsUsingCount = ArrayList<Int>(actionsBase.actions.size).apply {
-            if (save != null)
-                for (i in indices)
-                    add(i, save.actionsUsingCount[i])
+        actionsUsingCount = zeroList(actionsBase.actions.size).apply {
+            if (save != null) {
+                val saved = save.actionsUsingCount
+                for (i in indices) {
+                    if (i < saved.size)
+                        set(i, saved[i])
+                }
+            }
         }
 
-        boughtVips = ArrayList<Int>(actionsBase.vips.size).apply {
-            if (save != null)
-                for (i in indices)
-                    add(i, save.boughtVips[i])
+        boughtVips = zeroList(actionsBase.vips.size).apply {
+            if (save != null) {
+                val saved = save.boughtVips
+                for (i in indices) {
+                    if (i < saved.size)
+                        set(i, saved[i])
+                }
+            }
         }
 
         if (save != null)
@@ -31,4 +39,7 @@ class CachedStatistic() : SuperSerializable {
             saveId = player.id
     }
 
+    companion object {
+        private fun zeroList(size: Int) = ArrayList<Int>(size).apply { repeat(size) { add(0) } }
+    }
 }

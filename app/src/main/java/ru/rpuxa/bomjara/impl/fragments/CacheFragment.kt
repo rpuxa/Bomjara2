@@ -17,10 +17,14 @@ abstract class CacheFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        onPreChange()
         if (changed)
             return
         onChange(view)
         changed = true
+    }
+
+    protected open fun onPreChange() {
     }
 
     abstract fun onChange(view: View)

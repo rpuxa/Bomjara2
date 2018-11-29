@@ -103,19 +103,19 @@ object Actions : ActionsBase {
     private fun loadFromStream(inputStream: InputStream): Boolean {
         return try {
             ObjectInputStream(inputStream).use {
-                val actions = it.readObject() as Array<CachedAction>
-                val locations = it.readObject() as Array<CachedChainElement>
-                val friends = it.readObject() as Array<CachedChainElement>
-                val transports = it.readObject() as Array<CachedChainElement>
-                val homes = it.readObject() as Array<CachedChainElement>
-                val courses = it.readObject() as Array<CachedCourse>
+                cachedActions = it.readObject() as Array<CachedAction>
+                cachedLocations = it.readObject() as Array<CachedChainElement>
+                cachedFriends = it.readObject() as Array<CachedChainElement>
+                cachedTransports = it.readObject() as Array<CachedChainElement>
+                cachedHomes = it.readObject() as Array<CachedChainElement>
+                cachedCourses = it.readObject() as Array<CachedCourse>
 
-                this.actions = actions.toActions()
-                this.locations = locations.toElements()
-                this.friends = friends.toElements()
-                this.transports = transports.toElements()
-                this.homes = homes.toElements()
-                this.courses = courses.toCourses()
+                actions = cachedActions!!.toActions()
+                locations = cachedLocations!!.toElements()
+                friends = cachedFriends!!.toElements()
+                transports = cachedTransports!!.toElements()
+                homes = cachedHomes!!.toElements()
+                courses = cachedCourses!!.toCourses()
             }
             true
         } catch (e: Exception) {
@@ -173,8 +173,12 @@ object Actions : ActionsBase {
     private var cachedCourses = null as Array<CachedCourse>?
     private val hash
         get() = Objects.hash(
-                cachedActions, cachedLocations, cachedFriends,
-                cachedTransports, cachedHomes, cachedCourses
+                Arrays.hashCode(cachedActions),
+                Arrays.hashCode(cachedLocations),
+                Arrays.hashCode(cachedFriends),
+                Arrays.hashCode(cachedTransports),
+                Arrays.hashCode(cachedHomes),
+                Arrays.hashCode(cachedCourses)
         )
 
     @Suppress("UNCHECKED_CAST")

@@ -5,5 +5,4 @@ interface ServerPromise {
     fun onError(callback: () -> Unit): ServerPromise
 
     fun onCommand(callback: (Any?) -> Unit): ServerPromise
-
 }

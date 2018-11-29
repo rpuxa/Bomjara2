@@ -65,6 +65,7 @@ open class PlayerImpl(
 
     override fun addDiamond() {
         money.diamonds++
+        listener?.message("Вы нашли алмаз!")
     }
 
     override fun dispatchListener() {

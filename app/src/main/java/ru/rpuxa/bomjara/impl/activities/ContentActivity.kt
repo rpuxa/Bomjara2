@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.status_bars.view.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.CurrentData
 import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.CurrentData.statistic
@@ -75,15 +74,15 @@ class ContentActivity : AppCompatActivity() {
 
 
         //DEBUG
-        if (BuildConfig.DEBUG) {
-            player.money.rubles = 999999999
-            player.money.euros = 999999999
-            player.money.bitcoins = 999999999
-            player.money.bottles = 999999999
-            player.possessions.home = 7
-            player.possessions.transport = 7
-        }
-
+        /*  if (BuildConfig.DEBUG) {
+              player.money.rubles = 999999999
+              player.money.euros = 999999999
+              player.money.bitcoins = 999999999
+              player.money.bottles = 999999999
+              player.possessions.home = 7
+              player.possessions.transport = 7
+          }
+  */
 
         CurrentData.statistic.sendStatistic()
         save()
@@ -132,7 +131,6 @@ class ContentActivity : AppCompatActivity() {
                     val b = (Color.blue(startColor) * v + nv * Color.blue(toColor)).toInt()
 
                     textView.setTextColor(Color.argb(255, r, g, b))
-
                 }
                 anim.start()
             }
@@ -266,5 +264,7 @@ class ContentActivity : AppCompatActivity() {
             val notificationManager = NotificationManagerCompat.from(this@ContentActivity)
             notificationManager.notify(-8819293, builder.build())
         }
+
+        override fun message(msg: String) = toast(msg)
     }
 }
