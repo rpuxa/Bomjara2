@@ -3,11 +3,11 @@ package ru.rpuxa.bomjara.impl.player
 import ru.rpuxa.bomjara.CurrentData.actionsBase
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Player
-import ru.rpuxa.bomjara.impl.save.Save21
+import ru.rpuxa.bomjara.impl.save.Save
 
 object PlayerFactory {
 
-    fun fromSave(save: Save21): Player =
+    fun fromSave(save: Save): Player =
             PlayerImpl(
                     save.id,
                     save.name,

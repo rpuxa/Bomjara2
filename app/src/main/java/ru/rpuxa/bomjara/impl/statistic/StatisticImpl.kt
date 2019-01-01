@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara.impl.statistic
 
+import android.content.Context
 import ru.rpuxa.bomjara.CurrentData
 import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.api.player.Player
@@ -57,11 +58,11 @@ object StatisticImpl : Statistic {
         CurrentData.server.send(Server.REVIEW, Review(rating, review))
     }
 
-    override fun saveToFile(filesDir: File) {
+    override fun saveToFile(filesDir: File, context: Context) {
         filesDir.writeObject(statistics.map { it.serialize() }, FILE)
     }
 
-    override fun loadFromFile(filesDir: File) {
+    override fun loadFromFile(filesDir: File, context: Context) {
         val readObject = filesDir.readObject<List<ToSerialize>>(FILE)
         statistics = readObject?.map {
             CachedStatistic(SuperDeserializator.deserialize(it) as? CachedStatistic)

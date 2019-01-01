@@ -18,9 +18,9 @@ val gauss: Double
 fun Context.save() {
     val file = filesDir
     CurrentData.saveLoader.savePlayer(CurrentData.player)
-    CurrentData.saveLoader.saveToFile(file)
+    CurrentData.saveLoader.saveToFile(file, this)
     CurrentData.settings.saveToFile(file)
-    CurrentData.statistic.saveToFile(file)
+    CurrentData.statistic.saveToFile(file, this)
     CurrentData.actionsBase.save(file)
 }
 

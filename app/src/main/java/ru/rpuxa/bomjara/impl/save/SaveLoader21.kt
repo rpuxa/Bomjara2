@@ -1,15 +1,14 @@
 package ru.rpuxa.bomjara.impl.save
 
-import ru.rpuxa.bomjara.CurrentData.settings
+import android.content.Context
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.api.saves.SaveLoader
 import ru.rpuxa.bomjara.cache.SuperDeserializator
 import ru.rpuxa.bomjara.cache.SuperSerializable
-import ru.rpuxa.bomjara.save.Save
 import ru.rpuxa.bomjara.utils.writeObject
 import java.io.File
-import ru.rpuxa.bomjara.save.SaveLoader as OldSaveLoader
 
+@Deprecated("")
 object SaveLoader21 : SaveLoader {
     class Saves21 : SuperSerializable {
         var list = ArrayList<Save21>()
@@ -17,27 +16,17 @@ object SaveLoader21 : SaveLoader {
 
     private var saves21 = Saves21()
 
-    override val saves get() = saves21.list
+    override val saves: List<Save> get() = saves21.list
 
-    override fun saveToFile(filesDir: File) {
+    override fun saveToFile(filesDir: File, context: Context) {
         val obj = saves21.serialize()
         filesDir.writeObject(obj, SAVES21_FILE_NAME)
     }
 
-    override fun loadFromFile(filesDir: File) {
-        val deserialize = SuperDeserializator.deserialize(filesDir, OLD_SAVES_FILE_NAME)
-        val list = (deserialize as? OldSaveLoader.Saves)?.list?.map { it.toSave21() }?.toList()
-        if (list != null) {
-            saves.clear()
-            saves.addAll(list)
-            File(filesDir, OLD_SAVES_FILE_NAME).delete()
-            if (saves.isNotEmpty())
-                settings.lastSave = saves.last().id
-        } else {
-            val saves = SuperDeserializator.deserialize(filesDir, SAVES21_FILE_NAME) as? Saves21
-            if (saves != null)
-                saves21 = saves
-        }
+    override fun loadFromFile(filesDir: File, context: Context) {
+        val saves = SuperDeserializator.deserialize(filesDir, SAVES21_FILE_NAME) as? Saves21
+        if (saves != null)
+            saves21 = saves
     }
 
     override fun savePlayer(player: Player) {
@@ -45,10 +34,7 @@ object SaveLoader21 : SaveLoader {
         saves21.list.add(player.toSave21())
     }
 
-    override fun findSaveById(id: Long) =
-            saves21.list.find { it.id == id }
-
-    override fun deleteSave(save: Save21) {
+    override fun deleteSave(save: Save) {
         saves21.list.remove(save)
     }
 
@@ -91,6 +77,5 @@ object SaveLoader21 : SaveLoader {
         )
     }
 
-    private const val SAVES21_FILE_NAME = "saves2.1"
-    private const val OLD_SAVES_FILE_NAME = "saves2.0"
+    const val SAVES21_FILE_NAME = "saves2.1"
 }

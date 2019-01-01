@@ -15,11 +15,11 @@ import ru.rpuxa.bomjara.CurrentData.actionsBase
 import ru.rpuxa.bomjara.CurrentData.player
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Vip
-import ru.rpuxa.bomjara.impl.activities.App
+import ru.rpuxa.bomjara.impl.activities.Bomjara
 
 class VipFragment : Fragment() {
 
-    private val ad get() = (activity!!.application as App).videoAd
+    private val ad get() = (activity!!.application as Bomjara).videoAd
 
     private val closed get() = player.possessions.location < 2
 

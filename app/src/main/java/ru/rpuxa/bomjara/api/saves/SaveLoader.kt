@@ -2,15 +2,13 @@ package ru.rpuxa.bomjara.api.saves
 
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.cache.Savable
-import ru.rpuxa.bomjara.impl.save.Save21
+import ru.rpuxa.bomjara.impl.save.Save
 
 interface SaveLoader : Savable {
 
-    val saves: List<Save21>
+    val saves: List<Save>
 
     fun savePlayer(player: Player)
 
-    fun findSaveById(id: Long): Save21?
-
-    fun deleteSave(save: Save21)
+    fun deleteSave(save: Save)
 }

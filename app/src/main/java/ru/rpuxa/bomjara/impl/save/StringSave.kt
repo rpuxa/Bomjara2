@@ -1,10 +1,10 @@
 package ru.rpuxa.bomjara.impl.save
 
 import ru.rpuxa.bomjara.CurrentData
-import ru.rpuxa.bomjara.cache.SuperSerializable
+import ru.rpuxa.bomjara.cache.StringSerializable
 
-@Deprecated("")
-class Save21() : Save, SuperSerializable {
+class StringSave() : Save, StringSerializable {
+
     override var id = 0L
     override var name = "name"
     override var age = 0
@@ -58,5 +58,9 @@ class Save21() : Save, SuperSerializable {
         this.deadByHungry = deadByHungry
         this.deadByZeroHealth = deadByZeroHealth
         this.caughtByPolice = caughtByPolice
+    }
+
+    companion object {
+        private const val serialVersionUID = 2347354171311523176L
     }
 }

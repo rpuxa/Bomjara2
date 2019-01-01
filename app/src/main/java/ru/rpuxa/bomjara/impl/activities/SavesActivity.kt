@@ -20,7 +20,7 @@ import ru.rpuxa.bomjara.CurrentMutableData
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Player
 import ru.rpuxa.bomjara.impl.player.PlayerFactory
-import ru.rpuxa.bomjara.impl.save.Save21
+import ru.rpuxa.bomjara.impl.save.Save
 import ru.rpuxa.bomjara.utils.ageToString
 import ru.rpuxa.bomjara.utils.random
 
@@ -93,7 +93,7 @@ class SavesActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.left_in, R.anim.rigth_out)
     }
 
-    inner class SavesAdapter(private val list: List<Save21>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
+    inner class SavesAdapter(private val list: List<Save>) : RecyclerView.Adapter<SavesAdapter.SaveViewHolder>() {
 
         inner class SaveViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             val saveName = view.name!!
@@ -156,7 +156,7 @@ class SavesActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        saveLoader.saveToFile(filesDir)
+        saveLoader.saveToFile(filesDir, this)
         super.onPause()
     }
 

@@ -23,8 +23,8 @@ class SplashActivity : AppCompatActivity() {
     private fun load() {
         val file = filesDir
         actionsBase.load(file, assets.open("actions.bomj"))
-        statistic.loadFromFile(file)
+        statistic.loadFromFile(file, this)
         CurrentMutableData.settings = SuperDeserializator.deserialize(file, SETTINGS_FILE_NAME) as? Settings? ?: SettingsImpl()
-        saveLoader.loadFromFile(file)
+        saveLoader.loadFromFile(file, this)
     }
 }

@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import ru.rpuxa.bomjara.utils.OtherUtilsKt;
 
+@Deprecated
 public class SuperDeserializator {
 
     public static Object deserialize(File files, String fileName) {

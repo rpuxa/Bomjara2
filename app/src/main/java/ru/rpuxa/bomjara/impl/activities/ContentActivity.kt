@@ -33,7 +33,7 @@ import ru.rpuxa.bomjara.utils.save
 
 class ContentActivity : AppCompatActivity() {
 
-    val ad get() = (application as App).videoAd
+    val ad get() = (application as Bomjara).videoAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

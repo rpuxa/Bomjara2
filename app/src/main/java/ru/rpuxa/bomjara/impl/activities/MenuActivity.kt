@@ -50,7 +50,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        val save = saveLoader.findSaveById(settings.lastSave)
+        val save = saveLoader.saves.find { it.id == settings.lastSave }
         if (save == null) {
             continue_game.text = "Новая игра"
             continue_game.setOnClickListener {
