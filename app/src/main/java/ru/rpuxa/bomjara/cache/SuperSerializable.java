@@ -1,13 +1,13 @@
 package ru.rpuxa.bomjara.cache;
 
-import android.support.annotation.CallSuper;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.CallSuper;
 
 @Deprecated
 public interface SuperSerializable {

@@ -1,63 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/action_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
-        android:text="Какое то событие"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cost"
-        app:layout_constraintStart_toEndOf="@+id/illegal"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:id="@+id/illegal"
+        android:id="@+id/action_illegal"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/action_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/action_button"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/police" />
 
-    <TextView
-        android:id="@+id/cost"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="8dp"
-        android:gravity="end"
-        android:text="-13"
-        android:textSize="14sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="@+id/action_button"
-        app:layout_constraintEnd_toStartOf="@+id/currency"
-        app:layout_constraintTop_toTopOf="@+id/action_button" />
-
-    <ImageView
-        android:id="@+id/currency"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/action_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/action_button"
-        app:srcCompat="@drawable/euro" />
-
-    <ru.rpuxa.bomjara.impl.views.CircleProgressBar
-        android:id="@+id/progress_bar"
+    <ru.rpuxa.bomjara.refactor.m.views.CircleProgressBar
+        android:id="@+id/actions_progress_bar"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/currency"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/currency" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/action_illegal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/action_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Название"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/actions_progress_bar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/actions_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="8dp"
+        android:text="+20"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action_name" />
+
+    <ImageView
+        android:id="@+id/actions_add_icon"
+        android:layout_width="10sp"
+        android:layout_height="10sp"
+        android:layout_marginStart="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/actions_add"
+        app:layout_constraintStart_toEndOf="@+id/actions_add"
+        app:layout_constraintTop_toTopOf="@+id/actions_add"
+        app:srcCompat="@drawable/colored_health" />
+
+    <TextView
+        android:id="@+id/actions_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="-100"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/actions_add_icon"
+        app:layout_constraintTop_toBottomOf="@+id/action_name" />
+
+    <ImageView
+        android:id="@+id/actions_remove_icon"
+        android:layout_width="10sp"
+        android:layout_height="10sp"
+        android:layout_marginStart="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/actions_remove"
+        app:layout_constraintStart_toEndOf="@+id/actions_remove"
+        app:layout_constraintTop_toTopOf="@+id/actions_remove"
+        app:srcCompat="@drawable/ruble" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".impl.activities.MenuActivity">
+    tools:context=".refactor.v.activities.MenuActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -88,7 +88,7 @@
             app:layout_constraintStart_toStartOf="@+id/saves"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/menu_version"

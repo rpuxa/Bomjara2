@@ -1,8 +1,8 @@
 package ru.rpuxa.bomjara.impl.save
 
-import ru.rpuxa.bomjara.CurrentData
 import ru.rpuxa.bomjara.cache.StringSerializable
 
+@Deprecated("")
 class StringSave() : Save, StringSerializable {
 
     override var id = 0L
@@ -24,7 +24,7 @@ class StringSave() : Save, StringSerializable {
     override var energy = 100
     override var fullness = 100
     override var health = 100
-    override var courses = IntArray(CurrentData.actionsBase.courses.size)
+    override var courses = IntArray(0)
     override var deadByHungry = false
     override var deadByZeroHealth = false
     override var caughtByPolice = false

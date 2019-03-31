@@ -4,7 +4,6 @@ import ru.rpuxa.bomjara.api.actions.auxiliary.HasId
 import ru.rpuxa.bomjara.api.actions.auxiliary.Nameable
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.MonoCurrency
-import ru.rpuxa.bomjara.api.player.Player
 
 
 /**

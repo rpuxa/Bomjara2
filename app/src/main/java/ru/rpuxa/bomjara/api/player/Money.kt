@@ -4,10 +4,6 @@ interface Money {
 
     var rubles: Long
 
-    var euros: Long
-
-    var bitcoins: Long
-
     var bottles: Long
 
     var diamonds: Long

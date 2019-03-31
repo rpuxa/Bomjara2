@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.api.settings
 
 import java.io.File
 
+@Deprecated("Legacy code")
 interface Settings {
 
     var showTips: Boolean

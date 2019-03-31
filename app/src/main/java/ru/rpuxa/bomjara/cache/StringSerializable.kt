@@ -1,12 +1,13 @@
 package ru.rpuxa.bomjara.cache
 
 import android.content.Context
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import java.io.*
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 import java.util.*
 
+@Deprecated("")
 interface StringSerializable : Externalizable {
 
     @CallSuper
@@ -120,5 +121,6 @@ interface StringSerializable : Externalizable {
             val string = preferences.getString(SAVE_FIELD_NAME, null) ?: return null
             return fromSerializeString(string)
         }
+
     }
 }

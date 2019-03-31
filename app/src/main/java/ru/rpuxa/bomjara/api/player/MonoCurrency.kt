@@ -24,4 +24,6 @@ interface MonoCurrency : Money {
     override fun toString(): String
 
     override fun clone(): MonoCurrency
+
+
 }

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".impl.activities.Bomjara"
+        android:name=".refactor.v.Bomjara"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -15,8 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <meta-data android:name="com.google.android.gms.ads.AD_MANAGER_APP" android:value="true"/>
+
         <activity
-            android:name=".impl.activities.SplashActivity"
+            android:name=".refactor.v.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -26,18 +29,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".impl.activities.SavesActivity"
+            android:name=".refactor.v.activities.SavesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".impl.activities.MenuActivity"
+            android:name=".refactor.v.activities.MenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".impl.activities.ContentActivity"
+            android:name=".refactor.v.activities.ContentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".impl.activities.SettingsActivity"
+            android:name=".refactor.v.activities.SettingsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".impl.activities.MediaActivity" />
 
     </application>
 

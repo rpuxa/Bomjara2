@@ -1,5 +1,6 @@
 package ru.rpuxa.bomjara.impl.save
 
+@Deprecated("")
 interface Save {
     var id: Long
     var name: String

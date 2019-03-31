@@ -3,7 +3,7 @@ package ru.rpuxa.bomjara.api.actions
 import ru.rpuxa.bomjara.api.actions.auxiliary.CanBuy
 import ru.rpuxa.bomjara.api.actions.auxiliary.HasId
 import ru.rpuxa.bomjara.api.actions.auxiliary.Nameable
-import ru.rpuxa.bomjara.api.player.Money
+import ru.rpuxa.bomjara.api.player.MonoCurrency
 
 /**
  * API for course
@@ -18,5 +18,7 @@ interface Course : HasId, CanBuy, Nameable {
     /**
      * Skip cost
      */
-    val skipCost: Money
+    val skipCost: MonoCurrency
+
+    override val cost: MonoCurrency
 }
