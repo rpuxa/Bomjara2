@@ -28,5 +28,7 @@ class LocationFragment : ChainFragment() {
                 viewModel.friends,
                 viewModel::friend
         )
+
+        TipFragment.bind(this, R.id.tip_location)
     }
 }

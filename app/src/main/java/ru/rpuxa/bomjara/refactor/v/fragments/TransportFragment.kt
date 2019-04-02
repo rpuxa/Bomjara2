@@ -27,5 +27,7 @@ class TransportFragment : ChainFragment() {
                 viewModel.homes,
                 viewModel::home
         )
+
+        TipFragment.bind(this, R.id.tip_transport)
     }
 }

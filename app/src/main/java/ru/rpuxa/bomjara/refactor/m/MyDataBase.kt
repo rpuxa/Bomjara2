@@ -107,7 +107,12 @@ abstract class MyDataBase : RoomDatabase() {
     }
 
     fun deleteSave(id: Long) {
-        savesDao().delete(id)
+        val savesDao = savesDao()
+        savesDao.delete(id)
+        if (id == getLastSaveId()) {
+            val saveId = savesDao.getAll().maxBy { it.age }?.id ?: 0
+            setLastSaveId(saveId)
+        }
     }
 
     fun renameSave(id: Long, newName: String) {
@@ -146,6 +151,9 @@ abstract class MyDataBase : RoomDatabase() {
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         fun insert(save: Save)
+
+        @Query("SELECT * FROM $SAVES_TABLE_NAME WHERE id = :id")
+        fun get(id: Long): Save
 
         @Query("DELETE FROM $SAVES_TABLE_NAME WHERE id = :id")
         fun delete(id: Long)

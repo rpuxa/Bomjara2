@@ -1,15 +1,30 @@
-package ru.rpuxa.bomjara.refactor.m.player
+package ru.rpuxa.bomjara.refactor.m.player.secure
 
 import ru.rpuxa.bomjara.api.player.Condition
+import ru.rpuxa.bomjara.refactor.m.secure.SecureInt
 import kotlin.math.min
 import kotlin.math.round
 
-@Deprecated("")
-class ConditionImpl(
-        override var energy: Int = 0,
-        override var fullness: Int = 0,
-        override var health: Int = 0
-) : Condition {
+class SecureCondition(energy: Int, fullness: Int, health: Int) : Condition {
+    private val _energy = SecureInt(energy)
+    private val _fullness = SecureInt(fullness)
+    private val _health = SecureInt(health)
+
+    override var energy: Int
+        get() = _energy.value
+        set(value) {
+            _energy.value = value
+        }
+    override var fullness: Int
+        get() = _fullness.value
+        set(value) {
+            _fullness.value = value
+        }
+    override var health: Int
+        get() = _health.value
+        set(value) {
+            _health.value = value
+        }
 
     override fun addAssign(condition: Condition) {
         energy += condition.energy
@@ -32,7 +47,7 @@ class ConditionImpl(
         health = -health
     }
 
-    override fun inv() = ConditionImpl(-energy, -fullness, -health)
+    override fun inv() = SecureCondition(-energy, -fullness, -health)
 
     override fun truncateAssign(maxCondition: Condition) {
         energy = min(maxCondition.energy, energy)
@@ -50,5 +65,5 @@ class ConditionImpl(
 
     override fun multiply(x: Double) = clone().apply { multiplyAssign(x) }
 
-    override fun clone() = ConditionImpl(energy, fullness, health)
+    override fun clone() = SecureCondition(energy, fullness, health)
 }

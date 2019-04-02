@@ -37,7 +37,7 @@ class ActionsListFragment : CacheFragment() {
         }
         icon.setImageBitmap(ActionsMenus.getById(menu).getIcon(context))
         title.text = ActionsMenus.getById(menu).menuName
-        (childFragmentManager.findFragmentById(R.id.tip_action) as TipFragment).setMenu(menu)
+        TipFragment.bind(this, R.id.tip_action, menu)
     }
 
 
@@ -53,7 +53,7 @@ class ActionsListFragment : CacheFragment() {
             with(holder) {
                 val action = getItem(position)
                 name.text = action.name
-                illegal.visibility = if (action.illegal) View.VISIBLE else View.INVISIBLE
+                illegal.visibility = if (action.illegal) View.VISIBLE else View.GONE
                 itemView.setOnClickListener {
                     action(action)
                 }
@@ -85,11 +85,8 @@ class ActionsListFragment : CacheFragment() {
                     Action.NOTHING_NEEDED -> {
                         viewModel.doingAction = true
                         bar.visibility = View.VISIBLE
-                        illegal.visibility = View.INVISIBLE
                         bar.start(500) {
                             viewModel.doingAction = false
-                            if (action.illegal)
-                                illegal.visibility = View.VISIBLE
                             bar.visibility = View.INVISIBLE
                             action.perform(viewModel)
                         }
@@ -116,7 +113,7 @@ class ActionsListFragment : CacheFragment() {
                 oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Action, newItem: Action) =
-                oldItem.id == newItem.id
+                true
     }
 
     companion object {

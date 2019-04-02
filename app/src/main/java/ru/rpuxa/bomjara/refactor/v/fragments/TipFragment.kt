@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.tip.*
 import ru.rpuxa.bomjara.R
@@ -48,11 +49,17 @@ class TipFragment : Fragment() {
                     "А кореша помогут вам найти более лучшую работу"
             i.tip_transport -> "Покупай дома и транспорт, чтобы переходить на новые локации"
             i.tip_courses -> "Здесь вы можете проходить разные курсы, чтобы открыть корешей, транспорт и т.п."
-            i.tip_vip -> "Здесь вы можете купить уникальные товары за особую валюту - алмазы. " +
-                    "Они могут попадаться, когда вы совершаете какое либо действие." +
-                    "Либо вы можете их получить, посмотрев рекламу"
+            /* i.tip_vip -> "Здесь вы можете купить уникальные товары за особую валюту - алмазы. " +
+                     "Они могут попадаться, когда вы совершаете какое либо действие." +
+                     "Либо вы можете их получить, посмотрев рекламу"*/
             else -> throw IllegalStateException("unknown tip")
         }
         text_tip.text = text
+    }
+
+    companion object {
+        fun bind(fragment: Fragment, @IdRes id: Int, menu: Int = id) {
+            (fragment.childFragmentManager.findFragmentById(id) as TipFragment).setMenu(menu)
+        }
     }
 }

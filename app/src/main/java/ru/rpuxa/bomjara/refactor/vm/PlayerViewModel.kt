@@ -1,6 +1,5 @@
 package ru.rpuxa.bomjara.refactor.vm
 
-import android.os.Handler
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +15,8 @@ import ru.rpuxa.bomjara.api.player.Money
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.refactor.m.ActionsLoader
 import ru.rpuxa.bomjara.refactor.m.MyDataBase
-import ru.rpuxa.bomjara.refactor.m.player.ConditionImpl
-import ru.rpuxa.bomjara.refactor.m.player.MoneyImpl
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecureCondition
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecureMoney
 import ru.rpuxa.bomjara.refactor.v.Bomjara
 import ru.rpuxa.bomjara.utils.gauss
 import ru.rpuxa.bomjara.utils.nnValue
@@ -44,6 +43,8 @@ class PlayerViewModel : ViewModel(), Player {
     override var daysWithoutCaught: Int = 2
     override val endGame = MutableLiveData<Int>()
     override var doingAction: Boolean = false
+    override val immortal = MutableLiveData<Int>()
+    override val aezkmi = MutableLiveData<Int>()
 
 
     val currentActions = MutableLiveData<List<Action>>()
@@ -53,45 +54,56 @@ class PlayerViewModel : ViewModel(), Player {
 
 
     init {
-        val handler = Handler()
+        var id0: Long? = null
+        var save0: MyDataBase.Save? = null
         runBlocking(Dispatchers.IO) {
-            val id = res.myDataBase.getLastSaveId()
-            val save = res.myDataBase.getAllSaves().find { it.id == id }!!
-            handler.post {
-                this@PlayerViewModel.id = save.id
-                name = save.name
-                condition.value = ConditionImpl(save.energy, save.fullness, save.health)
-                maxCondition.value = ConditionImpl(save.maxEnergy, save.maxFullness, save.maxHealth)
-                money.value = MoneyImpl().apply {
-                    rubles = save.rubles
-                    bottles = save.bottles
-                    diamonds = save.diamonds
-                }
-                transport.value = save.transport
-                home.value = save.home
-                friend.value = save.friend
-                location.value = save.location
-                coursesProgress.value = save.courses
-                age.value = save.age
-                efficiency.value = save.efficiency
-                endGame.value = when {
-                    save.caughtByPolice -> CAUGHT_BY_POLICE
-                    save.deadByHungry -> DEAD_BY_HUNGRY
-                    save.deadByZeroHealth -> DEAD_BY_HEALTH
-                    else -> ALIVE
-                }
+            id0 = res.myDataBase.getLastSaveId()
+            val allSaves = res.myDataBase.getAllSaves()
+            save0 = allSaves.find { it.id == id0 }!!
+        }
+
+        val save = save0!!
+        val id = id0!!
+        this@PlayerViewModel.id = save.id
+        name = save.name
+        condition.value = SecureCondition(save.energy, save.fullness, save.health)
+        maxCondition.value = SecureCondition(save.maxEnergy, save.maxFullness, save.maxHealth)
+        money.value = SecureMoney().apply {
+            rubles = save.rubles
+            bottles = save.bottles
+            diamonds = save.diamonds
+        }
+        transport.value = save.transport
+        home.value = save.home
+        friend.value = save.friend
+        location.value = save.location
+        coursesProgress.value = save.courses
+        age.value = save.age
+        efficiency.value = save.efficiency
+        endGame.value = when {
+            save.caughtByPolice -> CAUGHT_BY_POLICE
+            save.deadByHungry -> DEAD_BY_HUNGRY
+            save.deadByZeroHealth -> DEAD_BY_HEALTH
+            else -> ALIVE
+        }
+
+
+        fun updateAvailableCourses() {
+            availableCourses.value = courses.filter {
+                it.id < location.v + 2 &&
+                        coursesProgress.v[it.id] == 0
             }
         }
 
         location.observeForever { loc ->
             currentActions.value = res.actions.getActionsByLevel(loc)
-
-            availableCourses.value = courses.filter { it.id < loc + 2 }
+            updateAvailableCourses()
         }
 
         coursesProgress.observeForever { progress ->
             currentCourses.value = courses.filter { progress[it.id] in 1 until it.length }
             completedCourses.value = courses.filter { progress[it.id] == it.length }
+            updateAvailableCourses()
         }
 
         condition.observeForever {
@@ -169,7 +181,7 @@ class PlayerViewModel : ViewModel(), Player {
         coursesProgress.update {
             this[id]++
         }
-        addCondition(ConditionImpl(-5, -5, -5))
+        addCondition(SecureCondition(-5, -5, -5))
         return coursesProgress.v[id] == courses[id].length
     }
 
@@ -183,6 +195,8 @@ class PlayerViewModel : ViewModel(), Player {
     }
 
     override fun addCondition(add: Condition) {
+        if (immortal.v >= 0)
+            return
         condition.update {
             addAssign(add.multiply(gauss))
             truncateAssign(maxCondition.nnValue)
@@ -211,7 +225,6 @@ class PlayerViewModel : ViewModel(), Player {
     fun getFriend(id: Int): ChainElement = res.actions.friends[id]
     fun getHome(id: Int): ChainElement = res.actions.homes[id]
     fun getCourse(id: Int) = res.actions.courses[id]
-    fun getCourseProgress(id: Int): Int = coursesProgress.v[id]
     val penalty get() = res.actions.getPenalty(this)
 
 

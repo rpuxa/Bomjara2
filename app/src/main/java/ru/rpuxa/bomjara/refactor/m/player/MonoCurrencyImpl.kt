@@ -2,7 +2,10 @@ package ru.rpuxa.bomjara.refactor.m.player
 
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.MonoCurrency
+import ru.rpuxa.bomjara.refactor.m.player.secure.of
 import java.lang.Math.ceil
+
+@Deprecated("")
 
 class MonoCurrencyImpl : MoneyImpl, MonoCurrency {
 
@@ -47,9 +50,9 @@ class MonoCurrencyImpl : MoneyImpl, MonoCurrency {
     }
 }
 
-infix fun Int.of(currency: Currencies) = MonoCurrencyImpl(toLong(), currency)
-
-infix fun Long.of(currency: Currencies) = MonoCurrencyImpl(this, currency)
-
+//infix fun Int.of(currency: Currencies) = MonoCurrencyImpl(toLong(), currency)
+//
+//infix fun Long.of(currency: Currencies) = MonoCurrencyImpl(this, currency)
+//
 inline val Int.rub get() = this of Currencies.RUBLES
 inline val Int.bottle get() = this of Currencies.BOTTLES

@@ -3,6 +3,8 @@ package ru.rpuxa.bomjara.refactor.m.player
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.api.player.Money
 
+@Deprecated("")
+
 open class MoneyImpl : Money {
 
     final override val currencies: LongArray

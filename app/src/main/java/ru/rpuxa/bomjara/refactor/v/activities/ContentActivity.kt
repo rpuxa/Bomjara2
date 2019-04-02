@@ -11,8 +11,10 @@ import kotlinx.android.synthetic.main.status_bars.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
+import ru.rpuxa.bomjara.refactor.m.player.bottle
 import ru.rpuxa.bomjara.refactor.m.player.rub
 import ru.rpuxa.bomjara.refactor.v.Bomjara
 import ru.rpuxa.bomjara.refactor.v.ContentAdapter
@@ -57,29 +59,24 @@ class ContentActivity : AppCompatActivity() {
                 )
                 .setViewPager(pager)
 
+        val playerViewModel = getViewModel<PlayerViewModel>()
+
 
         //DEBUG
-        /*  if (BuildConfig.DEBUG) {
-              player.money.rubles = 999999999
-              player.money.euros = 999999999
-              player.money.bitcoins = 999999999
-              player.money.bottles = 999999999
-              player.possessions.home = 0
-              player.possessions.transport = 0
-          }
-  */
-        val playerViewModel = getViewModel<PlayerViewModel>()
+        if (BuildConfig.DEBUG) {
+            playerViewModel.addMoney(999999999.rub)
+            playerViewModel.addMoney(999999999.bottle)
+        }
+
 
         var lastRubles = -1L
         var lastBottles = -1L
-        var anim = ValueAnimator.ofFloat()!!
         playerViewModel.money.observe(this) { money ->
             fun set(textView: TextView, count: Long, green: Boolean) {
                 textView.text = count.divider()
                 val startColor = if (green) Color.GREEN else Color.RED
                 val toColor = Color.WHITE
-                anim.cancel()
-                anim = ValueAnimator.ofFloat(1f, 0f)
+                val anim = ValueAnimator.ofFloat(1f, 0f)
                 anim.duration = 1000
                 anim.addUpdateListener {
                     val v = it.animatedValue as Float
@@ -95,17 +92,19 @@ class ContentActivity : AppCompatActivity() {
 
             if (lastRubles == -1L) {
                 rubles_bar.text = money.rubles.divider()
+            } else {
+                val deltaRubles = money.rubles - lastRubles
+                if (deltaRubles != 0L) {
+                    set(rubles_bar, money.rubles, deltaRubles > 0)
+                }
             }
             if (lastBottles == -1L) {
                 bottles_bar.text = money.bottles.divider()
-            }
-            val deltaRubles = money.rubles - lastRubles
-            val deltaBottles = money.bottles - lastBottles
-            if (deltaRubles != 0L) {
-                set(rubles_bar, money.rubles, deltaRubles > 0)
-            }
-            if (deltaBottles != 0L) {
-                set(bottles_bar, money.bottles, deltaBottles > 0)
+            } else {
+                val deltaBottles = money.bottles - lastBottles
+                if (deltaBottles != 0L) {
+                    set(bottles_bar, money.bottles, deltaBottles > 0)
+                }
             }
 
             lastRubles = money.rubles

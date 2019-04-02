@@ -3,11 +3,10 @@ package ru.rpuxa.bomjara.refactor.v
 import android.annotation.SuppressLint
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import ru.rpuxa.bomjara.R
-import ru.rpuxa.bomjara.api.settings.Settings
-import ru.rpuxa.bomjara.cache.SuperDeserializator
 import ru.rpuxa.bomjara.impl.save.StringSaveLoader
-import ru.rpuxa.bomjara.impl.settings.SettingsImpl
 import ru.rpuxa.bomjara.refactor.dagger.Component
 import ru.rpuxa.bomjara.refactor.dagger.DaggerComponent
 import ru.rpuxa.bomjara.refactor.dagger.Provider
@@ -39,40 +38,50 @@ class Bomjara : Application() {
 
 
         //<editor-fold desc="Legacy code">
-        (SuperDeserializator.deserialize(filesDir, SettingsImpl.SETTINGS_FILE_NAME) as? Settings?)?.let { settings ->
-            myDataBase.apply {
-                    setLastSaveId(settings.lastSave)
-                    setShowTips(settings.showTips)
-                }
-            File(filesDir, SettingsImpl.SETTINGS_FILE_NAME).delete()
-        }
+        File(filesDir, "settings2.0").delete()
 
-        StringSaveLoader.loadFromFile(this)?.forEach {
-            myDataBase.updatePlayer(
-                    it.id,
-                    it.name,
-                    it.age,
-                    it.bottles,
-                    it.rubles + it.euros * 100 + it.bitcoins * 3000,
-                    it.diamonds,
-                    it.location,
-                    it.friend,
-                    it.home,
-                    it.transport,
-                    it.efficiency,
-                    it.maxEnergy,
-                    it.maxFullness,
-                    it.maxHealth,
-                    it.maxEnergy,
-                    it.maxFullness,
-                    it.maxHealth,
-                    it.courses,
-                    deadByHungry = false,
-                    deadByZeroHealth = false,
-                    caughtByPolice = false
-            )
-        }
+        val oldSaves = StringSaveLoader.loadFromFile(this)
+
+        if (oldSaves != null)
+            runBlocking(Dispatchers.IO) {
+                var max = -1
+                var bestSaveId = 0L
+                for (it in oldSaves) {
+                    if (it.age > max) {
+                        max = it.age
+                        bestSaveId = it.id
+                    }
+
+                    myDataBase.updatePlayer(
+                            it.id,
+                            it.name,
+                            it.age,
+                            it.bottles,
+                            it.rubles + it.euros * 100 + it.bitcoins * 3000,
+                            it.diamonds,
+                            it.location,
+                            it.friend,
+                            it.home,
+                            it.transport,
+                            it.efficiency,
+                            it.maxEnergy,
+                            it.maxFullness,
+                            it.maxHealth,
+                            it.maxEnergy,
+                            it.maxFullness,
+                            it.maxHealth,
+                            it.courses,
+                            deadByHungry = false,
+                            deadByZeroHealth = false,
+                            caughtByPolice = false
+                    )
+                }
+
+                myDataBase.setLastSaveId(bestSaveId)
+            }
+
         //</editor-fold>
+
     }
 
     companion object {

@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.refactor.vm.SettingsViewModel
 import ru.rpuxa.bomjara.utils.getViewModel
-import ru.rpuxa.bomjara.utils.v
+import ru.rpuxa.bomjara.utils.observe
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -17,7 +17,9 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val viewModel = getViewModel<SettingsViewModel>()
-        show_tips.isChecked = viewModel.showTips.v
+        viewModel.showTips.observe(this) {
+            show_tips.isChecked = it
+        }
         show_tips.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setShowTips(isChecked)
         }

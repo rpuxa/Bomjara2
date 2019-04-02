@@ -61,6 +61,8 @@ class CoursesFragment : CacheFragment() {
                 completeAdapter.submitList(it)
             }
         }
+
+        TipFragment.bind(this, R.id.tip_courses)
     }
 
     private inner class AvailableCoursesAdapter : ListAdapter<Course, AvailableCoursesHolder>(Diff) {
@@ -111,13 +113,10 @@ class CoursesFragment : CacheFragment() {
         override fun onBindViewHolder(holder: CurrentCoursesHolder, position: Int) {
             val viewModel = getViewModel<PlayerViewModel>()
             val course = getItem(position)
-            val progress = viewModel.getCourseProgress(course.id)
             holder.name.text = course.name
-            holder.process.text = progress.toString()
             holder.max.text = course.length.toString()
             holder.skipCurrency.setImageBitmap(course.cost.currency.getIcon(context))
             holder.skipCost.text = course.skipCost.count.toString()
-            holder.bar.progress = progress
             holder.bar.max = course.length
 
             holder.learn.setOnClickListener {
@@ -127,6 +126,14 @@ class CoursesFragment : CacheFragment() {
 
             holder.skip.setOnClickListener {
                 viewModel.buyCourse(course.id)
+            }
+
+            viewModel.coursesProgress.observe(this@CoursesFragment) {
+                val progress = it[course.id]
+                if (progress in 1 until course.length) {
+                    holder.process.text = progress.toString()
+                    holder.bar.progress = progress
+                }
             }
         }
     }

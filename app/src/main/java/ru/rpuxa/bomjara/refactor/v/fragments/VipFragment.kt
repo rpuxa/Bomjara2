@@ -59,6 +59,7 @@ class VipFragment : Fragment() {
                 toast(R.string.ad_loading)
             }
         }
+//        TipFragment.bind(this, R.id.tip_vip)
     }
 
 

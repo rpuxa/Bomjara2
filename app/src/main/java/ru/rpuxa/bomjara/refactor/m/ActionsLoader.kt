@@ -8,12 +8,13 @@ import ru.rpuxa.bomjara.refactor.m.actions.ChainElementImpl
 import ru.rpuxa.bomjara.refactor.m.actions.CourseImpl
 import ru.rpuxa.bomjara.refactor.m.actions.VipImpl
 import ru.rpuxa.bomjara.refactor.m.player.ConditionImpl
-import ru.rpuxa.bomjara.refactor.m.player.of
 import ru.rpuxa.bomjara.refactor.m.player.rub
+import ru.rpuxa.bomjara.refactor.m.player.secure.of
 import ru.rpuxa.bomjara.refactor.v.Bomjara
+import ru.rpuxa.bomjara.utils.postValue
 import ru.rpuxa.bomjara.utils.update
 import ru.rpuxa.bomjara.utils.v
-import java.io.EOFException
+import java.io.DataInputStream
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -56,6 +57,14 @@ class ActionsLoader {
         add(3, "+10% к эффективности работы", 17) {
             it.efficiency.value = it.efficiency.v + 10
         }
+
+        add(4, "20 ходов без полиции", 27) {
+            it.aezkmi.postValue = 20
+        }
+
+        add(5, "30 ходов бессмертия", 27) {
+            it.immortal.postValue = 30
+        }
     }
 
     fun getPenalty(player: Player) = penalties[player.location.v]
@@ -85,26 +94,26 @@ class ActionsLoader {
     /**
      * Scheme
      *
-     * [UByte. Actions length] {
-     *      [UByte, id]
+     * [short Actions length] {
+     *      [short, id]
      *      [UByte. Level],
      *      [UByte. menu],
-     *      [UByte, name length] { ...}
-     *      [UInt. Cost in rubles],
-     *      [UByte. Energy],
-     *      [UByte. Fullness],
-     *      [UByte. Health],
-     *      [UByte. Is legal]
+     *      string name
+     *      [int. Cost in rubles],
+     *      [byte. Energy],
+     *      [byte. Fullness],
+     *      [byte. Health],
+     *      [boolean. Is legal]
      *      ...
      *      ...
      * },
-     * [UByte. transports] {
+     * [byte transports] {
      *      string name
-     *      transport,
-     *      home,
-     *      friend,
-     *      location
-     *      course
+     *      byte transport,
+     *      byte home,
+     *      byte friend,
+     *      byte location
+     *      byte course
      *      int cost
      * }
      * ...
@@ -119,21 +128,22 @@ class ActionsLoader {
      *      short length
      * }
      */
-    private fun read(input: InputStream) {
+    private fun read(i: InputStream) {
+        val input = DataInputStream(i)
         val actions = ArrayList<Action>()
-        input.repeat {
+        repeat(input.readShort().toInt()) {
             val action = ActionImpl(
-                    input.readUByte(),
-                    input.readUByte(),
-                    input.readUByte(),
-                    input.readString(),
-                    input.readInt().rub,
+                    input.readShort().toInt(),
+                    input.readByte().toInt(),
+                    input.readByte().toInt(),
+                    input.readUTF(),
+                    (-input.readInt()).rub,
                     ConditionImpl(
-                            input.readUByte(),
-                            input.readUByte(),
-                            input.readUByte()
+                            input.readByte().toInt(),
+                            input.readByte().toInt(),
+                            input.readByte().toInt()
                     ),
-                    !input.readBoolean()
+                    input.readBoolean()
             )
 
             actions.add(action)
@@ -141,14 +151,14 @@ class ActionsLoader {
 
         val chains = Array(4) { ArrayList<ChainElement>() }
         chains.forEach { list ->
-            input.repeat {
+            repeat(input.readByte().toInt()) {
                 val element = ChainElementImpl(
-                        input.readString(),
-                        input.readUByte(),
-                        input.readUByte(),
-                        input.readUByte(),
-                        input.readUByte(),
-                        input.readUByte(),
+                        input.readUTF(),
+                        input.readByte().toInt(),
+                        input.readByte().toInt(),
+                        input.readByte().toInt(),
+                        input.readByte().toInt(),
+                        input.readByte().toInt(),
                         input.readInt().rub
                 )
 
@@ -157,12 +167,12 @@ class ActionsLoader {
         }
 
         val courses = ArrayList<Course>()
-        input.repeat {
+        repeat(input.readByte().toInt()) {
             val course = CourseImpl(
-                    input.readUByte(),
-                    input.readString(),
-                    input.readInt().rub,
-                    input.readShort()
+                    input.readByte().toInt(),
+                    input.readUTF(),
+                    (-input.readInt()).rub,
+                    input.readShort().toInt()
             )
             courses.add(course)
         }
@@ -175,39 +185,6 @@ class ActionsLoader {
         this.courses = courses
     }
 
-    private fun InputStream.checkRead(): Int {
-        val a = read()
-        if (a < 0)
-            throw EOFException("Конец файла!")
-        return a
-    }
-
-    private fun InputStream.readBoolean() = checkRead() == 1
-
-    private fun InputStream.readUByte(): Int = checkRead()
-
-    private fun InputStream.readInt(): Int {
-        var int = 0
-        repeat(4) {
-            int = int or checkRead()
-            int = int shl 8
-        }
-        return int
-    }
-
-    private fun InputStream.readChar(): Char = readShort().toChar()
-
-    private fun InputStream.readShort(): Int = (checkRead() shl 8) or checkRead()
-
-    private inline fun InputStream.repeat(block: (Int) -> Unit) {
-        kotlin.repeat(readUByte(), block)
-    }
-
-    private fun InputStream.readString(): String {
-        val builder = StringBuilder()
-        repeat { builder.append(readChar()) }
-        return builder.toString()
-    }
 
     companion object {
         const val ACTIONS_NAME = "new_actions.bomj"

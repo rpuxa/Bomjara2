@@ -4,6 +4,7 @@ import ru.rpuxa.bomjara.api.player.MonoPossession
 import ru.rpuxa.bomjara.api.player.Possessions
 import ru.rpuxa.bomjara.api.player.PossessionsList
 
+@Deprecated("")
 open class PossessionsImpl(
         override var transport: Int = 0,
         override var home: Int = 0,
@@ -16,6 +17,6 @@ open class PossessionsImpl(
         home < standard.home -> MonoPossessionImpl(standard.home, PossessionsList.HOME)
         friend < standard.friend -> MonoPossessionImpl(standard.friend, PossessionsList.FRIEND)
         location < standard.location -> MonoPossessionImpl(standard.location, PossessionsList.LOCATION)
-            else -> null
-        }
+        else -> null
+    }
 }

@@ -22,6 +22,8 @@ interface Player {
     var daysWithoutCaught: Int
     val endGame: MutableLiveData<Int>
     val doingAction: Boolean
+    val immortal: MutableLiveData<Int>
+    val aezkmi: MutableLiveData<Int>
 
     fun startStudyCourse(id: Int): Boolean
 

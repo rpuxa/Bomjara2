@@ -26,7 +26,7 @@ class CircleProgressBar(context: Context, attrs: AttributeSet) : View(context, a
         val w = width / 2f
         val h = height / 2f
         val r = Math.min(w, h)
-        val circleWidth = r / 5
+        val circleWidth = r / 4
         val path = Path()
         path.moveTo(w, 0f)
         val max = 50

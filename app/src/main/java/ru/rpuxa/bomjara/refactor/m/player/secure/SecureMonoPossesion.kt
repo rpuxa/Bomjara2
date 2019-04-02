@@ -1,11 +1,9 @@
-package ru.rpuxa.bomjara.refactor.m.player
+package ru.rpuxa.bomjara.refactor.m.player.secure
 
 import ru.rpuxa.bomjara.api.player.MonoPossession
 import ru.rpuxa.bomjara.api.player.PossessionsList
 
-@Deprecated("")
-
-class MonoPossessionImpl : PossessionsImpl, MonoPossession {
+class SecureMonoPossesion : SecurePossession, MonoPossession {
     override var value
         get() = when (possession) {
             PossessionsList.LOCATION -> location

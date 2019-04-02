@@ -18,6 +18,8 @@ fun Long.divider(): String {
         s = s.substring(0, s.length - 3)
     }
 
+    if (newString.startsWith(' '))
+        return s + newString.substring(1)
     return s + newString
 }
 
@@ -65,7 +67,7 @@ inline fun <T> LiveData<T>.observe(owner: LifecycleOwner, crossinline block: (T)
 }
 
 
-val <T> LiveData<T>.nnValue get() = value!!
+inline val <T> LiveData<T>.nnValue get() = value!!
 
 inline val <T> LiveData<T>.v get() = nnValue
 
@@ -104,6 +106,6 @@ fun <T> LiveData<T>.toObservableForever(): Observable<T> {
 
 
 fun <T> MutableLiveData(value: T) =
-        androidx.lifecycle.MutableLiveData<T>().apply { this.value = value }
+        MutableLiveData<T>().apply { this.value = value }
 
 */
