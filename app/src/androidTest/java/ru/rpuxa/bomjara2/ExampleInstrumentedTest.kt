@@ -1,10 +1,14 @@
-package ru.rpuxa.bomjara
+package ru.rpuxa.bomjara2
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
-import org.junit.Assert.assertEquals
+import android.content.Context
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
+import junit.framework.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.rpuxa.bomjara.refactor.m.MyDataBase
+
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -13,10 +17,21 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+
+    lateinit var context: Context
+    lateinit var dataBase: MyDataBase
+
+    @Before
+    fun before() {
+        context = InstrumentationRegistry.getInstrumentation().context
+        dataBase = MyDataBase.create(context)
+    }
+
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("ru.rpuxa.bomjara", appContext.packageName)
+    fun lastSaveId() {
+        val rand = -7916290162127893
+        dataBase.setLastSaveId(rand)
+
+        assertEquals(rand, dataBase.getLastSaveId())
     }
 }

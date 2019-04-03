@@ -43,8 +43,6 @@ class PlayerViewModel : ViewModel(), Player {
     override var daysWithoutCaught: Int = 2
     override val endGame = MutableLiveData<Int>()
     override var doingAction: Boolean = false
-    override val immortal = MutableLiveData<Int>()
-    override val aezkmi = MutableLiveData<Int>()
 
 
     val currentActions = MutableLiveData<List<Action>>()
@@ -195,8 +193,6 @@ class PlayerViewModel : ViewModel(), Player {
     }
 
     override fun addCondition(add: Condition) {
-        if (immortal.v >= 0)
-            return
         condition.update {
             addAssign(add.multiply(gauss))
             truncateAssign(maxCondition.nnValue)

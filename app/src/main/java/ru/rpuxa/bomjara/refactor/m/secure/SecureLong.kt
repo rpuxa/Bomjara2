@@ -6,13 +6,15 @@ class SecureLong(value: Long) {
 
     constructor() : this(0)
 
-    var value: Long = value
+    private var _value = value
+
+    var value: Long
         get() {
             checkHash()
-            return field
+            return _value
         }
         set(v) {
-            field = v
+            _value = v
             updateHash()
         }
 
@@ -24,7 +26,7 @@ class SecureLong(value: Long) {
     }
 
     private fun calculateHash() =
-            Random(value).nextLong()
+            Random(_value).nextLong()
 
 
     private fun updateHash() {
@@ -33,7 +35,7 @@ class SecureLong(value: Long) {
 
     private fun checkHash() {
         if (hash != calculateHash())
-            throw HackException("Value = $value")
+            throw HackException("Value = $_value")
     }
 
     private class HackException(m: String) : Exception(m)

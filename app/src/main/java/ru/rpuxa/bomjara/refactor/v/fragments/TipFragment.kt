@@ -23,7 +23,7 @@ class TipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val viewModel = getViewModel<SettingsViewModel>()
         viewModel.showTips.observe(this) { show ->
-            view.visibility = if (show) View.VISIBLE else View.GONE
+            getView()?.visibility = if (show) View.VISIBLE else View.GONE
         }
         close_tip.setOnClickListener {
             AlertDialog.Builder(context)

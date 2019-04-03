@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.exchange.*
 import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Currencies
-import ru.rpuxa.bomjara.refactor.m.player.of
+import ru.rpuxa.bomjara.refactor.m.player.secure.of
 import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
 import ru.rpuxa.bomjara.utils.getViewModel
 import ru.rpuxa.bomjara.utils.observe
