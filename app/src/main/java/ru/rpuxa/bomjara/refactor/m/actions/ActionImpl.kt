@@ -42,7 +42,7 @@ class ActionImpl(
         player.addCondition(addCondition)
         if (random.nextInt(40) == 10)
             player.addMoney(SecureMonoCurrency.ONE_DIAMOND)
-        if (illegal && player.daysWithoutCaught >= 2 && random.nextInt(10) == 5) {
+        if (illegal && player.daysWithoutCaught >= 2 && random.nextInt(9) == 5) {
             player.endGame.value = CAUGHT_BY_POLICE
         } else {
             player.daysWithoutCaught++

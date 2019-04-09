@@ -45,8 +45,6 @@ class PlayerViewModel : ViewModel(), Player {
     override var daysWithoutCaught: Int = 2
     override val endGame = MutableLiveData<Int>()
     override var doingAction: Boolean = false
-    var adTime = 0L
-    var watchedAdLastTime = 0L
 
     val currentActions = MutableLiveData<List<Action>>()
     val availableCourses = MutableLiveData<List<Course>>()
@@ -82,6 +80,7 @@ class PlayerViewModel : ViewModel(), Player {
         age.value = save.age
         efficiency.value = save.efficiency
         endGame.value = save.endGame
+
 
 
         fun updateAvailableCourses() {
@@ -243,9 +242,6 @@ class PlayerViewModel : ViewModel(), Player {
 
     companion object {
         private val COURSE_CONDITION = SecureCondition(-5, -5, -5)
-
-        const val AD_TIME_DEFAULT = 2L * 60 * 1_000_000_000 // 2 minutes
-
     }
 
 }

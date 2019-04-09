@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.*
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.Money
-import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel.Companion.AD_TIME_DEFAULT
 
 @Database(
         entities = [MyDataBase.Save::class, MyDataBase.Settings::class],
@@ -115,17 +114,12 @@ abstract class MyDataBase : RoomDatabase() {
     fun getShowTips() = getSettings().showTips
 
     fun setShowTips(bFlag: Boolean) {
-        settingsDao().setShowTips(if (bFlag) 1 else 0)
+        settingsDao().setShowTips(bFlag)
     }
-
-    fun setAdTime(time: Long) {
-        settingsDao().setAdTime(time)
-    }
-
 
     private fun getSettings(): Settings {
         return settingsDao().get().firstOrNull() ?: run {
-            val settings = Settings(true, 0, AD_TIME_DEFAULT)
+            val settings = Settings(true, 0)
             settingsDao().insert(settings)
             return settings
         }
@@ -259,10 +253,11 @@ abstract class MyDataBase : RoomDatabase() {
         fun setLastSave(id: Long)
 
         @Query("UPDATE $SETTINGS_TABLE_NAME SET showTips = :bFlag")
-        fun setShowTips(bFlag: Int)
+        fun setShowTips(bFlag: Boolean)
 
         @Query("UPDATE $SETTINGS_TABLE_NAME SET showTips = :time")
         fun setAdTime(time: Long)
+
 
         @Query("SELECT * FROM $SETTINGS_TABLE_NAME")
         fun get(): List<Settings>
@@ -272,8 +267,7 @@ abstract class MyDataBase : RoomDatabase() {
     @Entity(tableName = SETTINGS_TABLE_NAME)
     class Settings(
             var showTips: Boolean,
-            var lastSave: Long,
-            var adTime: Long
+            var lastSave: Long
     ) {
         @PrimaryKey
         var id: Int = 0

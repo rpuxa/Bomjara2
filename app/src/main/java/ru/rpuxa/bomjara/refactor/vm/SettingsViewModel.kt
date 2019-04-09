@@ -17,6 +17,7 @@ class SettingsViewModel : ViewModel() {
 
     val showTips = MutableLiveData<Boolean>()
 
+
     init {
         runBlocking(Dispatchers.IO) {
             showTips.postValue = res.myDataBase.getShowTips()
