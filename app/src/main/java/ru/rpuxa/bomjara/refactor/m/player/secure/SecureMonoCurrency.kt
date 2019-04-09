@@ -8,9 +8,9 @@ class SecureMonoCurrency(count: Long, override var currency: Currencies) : Secur
 
     override var count: Long
         set(value) {
-            currencies[currency.id] = value
+            currencies[currency.id].value = value
         }
-        get() = currencies[currency.id]
+        get() = currencies[currency.id].value
 
     init {
         this.count = count

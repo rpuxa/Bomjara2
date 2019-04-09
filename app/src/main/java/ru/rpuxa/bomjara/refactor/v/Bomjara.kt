@@ -1,7 +1,11 @@
 package ru.rpuxa.bomjara.refactor.v
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Application
+import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -12,8 +16,10 @@ import ru.rpuxa.bomjara.refactor.dagger.DaggerComponent
 import ru.rpuxa.bomjara.refactor.dagger.Provider
 import ru.rpuxa.bomjara.refactor.m.ActionsLoader
 import ru.rpuxa.bomjara.refactor.m.MyDataBase
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.ALIVE
 import java.io.File
 import javax.inject.Inject
+import kotlin.math.min
 
 class Bomjara : Application() {
     @Inject
@@ -29,6 +35,45 @@ class Bomjara : Application() {
                 .build()
         component.inject(this)
         load()
+
+        registerInGameTime()
+    }
+
+    private fun registerInGameTime() {
+        val listener = object : View.OnTouchListener {
+
+            private var lastTouchTime = System.nanoTime()
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                inGameTime += min( System.nanoTime() - lastTouchTime, MAX_TIME_WITHOUT_TOUCH)
+
+                return true
+            }
+        }
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityPaused(activity: Activity) {
+                activity.window.decorView.setOnTouchListener(null)
+            }
+
+            override fun onActivityResumed(activity: Activity) {
+                activity.window.decorView.setOnTouchListener(listener)
+            }
+
+            override fun onActivityStarted(activity: Activity?) {
+            }
+
+            override fun onActivityDestroyed(activity: Activity?) {
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
+            }
+
+            override fun onActivityStopped(activity: Activity?) {
+            }
+
+            override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+            }
+        })
     }
 
     private fun load() {
@@ -44,14 +89,7 @@ class Bomjara : Application() {
 
         if (oldSaves != null)
             runBlocking(Dispatchers.IO) {
-                var max = -1
-                var bestSaveId = 0L
                 for (it in oldSaves) {
-                    if (it.age > max) {
-                        max = it.age
-                        bestSaveId = it.id
-                    }
-
                     myDataBase.updatePlayer(
                             it.id,
                             it.name,
@@ -71,13 +109,11 @@ class Bomjara : Application() {
                             it.maxFullness,
                             it.maxHealth,
                             it.courses,
-                            deadByHungry = false,
-                            deadByZeroHealth = false,
-                            caughtByPolice = false
+                            ALIVE
                     )
                 }
 
-                myDataBase.setLastSaveId(bestSaveId)
+                myDataBase.setLastSaveId(oldSaves.maxBy { it.age }?.id ?: return@runBlocking)
             }
 
         //</editor-fold>
@@ -89,6 +125,11 @@ class Bomjara : Application() {
             private set
         @SuppressLint("StaticFieldLeak")
         lateinit var videoAd: Ad
+            private set
+
+        private const val MAX_TIME_WITHOUT_TOUCH = 5_000_000_000L //5 sec
+
+        var inGameTime = 0L
             private set
     }
 }

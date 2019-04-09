@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ru.rpuxa.bomjara.refactor.m.ActionsLoader
 import ru.rpuxa.bomjara.refactor.m.MyDataBase
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.ALIVE
 import ru.rpuxa.bomjara.refactor.v.Bomjara
 import ru.rpuxa.bomjara.utils.postValue
 import java.util.*
@@ -49,9 +50,7 @@ class SavesViewModel : ViewModel() {
                     90,
                     90,
                     IntArray(coursesSize),
-                    deadByHungry = false,
-                    deadByZeroHealth = false,
-                    caughtByPolice = false
+                    ALIVE
             )
         }
         return id

@@ -1,5 +1,7 @@
 package ru.rpuxa.bomjara.api.player
 
+import ru.rpuxa.bomjara.refactor.m.secure.SecureLong
+
 interface Money {
 
     var rubles: Long
@@ -8,7 +10,7 @@ interface Money {
 
     var diamonds: Long
 
-    val currencies: LongArray
+    val currencies: Array<SecureLong>
 
     operator fun get(currency: Currencies) = get(currency.id)
 

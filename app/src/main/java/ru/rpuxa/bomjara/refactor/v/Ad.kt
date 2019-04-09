@@ -1,19 +1,24 @@
 package ru.rpuxa.bomjara.refactor.v
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
 
-class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
+class Ad(val context: Context, val id: String) : RewardedVideoAdListener, LifecycleObserver {
     private val videoAd = MobileAds.getRewardedVideoAdInstance(context).apply {
         rewardedVideoAdListener = this@Ad
     }!!
 
     private var watched = false
-    lateinit var listener: () -> Unit
+    private var listener: (() -> Unit)? = null
 
     init {
         load()
@@ -21,9 +26,10 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
 
     override fun onRewardedVideoAdClosed() {
         if (watched)
-            listener()
+            listener!!()
         load()
         watched = false
+        listener = null
     }
 
     override fun onRewardedVideoAdLeftApplication() {
@@ -56,16 +62,27 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener {
         load()
     }
 
-    fun show(listener: () -> Unit): Boolean {
-        this.listener = listener
+    fun show(owner: Activity, listener: () -> Unit): Boolean {
         if (!videoAd.isLoaded)
             return false
+        this.listener = listener
+        (owner as LifecycleOwner).lifecycle.addObserver(this)
         videoAd.show()
         return true
     }
 
     private fun load() {
         videoAd.loadAd(id, AdRequest.Builder().build())
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private fun pause() {
+        videoAd.pause(context)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private fun resume() {
+        videoAd.resume(context)
     }
 
     companion object {

@@ -7,11 +7,9 @@ import ru.rpuxa.bomjara.refactor.m.actions.ActionImpl
 import ru.rpuxa.bomjara.refactor.m.actions.ChainElementImpl
 import ru.rpuxa.bomjara.refactor.m.actions.CourseImpl
 import ru.rpuxa.bomjara.refactor.m.actions.VipImpl
-import ru.rpuxa.bomjara.refactor.m.player.ConditionImpl
-import ru.rpuxa.bomjara.refactor.m.player.rub
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecureCondition
 import ru.rpuxa.bomjara.refactor.m.player.secure.of
 import ru.rpuxa.bomjara.refactor.v.Bomjara
-import ru.rpuxa.bomjara.utils.postValue
 import ru.rpuxa.bomjara.utils.update
 import ru.rpuxa.bomjara.utils.v
 import java.io.DataInputStream
@@ -129,8 +127,8 @@ class ActionsLoader {
                     input.readByte().toInt(),
                     input.readByte().toInt(),
                     input.readUTF(),
-                    (-input.readInt()).rub,
-                    ConditionImpl(
+                    (-input.readInt()) of Currencies.RUBLES,
+                    SecureCondition(
                             input.readByte().toInt(),
                             input.readByte().toInt(),
                             input.readByte().toInt()
@@ -151,7 +149,7 @@ class ActionsLoader {
                         input.readByte().toInt(),
                         input.readByte().toInt(),
                         input.readByte().toInt(),
-                        input.readInt().rub
+                        input.readInt() of Currencies.RUBLES
                 )
 
                 list.add(element)
@@ -163,7 +161,7 @@ class ActionsLoader {
             val course = CourseImpl(
                     input.readByte().toInt(),
                     input.readUTF(),
-                    (-input.readInt()).rub,
+                    (-input.readInt()) of Currencies.RUBLES,
                     input.readShort().toInt()
             )
             courses.add(course)

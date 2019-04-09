@@ -7,8 +7,8 @@ import ru.rpuxa.bomjara.api.actions.Action.Companion.NOTHING_NEEDED
 import ru.rpuxa.bomjara.api.actions.Player
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.MonoCurrency
-import ru.rpuxa.bomjara.refactor.m.player.MonoCurrencyImpl
-import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.CAUGHT_BY_POLICE
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecureMonoCurrency
 import ru.rpuxa.bomjara.utils.nnValue
 import ru.rpuxa.bomjara.utils.random
 import ru.rpuxa.bomjara.utils.v
@@ -41,9 +41,9 @@ class ActionImpl(
             player.addMoney(addMoney)
         player.addCondition(addCondition)
         if (random.nextInt(40) == 10)
-            player.addMoney(MonoCurrencyImpl.ONE_DIAMOND)
+            player.addMoney(SecureMonoCurrency.ONE_DIAMOND)
         if (illegal && player.daysWithoutCaught >= 2 && random.nextInt(10) == 5) {
-            player.endGame.value = PlayerViewModel.CAUGHT_BY_POLICE
+            player.endGame.value = CAUGHT_BY_POLICE
         } else {
             player.daysWithoutCaught++
         }

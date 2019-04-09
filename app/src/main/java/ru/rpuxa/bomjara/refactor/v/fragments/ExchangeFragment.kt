@@ -8,7 +8,6 @@ import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.refactor.m.player.secure.of
 import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
 import ru.rpuxa.bomjara.utils.getViewModel
-import ru.rpuxa.bomjara.utils.observe
 import ru.rpuxa.bomjara.utils.v
 
 class ExchangeFragment : CacheFragment() {
@@ -26,10 +25,6 @@ class ExchangeFragment : CacheFragment() {
 
         bottles_30.setOnClickListener {
             handOver(3)
-        }
-
-        getViewModel<PlayerViewModel>().money.observe(this) {
-            exchange_bottles_count.text = it.bottles.toString()
         }
     }
 

@@ -3,6 +3,9 @@ package ru.rpuxa.bomjara.refactor.v.fragments
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -139,14 +142,14 @@ class CoursesFragment : CacheFragment() {
     }
 
     private class CurrentCoursesHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name = view.course_name!!
-        val process = view.process!!
-        val max = view.max!!
-        val bar = view.progressBar!!
-        val learn = view.learning!!
-        val skip = view.skip_course
-        val skipCost = view.curse_skip_cost
-        val skipCurrency = view.course_skip_currency
+        val name: TextView = view.course_name
+        val process: TextView = view.process
+        val max: TextView = view.max
+        val bar: ProgressBar = view.progressBar
+        val learn: Button = view.learning
+        val skip: Button = view.skip_course
+        val skipCost: TextView = view.curse_skip_cost
+        val skipCurrency: ImageView = view.course_skip_currency
     }
 
     private inner class CompletedCoursesAdapter : ListAdapter<Course, CompletedCoursesHolder>(Diff) {

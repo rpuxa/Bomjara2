@@ -14,8 +14,12 @@ import org.jetbrains.anko.toast
 import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
-import ru.rpuxa.bomjara.refactor.m.player.bottle
-import ru.rpuxa.bomjara.refactor.m.player.rub
+import ru.rpuxa.bomjara.api.player.Currencies
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.ALIVE
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.CAUGHT_BY_POLICE
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.DEAD_BY_HEALTH
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.DEAD_BY_HUNGRY
+import ru.rpuxa.bomjara.refactor.m.player.secure.of
 import ru.rpuxa.bomjara.refactor.v.Bomjara
 import ru.rpuxa.bomjara.refactor.v.ContentAdapter
 import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
@@ -64,8 +68,8 @@ class ContentActivity : AppCompatActivity() {
 
         //DEBUG
         if (BuildConfig.DEBUG) {
-            playerViewModel.addMoney(999999999.rub)
-            playerViewModel.addMoney(999999999.bottle)
+            playerViewModel.addMoney(999999999 of Currencies.RUBLES)
+            playerViewModel.addMoney(999999999 of Currencies.BOTTLES)
         }
 
 
@@ -132,7 +136,7 @@ class ContentActivity : AppCompatActivity() {
 
             fun alivePlayer() {
                 playerViewModel.addCondition(playerViewModel.maxCondition.v)
-                playerViewModel.endGame.value = PlayerViewModel.ALIVE
+                playerViewModel.endGame.value = ALIVE
             }
 
            fun dead(hunger: Boolean) {
@@ -151,7 +155,7 @@ class ContentActivity : AppCompatActivity() {
                         .show()
 
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    val res = Bomjara.videoAd.show {
+                    val res = Bomjara.videoAd.show(this) {
                         longToast("Мы вас с того света достали! Пожалуйста, не забывайте о своем здоровье")
                         alivePlayer()
                         dialog.dismiss()
@@ -164,7 +168,7 @@ class ContentActivity : AppCompatActivity() {
             }
 
             when (it) {
-                PlayerViewModel.CAUGHT_BY_POLICE -> {
+                CAUGHT_BY_POLICE -> {
                     val dialog = AlertDialog.Builder(this@ContentActivity)
                             .setTitle("Вас поймали менты!")
                             .setMessage(
@@ -178,7 +182,7 @@ class ContentActivity : AppCompatActivity() {
                             .show()
 
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                        val res = Bomjara.videoAd.show {
+                        val res = Bomjara.videoAd.show(this) {
                             longToast("Так уж и быть, мы вас отпустим. Впредь будьте аккуратнее")
                             alivePlayer()
                             dialog.dismiss()
@@ -189,7 +193,7 @@ class ContentActivity : AppCompatActivity() {
                     }
 
                     dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener penalty@{
-                        if (playerViewModel.addMoney((-playerViewModel.penalty).rub)) {
+                        if (playerViewModel.addMoney((-playerViewModel.penalty) of Currencies.RUBLES)) {
                             dialog.dismiss()
                             return@penalty
                         }
@@ -197,8 +201,8 @@ class ContentActivity : AppCompatActivity() {
                     }
                 }
 
-                PlayerViewModel.DEAD_BY_HEALTH -> dead(false)
-                PlayerViewModel.DEAD_BY_HUNGRY -> dead(true)
+               DEAD_BY_HEALTH -> dead(false)
+                DEAD_BY_HUNGRY -> dead(true)
             }
         }
     }

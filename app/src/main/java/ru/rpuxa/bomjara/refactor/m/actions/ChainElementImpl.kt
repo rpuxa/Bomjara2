@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.refactor.m.actions
 
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.api.player.MonoCurrency
-import ru.rpuxa.bomjara.refactor.m.player.PossessionsImpl
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecurePossession
 
 class ChainElementImpl(
         override val name: String,
@@ -13,5 +13,5 @@ class ChainElementImpl(
         override val courseId: Int,
         override val cost: MonoCurrency
 ) : ChainElement {
-    override val neededPossessions = PossessionsImpl(transport, home, friend, location)
+    override val neededPossessions = SecurePossession(transport, home, friend, location)
 }

@@ -15,6 +15,8 @@ import ru.rpuxa.bomjara.api.player.Money
 import ru.rpuxa.bomjara.api.player.MonoCurrency
 import ru.rpuxa.bomjara.refactor.m.ActionsLoader
 import ru.rpuxa.bomjara.refactor.m.MyDataBase
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.DEAD_BY_HEALTH
+import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.DEAD_BY_HUNGRY
 import ru.rpuxa.bomjara.refactor.m.player.secure.SecureCondition
 import ru.rpuxa.bomjara.refactor.m.player.secure.SecureMoney
 import ru.rpuxa.bomjara.refactor.v.Bomjara
@@ -43,7 +45,8 @@ class PlayerViewModel : ViewModel(), Player {
     override var daysWithoutCaught: Int = 2
     override val endGame = MutableLiveData<Int>()
     override var doingAction: Boolean = false
-
+    var adTime = 0L
+    var watchedAdLastTime = 0L
 
     val currentActions = MutableLiveData<List<Action>>()
     val availableCourses = MutableLiveData<List<Course>>()
@@ -78,12 +81,7 @@ class PlayerViewModel : ViewModel(), Player {
         coursesProgress.value = save.courses
         age.value = save.age
         efficiency.value = save.efficiency
-        endGame.value = when {
-            save.caughtByPolice -> CAUGHT_BY_POLICE
-            save.deadByHungry -> DEAD_BY_HUNGRY
-            save.deadByZeroHealth -> DEAD_BY_HEALTH
-            else -> ALIVE
-        }
+        endGame.value = save.endGame
 
 
         fun updateAvailableCourses() {
@@ -179,7 +177,7 @@ class PlayerViewModel : ViewModel(), Player {
         coursesProgress.update {
             this[id]++
         }
-        addCondition(SecureCondition(-5, -5, -5))
+        addCondition(COURSE_CONDITION)
         return coursesProgress.v[id] == courses[id].length
     }
 
@@ -244,9 +242,10 @@ class PlayerViewModel : ViewModel(), Player {
     }
 
     companion object {
-        const val CAUGHT_BY_POLICE = 3
-        const val DEAD_BY_HUNGRY = 2
-        const val DEAD_BY_HEALTH = 1
-        const val ALIVE = 0
+        private val COURSE_CONDITION = SecureCondition(-5, -5, -5)
+
+        const val AD_TIME_DEFAULT = 2L * 60 * 1_000_000_000 // 2 minutes
+
     }
+
 }

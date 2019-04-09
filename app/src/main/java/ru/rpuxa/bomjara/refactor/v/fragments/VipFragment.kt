@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.vip_item.view.*
 import kotlinx.android.synthetic.main.vip_opened.view.*
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.toast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.Vip
-import ru.rpuxa.bomjara.refactor.m.player.MonoCurrencyImpl
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecureMonoCurrency
 import ru.rpuxa.bomjara.refactor.v.Bomjara
 import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
 import ru.rpuxa.bomjara.utils.getViewModel
@@ -51,8 +52,8 @@ class VipFragment : Fragment() {
         view.vip_list.layoutManager = LinearLayoutManager(context)
         view.vip_list.adapter = VipAdapter().apply { submitList(viewModel.vips) }
         view.add_vip_diamonds.setOnClickListener {
-            val res = Bomjara.videoAd.show {
-                viewModel.addMoney(MonoCurrencyImpl.THREE_DIAMONDS)
+            val res = Bomjara.videoAd.show(act) {
+                viewModel.addMoney(SecureMonoCurrency.THREE_DIAMONDS)
                 toast("Получайте награду")
             }
             if (!res) {

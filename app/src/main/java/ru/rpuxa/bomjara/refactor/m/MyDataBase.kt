@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.*
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.Money
-import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
+import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel.Companion.AD_TIME_DEFAULT
 
 @Database(
         entities = [MyDataBase.Save::class, MyDataBase.Settings::class],
@@ -44,14 +44,12 @@ abstract class MyDataBase : RoomDatabase() {
             fullness: Int,
             health: Int,
             courses: IntArray,
-            deadByHungry: Boolean,
-            deadByZeroHealth: Boolean,
-            caughtByPolice: Boolean
+            endGame: Int
     ) {
         savesDao().insert(Save(
                 id, name, age, bottles, rubles, diamonds,
                 location, friend, home, transport, efficiency, maxEnergy, maxFullness, maxHealth,
-                energy, fullness, health, courses, deadByHungry, deadByZeroHealth, caughtByPolice
+                energy, fullness, health, courses, endGame
         ))
     }
 
@@ -92,18 +90,7 @@ abstract class MyDataBase : RoomDatabase() {
     }
 
     fun updateEndGame(id: Long, endGame: Int) {
-        savesDao().apply {
-            when (endGame) {
-                PlayerViewModel.ALIVE -> {
-                    updateDeadByHealth(id, false)
-                    updateDeadByHungry(id, false)
-                    updateCaughtByPolice(id, false)
-                }
-                PlayerViewModel.DEAD_BY_HEALTH -> updateDeadByHealth(id, true)
-                PlayerViewModel.DEAD_BY_HUNGRY -> updateDeadByHungry(id, true)
-                PlayerViewModel.CAUGHT_BY_POLICE -> updateCaughtByPolice(id, true)
-            }
-        }
+        savesDao().updateEndGame(id, endGame)
     }
 
     fun deleteSave(id: Long) {
@@ -131,10 +118,14 @@ abstract class MyDataBase : RoomDatabase() {
         settingsDao().setShowTips(if (bFlag) 1 else 0)
     }
 
+    fun setAdTime(time: Long) {
+        settingsDao().setAdTime(time)
+    }
+
 
     private fun getSettings(): Settings {
         return settingsDao().get().firstOrNull() ?: run {
-            val settings = Settings(true, 0)
+            val settings = Settings(true, 0, AD_TIME_DEFAULT)
             settingsDao().insert(settings)
             return settings
         }
@@ -188,14 +179,8 @@ abstract class MyDataBase : RoomDatabase() {
         @Query("UPDATE $SAVES_TABLE_NAME SET age = :age WHERE id = :id")
         fun updateAge(id: Long, age: Int)
 
-        @Query("UPDATE $SAVES_TABLE_NAME SET deadByHungry = :b WHERE id = :id")
-        fun updateDeadByHungry(id: Long, b: Boolean)
-
-        @Query("UPDATE $SAVES_TABLE_NAME SET deadByZeroHealth = :b WHERE id = :id")
-        fun updateDeadByHealth(id: Long, b: Boolean)
-
-        @Query("UPDATE $SAVES_TABLE_NAME SET caughtByPolice = :b WHERE id = :id")
-        fun updateCaughtByPolice(id: Long, b: Boolean)
+        @Query("UPDATE $SAVES_TABLE_NAME SET endGame = :flag WHERE id = :id")
+        fun updateEndGame(id: Long, flag: Int)
     }
 
     @Entity(tableName = SAVES_TABLE_NAME)
@@ -219,15 +204,15 @@ abstract class MyDataBase : RoomDatabase() {
             var fullness: Int,
             var health: Int,
             courses: IntArray,
-            var deadByHungry: Boolean,
-            var deadByZeroHealth: Boolean,
-            var caughtByPolice: Boolean
+            var endGame: Int
     ) {
 
         constructor() : this(
-                0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, IntArray(0),
-                false, false, false
+                0, "", 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                IntArray(0), 0
         )
 
         lateinit var stringCourses: String
@@ -255,6 +240,11 @@ abstract class MyDataBase : RoomDatabase() {
                 }
                 return builder.toString()
             }
+
+            const val CAUGHT_BY_POLICE = 3
+            const val DEAD_BY_HUNGRY = 2
+            const val DEAD_BY_HEALTH = 1
+            const val ALIVE = 0
         }
     }
 
@@ -271,14 +261,19 @@ abstract class MyDataBase : RoomDatabase() {
         @Query("UPDATE $SETTINGS_TABLE_NAME SET showTips = :bFlag")
         fun setShowTips(bFlag: Int)
 
+        @Query("UPDATE $SETTINGS_TABLE_NAME SET showTips = :time")
+        fun setAdTime(time: Long)
+
         @Query("SELECT * FROM $SETTINGS_TABLE_NAME")
         fun get(): List<Settings>
+
     }
 
     @Entity(tableName = SETTINGS_TABLE_NAME)
     class Settings(
             var showTips: Boolean,
-            var lastSave: Long
+            var lastSave: Long,
+            var adTime: Long
     ) {
         @PrimaryKey
         var id: Int = 0

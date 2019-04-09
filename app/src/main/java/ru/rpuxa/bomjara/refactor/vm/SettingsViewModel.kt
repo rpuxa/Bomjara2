@@ -24,8 +24,6 @@ class SettingsViewModel : ViewModel() {
     }
 
     fun setShowTips(bFlag: Boolean) {
-        if (showTips.value == bFlag)
-            return
         showTips.value = bFlag
         GlobalScope.launch {
             res.myDataBase.setShowTips(bFlag)
