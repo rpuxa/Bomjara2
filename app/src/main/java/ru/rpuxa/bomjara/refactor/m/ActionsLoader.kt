@@ -59,7 +59,11 @@ class ActionsLoader {
 
     fun getPenalty(player: Player) = penalties[player.location.v]
 
-    fun getActionsByLevel(level: Int) = actions.filter { it.level == level }
+    fun getActionsByLevel(locationLevel: Int, friendLevel: Int): List<Action> {
+        return actions.filter {
+            it.level == (if (it.menu == ActionsMenus.JOBS.id) friendLevel else locationLevel)
+        }
+    }
 
     private inline fun vips(block: CreateVip.() -> Unit): List<Vip> {
         val create = CreateVip()

@@ -8,6 +8,7 @@ import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.actions.ChainElement
 import ru.rpuxa.bomjara.refactor.vm.PlayerViewModel
 import ru.rpuxa.bomjara.utils.changeVisibility
+import ru.rpuxa.bomjara.utils.divider
 import ru.rpuxa.bomjara.utils.getViewModel
 import ru.rpuxa.bomjara.utils.v
 import kotlin.reflect.KProperty0
@@ -34,7 +35,7 @@ abstract class ChainFragment : CacheFragment() {
         changeVisibility(View.VISIBLE, next, change, change_label, cost, currency)
         next.text = element.name
         change.text = changeText
-        cost.text = money.toString()
+        cost.text = money.count.divider()
         currency.setImageBitmap(money.currency.getIcon(context))
         val viewModel = getViewModel<PlayerViewModel>()
         change.setOnClickListener {

@@ -90,8 +90,12 @@ class PlayerViewModel : ViewModel(), Player {
             }
         }
 
-        location.observeForever { loc ->
-            currentActions.value = res.actions.getActionsByLevel(loc)
+        fun updateAction() {
+            currentActions.value = res.actions.getActionsByLevel(location.v, friend.v)
+        }
+
+        location.observeForever {
+            updateAction()
             updateAvailableCourses()
         }
 
@@ -132,6 +136,7 @@ class PlayerViewModel : ViewModel(), Player {
         }
 
         friend.observeForever {
+            updateAction()
             GlobalScope.launch {
                 res.myDataBase.updateFriend(id, it)
             }

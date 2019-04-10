@@ -4,7 +4,7 @@
     <string name="dead_banner_id">ca-app-pub-9182384050264940/6095651901</string>
 
     <string name="app_name">Симулятор бомжа 2.0</string>
-    <string name="money_needed">Нехватает средств</string>
+    <string name="money_needed">Не хватает средств</string>
     <string name="cant_work">Не хочу работать, я устал</string>
     <string name="health">Здоровье</string>
     <string name="current_courses">Текущие курсы</string>
@@ -42,6 +42,7 @@
         <item>Сергей</item>
         <item>Михаил</item>
         <item>Игорь</item>
+        <item>Александр</item>
     </string-array>
 
 </resources>
