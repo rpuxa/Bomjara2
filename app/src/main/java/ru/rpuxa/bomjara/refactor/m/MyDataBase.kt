@@ -2,97 +2,103 @@ package ru.rpuxa.bomjara.refactor.m
 
 import android.content.Context
 import androidx.room.*
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.withContext
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.Money
 
 @Database(
-        entities = [MyDataBase.Save::class, MyDataBase.Settings::class],
-        version = 1
+    entities = [MyDataBase.Save::class, MyDataBase.Settings::class],
+    version = 1
 )
 abstract class MyDataBase : RoomDatabase() {
 
     companion object {
         fun create(context: Context): MyDataBase =
-                Room.databaseBuilder(context, MyDataBase::class.java, "database.db")
-                        .build()
+            Room.databaseBuilder(context, MyDataBase::class.java, "database.db")
+                .build()
 
         private const val SAVES_TABLE_NAME = "saves"
         private const val SETTINGS_TABLE_NAME = "settings"
     }
 
-    fun getAllSaves(): List<Save> {
-        return savesDao().getAll()
+    private val pool = newSingleThreadContext("DataBase")
+
+    suspend fun getAllSaves() = withContext(pool) {
+        savesDao().getAll()
     }
 
-    fun updatePlayer(
-            id: Long,
-            name: String,
-            age: Int,
-            bottles: Long,
-            rubles: Long,
-            diamonds: Long,
-            location: Int,
-            friend: Int,
-            home: Int,
-            transport: Int,
-            efficiency: Int,
-            maxEnergy: Int,
-            maxFullness: Int,
-            maxHealth: Int,
-            energy: Int,
-            fullness: Int,
-            health: Int,
-            courses: IntArray,
-            endGame: Int
-    ) {
-        savesDao().insert(Save(
+    suspend fun updatePlayer(
+        id: Long,
+        name: String,
+        age: Int,
+        bottles: Long,
+        rubles: Long,
+        diamonds: Long,
+        location: Int,
+        friend: Int,
+        home: Int,
+        transport: Int,
+        efficiency: Int,
+        maxEnergy: Int,
+        maxFullness: Int,
+        maxHealth: Int,
+        energy: Int,
+        fullness: Int,
+        health: Int,
+        courses: IntArray,
+        endGame: Int
+    ) = withContext(pool) {
+        savesDao().insert(
+            Save(
                 id, name, age, bottles, rubles, diamonds,
                 location, friend, home, transport, efficiency, maxEnergy, maxFullness, maxHealth,
                 energy, fullness, health, courses, endGame
-        ))
+            )
+        )
     }
 
-    fun updateCondition(id: Long, condition: Condition) {
+    suspend fun updateCondition(id: Long, condition: Condition) = withContext(pool) {
         savesDao().updateCondition(id, condition.energy, condition.health, condition.fullness)
     }
 
-    fun updateMaxCondition(id: Long, condition: Condition) {
+    suspend fun updateMaxCondition(id: Long, condition: Condition) = withContext(pool) {
         savesDao().updateMaxCondition(id, condition.energy, condition.health, condition.fullness)
     }
 
-    fun updateMoney(id: Long, money: Money) {
+    suspend fun updateMoney(id: Long, money: Money) = withContext(pool) {
         savesDao().updateMoney(id, money.rubles, money.bottles, money.diamonds)
     }
 
-    fun updateTransport(id: Long, transport: Int) {
+    suspend fun updateTransport(id: Long, transport: Int) = withContext(pool) {
         savesDao().updateTransport(id, transport)
     }
 
-    fun updateHome(id: Long, home: Int) {
+    suspend fun updateHome(id: Long, home: Int) = withContext(pool) {
         savesDao().updateHome(id, home)
     }
 
-    fun updateFriend(id: Long, friend: Int) {
+    suspend fun updateFriend(id: Long, friend: Int) = withContext(pool) {
         savesDao().updateFriend(id, friend)
     }
 
-    fun updateLocation(id: Long, location: Int) {
+    suspend fun updateLocation(id: Long, location: Int) = withContext(pool) {
         savesDao().updateLocation(id, location)
     }
 
-    fun updateCoursesProgress(id: Long, progress: IntArray) {
+    suspend fun updateCoursesProgress(id: Long, progress: IntArray) = withContext(pool) {
         savesDao().updateCoursesProgress(id, Save.toStringCourses(progress))
     }
 
-    fun updateAge(id: Long, age: Int) {
+    suspend fun updateAge(id: Long, age: Int) = withContext(pool) {
         savesDao().updateAge(id, age)
     }
 
-    fun updateEndGame(id: Long, endGame: Int) {
+    suspend fun updateEndGame(id: Long, endGame: Int) = withContext(pool) {
         savesDao().updateEndGame(id, endGame)
     }
 
-    fun deleteSave(id: Long) {
+    suspend fun deleteSave(id: Long) = withContext(pool) {
         val savesDao = savesDao()
         savesDao.delete(id)
         if (id == getLastSaveId()) {
@@ -101,27 +107,36 @@ abstract class MyDataBase : RoomDatabase() {
         }
     }
 
-    fun renameSave(id: Long, newName: String) {
+    suspend fun renameSave(id: Long, newName: String) = withContext(pool) {
         savesDao().rename(id, newName)
     }
 
-    fun getLastSaveId() = getSettings().lastSave
+    suspend fun getLastSaveId() = withContext(pool) {
+        getSettings().lastSave
+    }
 
-    fun setLastSaveId(id: Long) {
+    suspend fun setLastSaveId(id: Long) = withContext(pool) {
+        createSettingsIfAbsent()
         settingsDao().setLastSave(id)
     }
 
-    fun getShowTips() = getSettings().showTips
+    suspend fun getShowTips() = withContext(pool) {
+        getSettings().showTips
+    }
 
-    fun setShowTips(bFlag: Boolean) {
+    suspend fun setShowTips(bFlag: Boolean) = withContext(pool) {
+        createSettingsIfAbsent()
         settingsDao().setShowTips(bFlag)
     }
 
-    private fun getSettings(): Settings {
-        return settingsDao().get().firstOrNull() ?: run {
-            val settings = Settings(true, 0)
-            settingsDao().insert(settings)
-            return settings
+    private suspend fun getSettings() = withContext(pool) {
+        createSettingsIfAbsent()
+        settingsDao().get()[0]
+    }
+
+    private suspend fun createSettingsIfAbsent() = withContext(pool) {
+        if (settingsDao().get().isEmpty()) {
+            settingsDao().insert(Settings(true, 0))
         }
     }
 
@@ -179,34 +194,34 @@ abstract class MyDataBase : RoomDatabase() {
 
     @Entity(tableName = SAVES_TABLE_NAME)
     class Save(
-            @PrimaryKey
-            var id: Long,
-            var name: String,
-            var age: Int,
-            var bottles: Long,
-            var rubles: Long,
-            var diamonds: Long,
-            var location: Int,
-            var friend: Int,
-            var home: Int,
-            var transport: Int,
-            var efficiency: Int,
-            var maxEnergy: Int,
-            var maxFullness: Int,
-            var maxHealth: Int,
-            var energy: Int,
-            var fullness: Int,
-            var health: Int,
-            courses: IntArray,
-            var endGame: Int
+        @PrimaryKey
+        var id: Long,
+        var name: String,
+        var age: Int,
+        var bottles: Long,
+        var rubles: Long,
+        var diamonds: Long,
+        var location: Int,
+        var friend: Int,
+        var home: Int,
+        var transport: Int,
+        var efficiency: Int,
+        var maxEnergy: Int,
+        var maxFullness: Int,
+        var maxHealth: Int,
+        var energy: Int,
+        var fullness: Int,
+        var health: Int,
+        courses: IntArray,
+        var endGame: Int
     ) {
 
         constructor() : this(
-                0, "", 0, 0, 0,
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                IntArray(0), 0
+            0, "", 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            IntArray(0), 0
         )
 
         lateinit var stringCourses: String
@@ -266,8 +281,8 @@ abstract class MyDataBase : RoomDatabase() {
 
     @Entity(tableName = SETTINGS_TABLE_NAME)
     class Settings(
-            var showTips: Boolean,
-            var lastSave: Long
+        var showTips: Boolean,
+        var lastSave: Long
     ) {
         @PrimaryKey
         var id: Int = 0

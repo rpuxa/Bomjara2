@@ -10,12 +10,13 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
 
 class Ad(val context: Context, val id: String) : RewardedVideoAdListener, LifecycleObserver {
-    private val videoAd = MobileAds.getRewardedVideoAdInstance(context).apply {
+    private val videoAd: RewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context).apply {
         rewardedVideoAdListener = this@Ad
-    }!!
+    }
 
     private var watched = false
     private var listener: (() -> Unit)? = null

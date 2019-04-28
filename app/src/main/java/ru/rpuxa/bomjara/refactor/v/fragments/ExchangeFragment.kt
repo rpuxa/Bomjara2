@@ -2,7 +2,7 @@ package ru.rpuxa.bomjara.refactor.v.fragments
 
 import android.view.View
 import kotlinx.android.synthetic.main.exchange.*
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.longToast
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.api.player.Currencies
 import ru.rpuxa.bomjara.refactor.m.player.secure.of
@@ -34,9 +34,10 @@ class ExchangeFragment : CacheFragment() {
         val rubles = bottles * 2
         player.addMoney((-bottles of Currencies.BOTTLES))
         player.addMoney(rubles of Currencies.RUBLES)
-        if (bottles == 0L)
-            toast("У вас нет бутылок!")
+        val toast = if (bottles == 0L)
+            "У вас нет бутылок!"
         else
-            toast("Вы получили за бутылки $rubles рублей")
+            "Вы получили за бутылки $rubles рублей"
+        longToast(toast)
     }
 }

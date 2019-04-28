@@ -7,26 +7,37 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import java.util.*
+import kotlin.math.abs
 
 
 fun Long.divider(): String {
-    var s = toString()
-    var newString = ""
-    while (s.length > 3) {
-        newString = " " + s.substring(s.length - 3) + newString
-        s = s.substring(0, s.length - 3)
-    }
+    if (this == 0L)
+        return "0"
+    val builder = StringBuilder()
+    var number = abs(this)
+    val positive = (this ushr 63) == 0L
 
-    val res = s + newString
-    if (res.startsWith(' '))
-        return res.substring(1)
-    return res
+    var i = 0
+
+    while (number != 0L) {
+        builder.append(number % 10)
+        number /= 10
+        if (i == 2 && number != 0L) {
+            i = 0
+            builder.append(' ')
+        } else {
+            i++
+        }
+    }
+    if (!positive)
+        builder.append('-')
+    return builder.reverse().toString()
 }
 
 val random = Random()
 
 fun Random.nextDouble(from: Double, to: Double) =
-    random.nextDouble() * (to - from) + to
+        random.nextDouble() * (to - from) + to
 
 
 inline fun <T> MutableLiveData<T>.update(block: T.() -> Unit) {

@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara.refactor.m.views
+package ru.rpuxa.bomjara.refactor.v.views
 
 import android.content.Context
 import android.graphics.Canvas

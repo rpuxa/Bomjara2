@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.actions_list.*
 import org.jetbrains.anko.support.v4.toast
@@ -29,7 +31,7 @@ class ActionsListFragment : CacheFragment() {
         val viewModel = getViewModel<PlayerViewModel>()
         val adapter = ActionsAdapter()
         actions_list.layoutManager = NoScrollManager(context)
-        actions_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+   //    actions_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         actions_list.adapter = adapter
         viewModel.currentActions.observe(this) { all ->
             val actions = all.filter { it.menu == menu }
@@ -59,7 +61,10 @@ class ActionsListFragment : CacheFragment() {
                 }
 
                 val actionsMenus = ActionsMenus.getById(menu)
-                setVisibility(if (actionsMenus == ActionsMenus.JOBS) View.GONE else View.VISIBLE, remove, removeIcon)
+                setVisibility(
+                        if (actionsMenus == ActionsMenus.JOBS) View.GONE else View.VISIBLE,
+                        remove, removeIcon
+                )
                 if (actionsMenus != ActionsMenus.JOBS) {
                     val count = when (actionsMenus) {
                         ActionsMenus.ENERGY -> action.addCondition.energy
@@ -70,7 +75,8 @@ class ActionsListFragment : CacheFragment() {
                     add.text = count.toString()
                     addIcon.setImageResource(actionsMenus.iconId)
                     remove.text = action.addMoney.count.divider()
-                    removeIcon.setImageBitmap(action.addMoney.currency.getIcon(context))
+                    val currency = action.addMoney.currency
+                    removeIcon.setImageBitmap(currency.getIcon(context))
                 } else {
                     add.text = "+" + action.addMoney.count.divider()
                     addIcon.setImageBitmap(action.addMoney.currency.getIcon(context))

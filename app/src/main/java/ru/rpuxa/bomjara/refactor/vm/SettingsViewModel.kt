@@ -2,7 +2,6 @@ package ru.rpuxa.bomjara.refactor.vm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -19,7 +18,7 @@ class SettingsViewModel : ViewModel() {
 
 
     init {
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             showTips.postValue = res.myDataBase.getShowTips()
         }
     }
@@ -31,7 +30,7 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
-    fun isSavesIsEmpty(): Boolean = runBlocking(Dispatchers.IO) { res.myDataBase.getLastSaveId() == 0L }
+    fun isSavesIsEmpty(): Boolean = runBlocking { res.myDataBase.getLastSaveId() == 0L }
 
     class Resources {
         @Inject

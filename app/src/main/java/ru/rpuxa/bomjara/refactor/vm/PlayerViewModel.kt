@@ -2,7 +2,6 @@ package ru.rpuxa.bomjara.refactor.vm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -53,116 +52,111 @@ class PlayerViewModel : ViewModel(), Player {
 
 
     init {
-        var id0: Long? = null
-        var save0: MyDataBase.Save? = null
-        runBlocking(Dispatchers.IO) {
-            id0 = res.myDataBase.getLastSaveId()
-            val allSaves = res.myDataBase.getAllSaves()
-            save0 = allSaves.find { it.id == id0 }!!
-        }
-
-        val save = save0!!
-        val id = id0!!
-        this@PlayerViewModel.id = save.id
-        name = save.name
-        condition.value = SecureCondition(save.energy, save.fullness, save.health)
-        maxCondition.value = SecureCondition(save.maxEnergy, save.maxFullness, save.maxHealth)
-        money.value = SecureMoney().apply {
-            rubles = save.rubles
-            bottles = save.bottles
-            diamonds = save.diamonds
-        }
-        transport.value = save.transport
-        home.value = save.home
-        friend.value = save.friend
-        location.value = save.location
-        coursesProgress.value = save.courses
-        age.value = save.age
-        efficiency.value = save.efficiency
-        endGame.value = save.endGame
+        runBlocking {
+            val id = res.myDataBase.getLastSaveId()
+            val save = res.myDataBase.getAllSaves()
+                .find { it.id == id }!!
+            this@PlayerViewModel.id = save.id
+            name = save.name
+            condition.value = SecureCondition(save.energy, save.fullness, save.health)
+            maxCondition.value = SecureCondition(save.maxEnergy, save.maxFullness, save.maxHealth)
+            money.value = SecureMoney().apply {
+                rubles = save.rubles
+                bottles = save.bottles
+                diamonds = save.diamonds
+            }
+            transport.value = save.transport
+            home.value = save.home
+            friend.value = save.friend
+            location.value = save.location
+            coursesProgress.value = save.courses
+            age.value = save.age
+            efficiency.value = save.efficiency
+            endGame.value = save.endGame
 
 
 
-        fun updateAvailableCourses() {
-            availableCourses.value = courses.filter {
-                it.id < location.v + 2 &&
+            fun updateAvailableCourses() {
+                availableCourses.value = courses.filter {
+                    it.id < location.v + 2 &&
                         coursesProgress.v[it.id] == 0
+                }
             }
-        }
 
-        fun updateAction() {
-            currentActions.value = res.actions.getActionsByLevel(location.v, friend.v)
-        }
-
-        location.observeForever {
-            updateAction()
-            updateAvailableCourses()
-        }
-
-        coursesProgress.observeForever { progress ->
-            currentCourses.value = courses.filter { progress[it.id] in 1 until it.length }
-            completedCourses.value = courses.filter { progress[it.id] == it.length }
-            updateAvailableCourses()
-        }
-
-        condition.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateCondition(id, it)
+            fun updateAction() {
+                currentActions.value = res.actions.getActionsByLevel(location.v, friend.v)
             }
-        }
 
-        maxCondition.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateMaxCondition(id, it)
+            location.observeForever {
+                updateAction()
+                updateAvailableCourses()
             }
-        }
 
-        money.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateMoney(id, it)
+            coursesProgress.observeForever { progress ->
+                currentCourses.value = courses.filter { progress[it.id] in 1 until it.length }
+                completedCourses.value = courses.filter { progress[it.id] == it.length }
+                updateAvailableCourses()
             }
-        }
 
-        transport.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateTransport(id, it)
+            condition.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateCondition(id, it)
+                }
             }
-        }
 
-        home.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateHome(id, it)
+            maxCondition.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateMaxCondition(id, it)
+                }
             }
-        }
 
-        friend.observeForever {
-            updateAction()
-            GlobalScope.launch {
-                res.myDataBase.updateFriend(id, it)
+            money.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateMoney(id, it)
+                }
             }
-        }
 
-        location.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateLocation(id, it)
+            transport.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateTransport(id, it)
+                }
             }
-        }
 
-        coursesProgress.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateCoursesProgress(id, it)
+            home.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateHome(id, it)
+                }
             }
-        }
 
-        age.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateAge(id, it)
+            friend.observeForever {
+                updateAction()
+                GlobalScope.launch {
+                    res.myDataBase.updateFriend(id, it)
+                }
             }
-        }
 
-        endGame.observeForever {
-            GlobalScope.launch {
-                res.myDataBase.updateEndGame(id, it)
+            location.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateLocation(id, it)
+                }
+            }
+
+            coursesProgress.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateCoursesProgress(id, it)
+                }
+            }
+
+            age.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateAge(id, it)
+                }
+            }
+
+            endGame.observeForever {
+                GlobalScope.launch {
+                    res.myDataBase.updateEndGame(id, it)
+                }
             }
         }
     }

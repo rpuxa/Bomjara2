@@ -2,7 +2,6 @@ package ru.rpuxa.bomjara.refactor.vm
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ru.rpuxa.bomjara.refactor.m.ActionsLoader
 import ru.rpuxa.bomjara.refactor.m.MyDataBase
@@ -22,7 +21,7 @@ class SavesViewModel : ViewModel() {
     }
 
     private fun setListSaves() {
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             saves.postValue = res.myDataBase.getAllSaves()
         }
     }
@@ -30,7 +29,7 @@ class SavesViewModel : ViewModel() {
     fun newSave(name: String): Long {
         val id = Random().nextLong()
         val coursesSize = res.actionsLoader.courses.size
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             res.myDataBase.updatePlayer(
                     id,
                     name,
@@ -57,21 +56,21 @@ class SavesViewModel : ViewModel() {
     }
 
     fun renameSave(id: Long, newName: String) {
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             res.myDataBase.renameSave(id, newName)
         }
         setListSaves()
     }
 
     fun deleteSave(id: Long) {
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             res.myDataBase.deleteSave(id)
         }
         setListSaves()
     }
 
     fun setLastSaveId(id: Long) {
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             res.myDataBase.setLastSaveId(id)
         }
         setListSaves()

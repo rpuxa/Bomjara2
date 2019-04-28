@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.status_bars.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
 import ru.rpuxa.bomjara.api.player.Currencies
@@ -67,10 +66,10 @@ class ContentActivity : AppCompatActivity() {
 
 
         //DEBUG
-        if (BuildConfig.DEBUG) {
+      /*  if (BuildConfig.DEBUG) {
             playerViewModel.addMoney(999999999 of Currencies.RUBLES)
             playerViewModel.addMoney(999999999 of Currencies.BOTTLES)
-        }
+        }*/
 
 
         var lastRubles = -1L

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ru.rpuxa.bomjara.refactor.m.views.ScrollButtonsView
+    <ru.rpuxa.bomjara.refactor.v.views.ScrollButtonsView
         android:id="@+id/scroll_buttons"
         android:layout_width="30dp"
         android:layout_height="0dp"

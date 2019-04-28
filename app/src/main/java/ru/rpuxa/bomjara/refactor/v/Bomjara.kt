@@ -3,7 +3,6 @@ package ru.rpuxa.bomjara.refactor.v
 import android.annotation.SuppressLint
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.impl.save.StringSaveLoader
@@ -33,6 +32,8 @@ class Bomjara : Application() {
     }
 
 
+
+
     private fun load() {
         MobileAds.initialize(this, getString(R.string.ad_id))
         videoAd = Ad(this, getString(R.string.dead_banner_id))
@@ -45,7 +46,7 @@ class Bomjara : Application() {
         val oldSaves = StringSaveLoader.loadFromFile(this)
 
         if (oldSaves != null)
-            runBlocking(Dispatchers.IO) {
+            runBlocking {
                 for (it in oldSaves) {
                     myDataBase.updatePlayer(
                             it.id,
@@ -74,7 +75,6 @@ class Bomjara : Application() {
             }
 
         //</editor-fold>
-
     }
 
     companion object {

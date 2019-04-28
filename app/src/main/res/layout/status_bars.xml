@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ru.rpuxa.bomjara.refactor.m.views.AnimProgressBar
+    <ru.rpuxa.bomjara.refactor.v.views.AnimProgressBar
         android:id="@+id/health_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
-    <ru.rpuxa.bomjara.refactor.m.views.AnimProgressBar
+    <ru.rpuxa.bomjara.refactor.v.views.AnimProgressBar
         android:id="@+id/fullness_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
-    <ru.rpuxa.bomjara.refactor.m.views.AnimProgressBar
+    <ru.rpuxa.bomjara.refactor.v.views.AnimProgressBar
         android:id="@+id/energy_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"

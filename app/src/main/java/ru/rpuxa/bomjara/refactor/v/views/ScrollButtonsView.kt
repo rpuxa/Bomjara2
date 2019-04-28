@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara.refactor.m.views
+package ru.rpuxa.bomjara.refactor.v.views
 
 import android.annotation.SuppressLint
 import android.content.Context

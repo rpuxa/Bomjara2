@@ -81,7 +81,7 @@ class ActionsLoader {
     }
 
     private val penalties = arrayOf(
-            1000, 6_000, 12_000, 40_000, 100_000, 300_000, 1_000_000
+            1_000, 6_000, 12_000, 40_000, 100_000, 300_000, 1_000_000
     )
 
 
@@ -93,7 +93,8 @@ class ActionsLoader {
      *      [UByte. Level],
      *      [UByte. menu],
      *      string name
-     *      [int. Cost in rubles],
+     *      [int. Cost],
+     *      [byte. currency],
      *      [byte. Energy],
      *      [byte. Fullness],
      *      [byte. Health],
@@ -109,6 +110,7 @@ class ActionsLoader {
      *      byte location
      *      byte course
      *      int cost
+     *      byte currency
      * }
      * ...
      * friends
@@ -131,7 +133,7 @@ class ActionsLoader {
                     input.readByte().toInt(),
                     input.readByte().toInt(),
                     input.readUTF(),
-                    (-input.readInt()) of Currencies.RUBLES,
+                    (-input.readInt()) of Currencies.getById(input.readByte().toInt()),
                     SecureCondition(
                             input.readByte().toInt(),
                             input.readByte().toInt(),
@@ -153,7 +155,7 @@ class ActionsLoader {
                         input.readByte().toInt(),
                         input.readByte().toInt(),
                         input.readByte().toInt(),
-                        input.readInt() of Currencies.RUBLES
+                        input.readInt() of Currencies.getById(input.readByte().toInt())
                 )
 
                 list.add(element)

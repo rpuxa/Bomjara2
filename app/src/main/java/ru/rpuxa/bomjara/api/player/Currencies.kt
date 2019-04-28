@@ -9,6 +9,9 @@ enum class Currencies(val id: Int, val cost: Double, @DrawableRes override val i
     BOTTLES(1, 1.5, bottle),
     DIAMONDS(2, Double.NaN, diamond)
     ;
+    companion object {
+        fun getById(id: Int) = values().find { it.id == id }!!
+    }
 }
 
 inline val rubles get() = Currencies.RUBLES
