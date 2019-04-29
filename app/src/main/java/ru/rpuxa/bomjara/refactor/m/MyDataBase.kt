@@ -2,6 +2,7 @@ package ru.rpuxa.bomjara.refactor.m
 
 import android.content.Context
 import androidx.room.*
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 import ru.rpuxa.bomjara.api.player.Condition

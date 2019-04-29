@@ -119,7 +119,6 @@ class CoursesFragment : CacheFragment() {
             holder.name.text = course.name
             holder.max.text = course.length.toString()
             holder.skipCurrency.setImageBitmap(course.cost.currency.getIcon(context))
-            holder.skipCost.text = course.skipCost.count.toString()
             holder.bar.max = course.length
 
             holder.learn.setOnClickListener {
@@ -136,6 +135,7 @@ class CoursesFragment : CacheFragment() {
                 if (progress in 1 until course.length) {
                     holder.process.text = progress.toString()
                     holder.bar.progress = progress
+                    holder.skipCost.text = (course.skipCost.count - course.skipCost.count * progress / course.length).toString()
                 }
             }
         }

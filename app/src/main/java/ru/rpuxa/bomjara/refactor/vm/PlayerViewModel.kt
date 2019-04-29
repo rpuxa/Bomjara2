@@ -18,6 +18,7 @@ import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.DEAD_BY_HEALTH
 import ru.rpuxa.bomjara.refactor.m.MyDataBase.Save.Companion.DEAD_BY_HUNGRY
 import ru.rpuxa.bomjara.refactor.m.player.secure.SecureCondition
 import ru.rpuxa.bomjara.refactor.m.player.secure.SecureMoney
+import ru.rpuxa.bomjara.refactor.m.player.secure.SecureMonoCurrency
 import ru.rpuxa.bomjara.refactor.v.Bomjara
 import ru.rpuxa.bomjara.utils.gauss
 import ru.rpuxa.bomjara.utils.nnValue
@@ -181,7 +182,13 @@ class PlayerViewModel : ViewModel(), Player {
 
     override fun buyCourse(id: Int): Boolean {
         val course = getCourse(id)
-        if (addMoney(course.skipCost)) {
+        if (addMoney(
+                SecureMonoCurrency(
+                    course.skipCost.count - course.skipCost.count * coursesProgress.v[id] / course.length,
+                    course.skipCost.currency
+                )
+            )
+        ) {
             coursesProgress.update { this[id] = getCourse(id).length }
             return true
         }
