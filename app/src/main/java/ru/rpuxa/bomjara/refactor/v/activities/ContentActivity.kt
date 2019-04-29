@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.status_bars.*
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import ru.rpuxa.bomjara.BuildConfig
 import ru.rpuxa.bomjara.R
 import ru.rpuxa.bomjara.R.drawable.*
 import ru.rpuxa.bomjara.api.player.Currencies
@@ -46,7 +47,7 @@ class ContentActivity : AppCompatActivity() {
                         food,
                         health,
                         job,
-                        vip
+                        colored_vip
                 )
                 .setColoredIcons(
                         colored_info,
@@ -66,7 +67,7 @@ class ContentActivity : AppCompatActivity() {
 
 
         //DEBUG
-      /*  if (BuildConfig.DEBUG) {
+    /*    if (BuildConfig.DEBUG) {
             playerViewModel.addMoney(999999999 of Currencies.RUBLES)
             playerViewModel.addMoney(999999999 of Currencies.BOTTLES)
         }*/
@@ -145,7 +146,7 @@ class ContentActivity : AppCompatActivity() {
                                 (if (hunger) "Уровень сытости опустился ниже нуля!" else "Уровень здоровья опустился ниже нуля!") +
                                         " Вы можете воскресить его, посмотрев рекламу, или начать заново, потеряв прогресс"
                         )
-                        .setIcon(R.drawable.dead)
+                        .setIcon(dead)
                         .setCancelable(false)
                         .setNegativeButton("Начать заново") { _, _ ->
                             startActivity<MenuActivity>()
@@ -175,7 +176,7 @@ class ContentActivity : AppCompatActivity() {
                                             " или заплатить штраф в размере ${playerViewModel.penalty} рублей"
                             )
                             .setCancelable(false)
-                            .setIcon(R.drawable.prison)
+                            .setIcon(prison)
                             .setNegativeButton("Заплатить штраф", null)
                             .setPositiveButton("Не платить штраф", null)
                             .show()

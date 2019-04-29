@@ -179,6 +179,7 @@ class ActionsLoader {
         friends = chains[2]
         locations = chains[3]
         this.courses = courses
+
     }
 
 

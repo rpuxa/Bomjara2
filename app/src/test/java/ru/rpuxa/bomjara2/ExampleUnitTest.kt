@@ -1,4 +1,4 @@
-package ru.rpuxa.bomjara
+package ru.rpuxa.bomjara2
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

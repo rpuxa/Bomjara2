@@ -21,7 +21,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:text="jkfgsjdfsjhfgsjfhgjhsdfsfssdfsdfsdfsdfsdfsdf"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/learn"
         app:layout_constraintEnd_toStartOf="@+id/cost"

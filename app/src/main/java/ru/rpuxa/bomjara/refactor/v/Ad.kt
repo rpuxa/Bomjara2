@@ -76,11 +76,13 @@ class Ad(val context: Context, val id: String) : RewardedVideoAdListener, Lifecy
         videoAd.loadAd(id, AdRequest.Builder().build())
     }
 
+    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private fun pause() {
         videoAd.pause(context)
     }
 
+    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun resume() {
         videoAd.resume(context)

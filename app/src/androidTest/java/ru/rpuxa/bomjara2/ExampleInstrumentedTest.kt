@@ -18,8 +18,8 @@ import ru.rpuxa.bomjara.refactor.m.MyDataBase
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
 
-    lateinit var context: Context
-    lateinit var dataBase: MyDataBase
+    private lateinit var context: Context
+    private lateinit var dataBase: MyDataBase
 
     @Before
     fun before() {
@@ -28,10 +28,11 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun lastSaveId() {
+    suspend fun lastSaveId() {
         val rand = -7916290162127893
         dataBase.setLastSaveId(rand)
 
         assertEquals(rand, dataBase.getLastSaveId())
     }
+
 }

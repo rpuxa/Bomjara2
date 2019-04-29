@@ -3,7 +3,8 @@ package ru.rpuxa.bomjara.refactor.m.player.secure
 import ru.rpuxa.bomjara.api.player.MonoPossession
 import ru.rpuxa.bomjara.api.player.PossessionsList
 
-class SecureMonoPossesion : SecurePossession, MonoPossession {
+class SecureMonoPossession(value: Int, override val possession: PossessionsList) : SecurePossession(), MonoPossession {
+
     override var value
         get() = when (possession) {
             PossessionsList.LOCATION -> location
@@ -20,10 +21,7 @@ class SecureMonoPossesion : SecurePossession, MonoPossession {
             }
         }
 
-    override val possession: PossessionsList
-
-    constructor(value: Int, possession: PossessionsList) : super() {
-        this.possession = possession
+    init {
         this.value = value
     }
 }

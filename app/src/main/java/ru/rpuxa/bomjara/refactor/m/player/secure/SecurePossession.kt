@@ -41,10 +41,10 @@ open class SecurePossession(
         }
 
     override fun enoughFor(standard: Possessions): MonoPossession? = when {
-        transport < standard.transport -> SecureMonoPossesion(standard.transport, PossessionsList.TRANSPORT)
-        home < standard.home -> SecureMonoPossesion(standard.home, PossessionsList.HOME)
-        friend < standard.friend -> SecureMonoPossesion(standard.friend, PossessionsList.FRIEND)
-        location < standard.location -> SecureMonoPossesion(standard.location, PossessionsList.LOCATION)
+        transport < standard.transport -> SecureMonoPossession(standard.transport, PossessionsList.TRANSPORT)
+        home < standard.home -> SecureMonoPossession(standard.home, PossessionsList.HOME)
+        friend < standard.friend -> SecureMonoPossession(standard.friend, PossessionsList.FRIEND)
+        location < standard.location -> SecureMonoPossession(standard.location, PossessionsList.LOCATION)
         else -> null
     }
 }

@@ -36,10 +36,6 @@ fun Long.divider(): String {
 
 val random = Random()
 
-fun Random.nextDouble(from: Double, to: Double) =
-        random.nextDouble() * (to - from) + to
-
-
 inline fun <T> MutableLiveData<T>.update(block: T.() -> Unit) {
     block(value!!)
     update()
