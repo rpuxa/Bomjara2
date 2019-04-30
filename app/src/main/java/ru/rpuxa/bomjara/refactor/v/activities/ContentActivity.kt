@@ -34,6 +34,7 @@ class ContentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content)
 
+
         pager.adapter = ContentAdapter(supportFragmentManager)
         scroll_buttons
                 .setIcons(
