@@ -67,7 +67,11 @@ class Bomjara : Application() {
                             it.maxFullness,
                             it.maxHealth,
                             it.courses,
-                            ALIVE
+                            ALIVE,
+                            0,
+                            0,
+                            0,
+                            0
                     )
                 }
 

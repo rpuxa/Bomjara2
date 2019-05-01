@@ -34,7 +34,7 @@ class ActionImpl(
     override fun perform(player: Player): Boolean {
         if (canPerform(player) != NOTHING_NEEDED)
             return false
-        player.age.value = player.age.nnValue + 1
+        player.age.v++
         if (addMoney.positive)
             player.addSalary(addMoney)
         else
@@ -42,7 +42,11 @@ class ActionImpl(
         player.addCondition(addCondition)
         if (random.nextInt(40) == 10)
             player.addMoney(SecureMonoCurrency.ONE_DIAMOND)
-        if (illegal && player.daysWithoutCaught >= 2 && random.nextInt(9) == 5) {
+        if (illegal &&
+                player.aezakmi.v > 0 &&
+                player.daysWithoutCaught >= 2 &&
+                random.nextInt(9) == 5
+        ) {
             player.endGame.value = CAUGHT_BY_POLICE
         } else {
             player.daysWithoutCaught++

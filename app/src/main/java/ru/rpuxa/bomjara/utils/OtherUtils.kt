@@ -62,7 +62,14 @@ inline fun <T> LiveData<T>.observe(owner: LifecycleOwner, crossinline block: (T)
 
 inline val <T> LiveData<T>.nnValue get() = value!!
 
-inline val <T> LiveData<T>.v get() = nnValue
+inline val <T> LiveData<T>.v
+    get() = nnValue
+
+inline var <T> MutableLiveData<T>.v: T
+    get() = nnValue
+    set(value) {
+        postValue = value
+    }
 
 fun setVisibility(visibility: Int, vararg views: View) {
     for (v in views)
@@ -75,7 +82,10 @@ var <T> MutableLiveData<T>.postValue: T
         throw UnsupportedOperationException()
     }
     set(value) {
-        postValue(value)
+        if (Looper.myLooper() == null)
+            setValue(value)
+        else
+            postValue(value)
     }
 
 

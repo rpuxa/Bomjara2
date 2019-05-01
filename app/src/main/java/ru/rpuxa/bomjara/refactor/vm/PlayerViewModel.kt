@@ -44,6 +44,8 @@ class PlayerViewModel : ViewModel(), Player {
     override var efficiency = MutableLiveData<Int>()
     override var daysWithoutCaught: Int = 2
     override val endGame = MutableLiveData<Int>()
+    override val immortal = MutableLiveData<Int>()
+    override val aezakmi = MutableLiveData<Int>()
     override var doingAction: Boolean = false
 
     val currentActions = MutableLiveData<List<Action>>()
@@ -196,6 +198,8 @@ class PlayerViewModel : ViewModel(), Player {
     }
 
     override fun addCondition(add: Condition) {
+        if (immortal.v > 0)
+            return
         condition.update {
             addAssign(add.multiply(gauss))
             truncateAssign(maxCondition.nnValue)
@@ -217,6 +221,15 @@ class PlayerViewModel : ViewModel(), Player {
 
     override fun addSalary(add: MonoCurrency) {
         addMoney(add.multiply(gauss).multiply(efficiency.v.toDouble() / 100))
+    }
+
+    override fun addImmortal(days: Int) {
+        addCondition(maxCondition.v)
+        immortal.v += days
+    }
+
+    override fun addAezakmi(days: Int) {
+        aezakmi.v += days
     }
 
     fun getLocation(id: Int): ChainElement = res.actions.locations[id]

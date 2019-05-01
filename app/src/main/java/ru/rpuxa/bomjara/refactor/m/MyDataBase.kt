@@ -2,22 +2,21 @@ package ru.rpuxa.bomjara.refactor.m
 
 import android.content.Context
 import androidx.room.*
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 import ru.rpuxa.bomjara.api.player.Condition
 import ru.rpuxa.bomjara.api.player.Money
 
 @Database(
-    entities = [MyDataBase.Save::class, MyDataBase.Settings::class],
-    version = 1
+        entities = [MyDataBase.Save::class, MyDataBase.Settings::class],
+        version = 2
 )
 abstract class MyDataBase : RoomDatabase() {
 
     companion object {
         fun create(context: Context): MyDataBase =
-            Room.databaseBuilder(context, MyDataBase::class.java, "database.db")
-                .build()
+                Room.databaseBuilder(context, MyDataBase::class.java, "database.db")
+                        .build()
 
         private const val SAVES_TABLE_NAME = "saves"
         private const val SETTINGS_TABLE_NAME = "settings"
@@ -30,32 +29,37 @@ abstract class MyDataBase : RoomDatabase() {
     }
 
     suspend fun updatePlayer(
-        id: Long,
-        name: String,
-        age: Int,
-        bottles: Long,
-        rubles: Long,
-        diamonds: Long,
-        location: Int,
-        friend: Int,
-        home: Int,
-        transport: Int,
-        efficiency: Int,
-        maxEnergy: Int,
-        maxFullness: Int,
-        maxHealth: Int,
-        energy: Int,
-        fullness: Int,
-        health: Int,
-        courses: IntArray,
-        endGame: Int
+            id: Long,
+            name: String,
+            age: Int,
+            bottles: Long,
+            rubles: Long,
+            diamonds: Long,
+            location: Int,
+            friend: Int,
+            home: Int,
+            transport: Int,
+            efficiency: Int,
+            maxEnergy: Int,
+            maxFullness: Int,
+            maxHealth: Int,
+            energy: Int,
+            fullness: Int,
+            health: Int,
+            courses: IntArray,
+            endGame: Int,
+            immortal: Int,
+            aezakmi: Int,
+            policeTokens: Int,
+            pills: Int
     ) = withContext(pool) {
         savesDao().insert(
-            Save(
-                id, name, age, bottles, rubles, diamonds,
-                location, friend, home, transport, efficiency, maxEnergy, maxFullness, maxHealth,
-                energy, fullness, health, courses, endGame
-            )
+                Save(
+                        id, name, age, bottles, rubles, diamonds, location, friend,
+                        home, transport, efficiency, maxEnergy, maxFullness,
+                        maxHealth, energy, fullness, health, courses, endGame,
+                        immortal, aezakmi, policeTokens, pills
+                )
         )
     }
 
@@ -130,6 +134,22 @@ abstract class MyDataBase : RoomDatabase() {
         settingsDao().setShowTips(bFlag)
     }
 
+    suspend fun setImmortal(id: Long, days: Int) = withContext(pool) {
+        savesDao().updateImmortal(id, days)
+    }
+
+    suspend fun setAezakmi(id: Long, days: Int) = withContext(pool) {
+        savesDao().updateAezakmi(id, days)
+    }
+
+    suspend fun setPills(id: Long, count: Int) = withContext(pool) {
+        savesDao().updatePills(id, count)
+    }
+
+    suspend fun setPoliceTokens(id: Long, count: Int) = withContext(pool) {
+        savesDao().updatePoliceTokens(id, count)
+    }
+
     private suspend fun getSettings() = withContext(pool) {
         createSettingsIfAbsent()
         settingsDao().get()[0]
@@ -191,38 +211,55 @@ abstract class MyDataBase : RoomDatabase() {
 
         @Query("UPDATE $SAVES_TABLE_NAME SET endGame = :flag WHERE id = :id")
         fun updateEndGame(id: Long, flag: Int)
+
+        @Query("UPDATE $SAVES_TABLE_NAME SET immortal = :days WHERE id = :id")
+        fun updateImmortal(id: Long, days: Int)
+
+        @Query("UPDATE $SAVES_TABLE_NAME SET aezakmi = :days WHERE id = :id")
+        fun updateAezakmi(id: Long, days: Int)
+
+        @Query("UPDATE $SAVES_TABLE_NAME SET policeTokens = :count WHERE id = :id")
+        fun updatePoliceTokens(id: Long, count: Int)
+
+        @Query("UPDATE $SAVES_TABLE_NAME SET pills = :count WHERE id = :id")
+        fun updatePills(id: Long, count: Int)
     }
 
     @Entity(tableName = SAVES_TABLE_NAME)
     class Save(
-        @PrimaryKey
-        var id: Long,
-        var name: String,
-        var age: Int,
-        var bottles: Long,
-        var rubles: Long,
-        var diamonds: Long,
-        var location: Int,
-        var friend: Int,
-        var home: Int,
-        var transport: Int,
-        var efficiency: Int,
-        var maxEnergy: Int,
-        var maxFullness: Int,
-        var maxHealth: Int,
-        var energy: Int,
-        var fullness: Int,
-        var health: Int,
-        courses: IntArray,
-        var endGame: Int
+            @PrimaryKey
+            var id: Long,
+            var name: String,
+            var age: Int,
+            var bottles: Long,
+            var rubles: Long,
+            var diamonds: Long,
+            var location: Int,
+            var friend: Int,
+            var home: Int,
+            var transport: Int,
+            var efficiency: Int,
+            var maxEnergy: Int,
+            var maxFullness: Int,
+            var maxHealth: Int,
+            var energy: Int,
+            var fullness: Int,
+            var health: Int,
+            courses: IntArray,
+            var endGame: Int,
+            var immortal: Int,
+            var aezakmi: Int,
+            var policeTokens: Int,
+            var pills: Int
     ) {
 
         constructor() : this(
-            0, "", 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            IntArray(0), 0
+                0, "", 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                IntArray(0), 0, 0, 0,
+                0, 0
         )
 
         lateinit var stringCourses: String
@@ -282,8 +319,8 @@ abstract class MyDataBase : RoomDatabase() {
 
     @Entity(tableName = SETTINGS_TABLE_NAME)
     class Settings(
-        var showTips: Boolean,
-        var lastSave: Long
+            var showTips: Boolean,
+            var lastSave: Long
     ) {
         @PrimaryKey
         var id: Int = 0

@@ -49,7 +49,11 @@ class SavesViewModel : ViewModel() {
                     90,
                     90,
                     IntArray(coursesSize),
-                    ALIVE
+                    ALIVE,
+                    0,
+                    0,
+                    0,
+                    0
             )
         }
         return id

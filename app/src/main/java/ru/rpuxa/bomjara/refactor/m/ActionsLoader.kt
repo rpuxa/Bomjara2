@@ -55,6 +55,14 @@ class ActionsLoader {
         add(3, "+10% к эффективности работы", 17) {
             it.efficiency.value = it.efficiency.v + 10
         }
+
+        add(4, "Бессмертие на 30 дней", 47) {
+            it.addImmortal(30)
+        }
+
+        add(5, "Вас не ловит полиция 30 дней", 47) {
+            it.addAezakmi(30)
+        }
     }
 
     fun getPenalty(player: Player) = penalties[player.location.v]

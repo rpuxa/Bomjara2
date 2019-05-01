@@ -34,4 +34,10 @@ interface Player {
     fun addMoney(add: MonoCurrency): Boolean
 
     fun addSalary(add: MonoCurrency)
+
+    fun addImmortal(days: Int)
+
+    fun addAezakmi(days: Int)
+    val immortal: MutableLiveData<Int>
+    val aezakmi: MutableLiveData<Int>
 }
